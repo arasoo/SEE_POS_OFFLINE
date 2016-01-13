@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BABD0BBE-83B9-4578-A8F7-93E6043F310C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>imgLib</RootNamespace>
+    <AssemblyName>imgLib</AssemblyName>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>imgLib.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>imgLib.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReloadImage.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Print.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\browse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Apply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Void.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\New.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\payment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\setup_printer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\parameter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\interfacing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\purchase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\receive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\report.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shopping-cart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tag2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\my_logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo_company.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Promo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UserGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\userlogin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\users.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\edit2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Posting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CloseMenu.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpenMenu.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
