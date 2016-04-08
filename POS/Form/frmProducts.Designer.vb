@@ -49,22 +49,22 @@ Partial Class frmProducts
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GridProducts = New System.Windows.Forms.DataGridView()
-        Me.colView = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.colEdit = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.picProducts = New System.Windows.Forms.PictureBox()
         Me.gridAll = New System.Windows.Forms.DataGridView()
-        Me.cmbFilter = New System.Windows.Forms.ComboBox()
-        Me.picSearch = New System.Windows.Forms.PictureBox()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.btnPrint = New System.Windows.Forms.Button()
         Me.btnExport = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cmbProduct = New System.Windows.Forms.ComboBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.cmbType = New System.Windows.Forms.ComboBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.cmbGroup = New System.Windows.Forms.ComboBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.cmbStatus = New System.Windows.Forms.ComboBox()
+        Me.colView = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.colEdit = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.lblRecords = New System.Windows.Forms.Label()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -81,12 +81,9 @@ Partial Class frmProducts
         Me.colPrice = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colDisc1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colDiscPurch = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         CType(Me.GridProducts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picProducts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridAll, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GridProducts
@@ -99,8 +96,8 @@ Partial Class frmProducts
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridProducts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.GridProducts.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GridProducts.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.GridProducts.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.GridProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -147,30 +144,8 @@ Partial Class frmProducts
         Me.GridProducts.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black
         Me.GridProducts.RowTemplate.Height = 25
         Me.GridProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.GridProducts.Size = New System.Drawing.Size(866, 453)
+        Me.GridProducts.Size = New System.Drawing.Size(866, 463)
         Me.GridProducts.TabIndex = 381
-        '
-        'colView
-        '
-        Me.colView.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colView.Frozen = True
-        Me.colView.HeaderText = ""
-        Me.colView.Name = "colView"
-        Me.colView.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colView.Text = "    View"
-        Me.colView.ToolTipText = "View Product"
-        Me.colView.UseColumnTextForButtonValue = True
-        Me.colView.Width = 60
-        '
-        'colEdit
-        '
-        Me.colEdit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colEdit.HeaderText = ""
-        Me.colEdit.Name = "colEdit"
-        Me.colEdit.Text = "    Edit"
-        Me.colEdit.ToolTipText = "Modify Item"
-        Me.colEdit.UseColumnTextForButtonValue = True
-        Me.colEdit.Width = 60
         '
         'Label3
         '
@@ -251,40 +226,6 @@ Partial Class frmProducts
         Me.gridAll.TabIndex = 395
         Me.gridAll.Visible = False
         '
-        'cmbFilter
-        '
-        Me.cmbFilter.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbFilter.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbFilter.FormattingEnabled = True
-        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description"})
-        Me.cmbFilter.Location = New System.Drawing.Point(12, 558)
-        Me.cmbFilter.Name = "cmbFilter"
-        Me.cmbFilter.Size = New System.Drawing.Size(108, 21)
-        Me.cmbFilter.TabIndex = 439
-        '
-        'picSearch
-        '
-        Me.picSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.picSearch.BackColor = System.Drawing.Color.White
-        Me.picSearch.Location = New System.Drawing.Point(344, 559)
-        Me.picSearch.Name = "picSearch"
-        Me.picSearch.Size = New System.Drawing.Size(25, 20)
-        Me.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.picSearch.TabIndex = 438
-        Me.picSearch.TabStop = False
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.txtSearch.BackColor = System.Drawing.Color.White
-        Me.txtSearch.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSearch.Location = New System.Drawing.Point(126, 558)
-        Me.txtSearch.MaxLength = 100
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(244, 21)
-        Me.txtSearch.TabIndex = 437
-        '
         'btnRefresh
         '
         Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -292,7 +233,7 @@ Partial Class frmProducts
         Me.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnRefresh.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRefresh.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRefresh.Location = New System.Drawing.Point(884, 138)
+        Me.btnRefresh.Location = New System.Drawing.Point(884, 99)
         Me.btnRefresh.Name = "btnRefresh"
         Me.btnRefresh.Size = New System.Drawing.Size(67, 58)
         Me.btnRefresh.TabIndex = 443
@@ -307,7 +248,7 @@ Partial Class frmProducts
         Me.btnPrint.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnPrint.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPrint.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnPrint.Location = New System.Drawing.Point(884, 256)
+        Me.btnPrint.Location = New System.Drawing.Point(884, 217)
         Me.btnPrint.Name = "btnPrint"
         Me.btnPrint.Size = New System.Drawing.Size(67, 58)
         Me.btnPrint.TabIndex = 442
@@ -323,7 +264,7 @@ Partial Class frmProducts
         Me.btnExport.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnExport.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnExport.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnExport.Location = New System.Drawing.Point(884, 197)
+        Me.btnExport.Location = New System.Drawing.Point(884, 158)
         Me.btnExport.Name = "btnExport"
         Me.btnExport.Size = New System.Drawing.Size(67, 58)
         Me.btnExport.TabIndex = 441
@@ -338,7 +279,7 @@ Partial Class frmProducts
         Me.btnClose.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btnClose.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnClose.Location = New System.Drawing.Point(884, 315)
+        Me.btnClose.Location = New System.Drawing.Point(884, 276)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(67, 58)
         Me.btnClose.TabIndex = 440
@@ -351,7 +292,7 @@ Partial Class frmProducts
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Black
-        Me.Label1.Location = New System.Drawing.Point(226, 49)
+        Me.Label1.Location = New System.Drawing.Point(304, 49)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(83, 23)
         Me.Label1.TabIndex = 447
@@ -365,7 +306,7 @@ Partial Class frmProducts
         Me.cmbProduct.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbProduct.FormattingEnabled = True
         Me.cmbProduct.IntegralHeight = False
-        Me.cmbProduct.Location = New System.Drawing.Point(226, 72)
+        Me.cmbProduct.Location = New System.Drawing.Point(304, 72)
         Me.cmbProduct.MaxDropDownItems = 1
         Me.cmbProduct.Name = "cmbProduct"
         Me.cmbProduct.Size = New System.Drawing.Size(215, 21)
@@ -373,32 +314,92 @@ Partial Class frmProducts
         Me.cmbProduct.Tag = "PRODUCT"
         Me.cmbProduct.Text = "Any"
         '
-        'Label6
+        'Label4
         '
-        Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.Black
-        Me.Label6.Location = New System.Drawing.Point(17, 49)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(83, 23)
-        Me.Label6.TabIndex = 445
-        Me.Label6.Text = "Material Type"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Label4.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.Label4.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.Black
+        Me.Label4.Location = New System.Drawing.Point(9, 49)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(64, 23)
+        Me.Label4.TabIndex = 451
+        Me.Label4.Tag = "GROUP"
+        Me.Label4.Text = "Group"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'cmbType
+        'cmbGroup
         '
-        Me.cmbType.DropDownHeight = 1
-        Me.cmbType.DropDownWidth = 1
-        Me.cmbType.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbType.FormattingEnabled = True
-        Me.cmbType.IntegralHeight = False
-        Me.cmbType.Location = New System.Drawing.Point(17, 72)
-        Me.cmbType.MaxDropDownItems = 1
-        Me.cmbType.Name = "cmbType"
-        Me.cmbType.Size = New System.Drawing.Size(203, 21)
-        Me.cmbType.TabIndex = 444
-        Me.cmbType.Tag = "TYPE"
-        Me.cmbType.Text = "Any"
+        Me.cmbGroup.DropDownHeight = 1
+        Me.cmbGroup.DropDownWidth = 1
+        Me.cmbGroup.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbGroup.FormattingEnabled = True
+        Me.cmbGroup.IntegralHeight = False
+        Me.cmbGroup.Location = New System.Drawing.Point(12, 72)
+        Me.cmbGroup.MaxDropDownItems = 1
+        Me.cmbGroup.Name = "cmbGroup"
+        Me.cmbGroup.Size = New System.Drawing.Size(153, 21)
+        Me.cmbGroup.TabIndex = 450
+        Me.cmbGroup.Tag = "GROUP"
+        '
+        'Label5
+        '
+        Me.Label5.BackColor = System.Drawing.Color.Transparent
+        Me.Label5.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.Black
+        Me.Label5.Location = New System.Drawing.Point(171, 47)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(94, 23)
+        Me.Label5.TabIndex = 470
+        Me.Label5.Text = "Status"
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'cmbStatus
+        '
+        Me.cmbStatus.DropDownWidth = 121
+        Me.cmbStatus.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbStatus.FormattingEnabled = True
+        Me.cmbStatus.IntegralHeight = False
+        Me.cmbStatus.Items.AddRange(New Object() {"Consignment", "Credit"})
+        Me.cmbStatus.Location = New System.Drawing.Point(170, 72)
+        Me.cmbStatus.Name = "cmbStatus"
+        Me.cmbStatus.Size = New System.Drawing.Size(129, 21)
+        Me.cmbStatus.TabIndex = 469
+        Me.cmbStatus.Tag = "STATUS"
+        '
+        'colView
+        '
+        Me.colView.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colView.Frozen = True
+        Me.colView.HeaderText = ""
+        Me.colView.Name = "colView"
+        Me.colView.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colView.Text = "    View"
+        Me.colView.ToolTipText = "View Product"
+        Me.colView.UseColumnTextForButtonValue = True
+        Me.colView.Width = 60
+        '
+        'colEdit
+        '
+        Me.colEdit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colEdit.HeaderText = ""
+        Me.colEdit.Name = "colEdit"
+        Me.colEdit.Text = "    Edit"
+        Me.colEdit.ToolTipText = "Modify Item"
+        Me.colEdit.UseColumnTextForButtonValue = True
+        Me.colEdit.Width = 60
+        '
+        'lblRecords
+        '
+        Me.lblRecords.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblRecords.BackColor = System.Drawing.Color.Transparent
+        Me.lblRecords.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblRecords.ForeColor = System.Drawing.Color.Black
+        Me.lblRecords.Location = New System.Drawing.Point(734, 565)
+        Me.lblRecords.Name = "lblRecords"
+        Me.lblRecords.Size = New System.Drawing.Size(144, 23)
+        Me.lblRecords.TabIndex = 471
+        Me.lblRecords.Text = "0 records"
+        Me.lblRecords.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'DataGridViewTextBoxColumn1
         '
@@ -435,6 +436,7 @@ Partial Class frmProducts
         Me.DataGridViewTextBoxColumn3.Frozen = True
         Me.DataGridViewTextBoxColumn3.HeaderText = "Status"
         Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.ReadOnly = True
         Me.DataGridViewTextBoxColumn3.Width = 80
         '
         'DataGridViewTextBoxColumn4
@@ -466,6 +468,7 @@ Partial Class frmProducts
         Me.DataGridViewTextBoxColumn6.Frozen = True
         Me.DataGridViewTextBoxColumn6.HeaderText = "Price"
         Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
+        Me.DataGridViewTextBoxColumn6.ReadOnly = True
         Me.DataGridViewTextBoxColumn6.ToolTipText = "HET Price"
         Me.DataGridViewTextBoxColumn6.Width = 80
         '
@@ -478,6 +481,7 @@ Partial Class frmProducts
         Me.DataGridViewTextBoxColumn7.Frozen = True
         Me.DataGridViewTextBoxColumn7.HeaderText = "Disc1"
         Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
+        Me.DataGridViewTextBoxColumn7.ReadOnly = True
         Me.DataGridViewTextBoxColumn7.Width = 80
         '
         'DataGridViewTextBoxColumn8
@@ -490,6 +494,7 @@ Partial Class frmProducts
         Me.DataGridViewTextBoxColumn8.Frozen = True
         Me.DataGridViewTextBoxColumn8.HeaderText = "DiscPurch"
         Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
+        Me.DataGridViewTextBoxColumn8.ReadOnly = True
         Me.DataGridViewTextBoxColumn8.Width = 80
         '
         'colItem
@@ -524,6 +529,7 @@ Partial Class frmProducts
         Me.colType.Frozen = True
         Me.colType.HeaderText = "Type"
         Me.colType.Name = "colType"
+        Me.colType.ReadOnly = True
         Me.colType.Width = 50
         '
         'Column1
@@ -551,6 +557,7 @@ Partial Class frmProducts
         Me.colPrice.Frozen = True
         Me.colPrice.HeaderText = "Price"
         Me.colPrice.Name = "colPrice"
+        Me.colPrice.ReadOnly = True
         Me.colPrice.ToolTipText = "HET Price"
         Me.colPrice.Width = 56
         '
@@ -563,6 +570,7 @@ Partial Class frmProducts
         Me.colDisc1.Frozen = True
         Me.colDisc1.HeaderText = "Disc1"
         Me.colDisc1.Name = "colDisc1"
+        Me.colDisc1.ReadOnly = True
         Me.colDisc1.Width = 60
         '
         'colDiscPurch
@@ -575,35 +583,8 @@ Partial Class frmProducts
         Me.colDiscPurch.Frozen = True
         Me.colDiscPurch.HeaderText = "DiscPurch"
         Me.colDiscPurch.Name = "colDiscPurch"
+        Me.colDiscPurch.ReadOnly = True
         Me.colDiscPurch.Width = 60
-        '
-        'Label2
-        '
-        Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.Black
-        Me.Label2.Location = New System.Drawing.Point(447, 49)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(83, 23)
-        Me.Label2.TabIndex = 449
-        Me.Label2.Text = "Status"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.DropDownHeight = 1
-        Me.ComboBox1.DropDownWidth = 1
-        Me.ComboBox1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.IntegralHeight = False
-        Me.ComboBox1.Items.AddRange(New Object() {"Any", "OK", "Block", "Out Only", "Lock"})
-        Me.ComboBox1.Location = New System.Drawing.Point(447, 72)
-        Me.ComboBox1.MaxDropDownItems = 1
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(118, 21)
-        Me.ComboBox1.TabIndex = 448
-        Me.ComboBox1.Tag = "PRODUCT"
-        Me.ComboBox1.Text = "Any"
         '
         'frmProducts
         '
@@ -612,19 +593,17 @@ Partial Class frmProducts
         Me.BackColor = System.Drawing.Color.WhiteSmoke
         Me.ClientSize = New System.Drawing.Size(959, 598)
         Me.ControlBox = False
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.lblRecords)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.cmbStatus)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.cmbGroup)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cmbProduct)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.cmbType)
         Me.Controls.Add(Me.btnRefresh)
         Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.btnExport)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.cmbFilter)
-        Me.Controls.Add(Me.picSearch)
-        Me.Controls.Add(Me.txtSearch)
         Me.Controls.Add(Me.gridAll)
         Me.Controls.Add(Me.picProducts)
         Me.Controls.Add(Me.Label3)
@@ -639,9 +618,7 @@ Partial Class frmProducts
         CType(Me.GridProducts, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picProducts, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gridAll, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents GridProducts As System.Windows.Forms.DataGridView
@@ -654,17 +631,18 @@ Partial Class frmProducts
     Friend WithEvents picProducts As System.Windows.Forms.PictureBox
     Friend WithEvents gridAll As System.Windows.Forms.DataGridView
     Friend WithEvents DataGridViewTextBoxColumn6 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents cmbFilter As System.Windows.Forms.ComboBox
-    Friend WithEvents picSearch As System.Windows.Forms.PictureBox
-    Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents btnRefresh As System.Windows.Forms.Button
     Friend WithEvents btnPrint As System.Windows.Forms.Button
     Friend WithEvents btnExport As System.Windows.Forms.Button
     Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cmbProduct As System.Windows.Forms.ComboBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents cmbType As System.Windows.Forms.ComboBox
+    Friend WithEvents DataGridViewTextBoxColumn7 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn8 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents cmbGroup As System.Windows.Forms.ComboBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents cmbStatus As System.Windows.Forms.ComboBox
     Friend WithEvents colItem As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colDescription As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colType As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -675,8 +653,5 @@ Partial Class frmProducts
     Friend WithEvents colDiscPurch As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colView As System.Windows.Forms.DataGridViewButtonColumn
     Friend WithEvents colEdit As System.Windows.Forms.DataGridViewButtonColumn
-    Friend WithEvents DataGridViewTextBoxColumn7 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn8 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents lblRecords As System.Windows.Forms.Label
 End Class

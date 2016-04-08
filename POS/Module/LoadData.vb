@@ -146,7 +146,10 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT TrnCode Code,Description Name FROM " & DB & ".dbo.mktrd"
+                .CommandText = "SELECT TrnCode Code,Description Name FROM " & DB & ".dbo.mktrd " & _
+                                "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " & _
+                                "WHERE stok_txcode=TrnCode) " & _
+                                "AND TrnCode NOT IN ('DO1')"
             End With
 
             da = New SqlDataAdapter
@@ -865,14 +868,39 @@ Module LoadData
         End Try
     End Sub
 
-    Public Sub GETProducts(ByVal gridView As DataGridView, ByVal opt As Integer, ByVal product As String, ByVal type As String, ByVal text As String)
+    Public Sub GETProducts(ByVal gridView As DataGridView, ByVal group As Integer, ByVal sts As String, ByVal product As String)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
+
+            query = "BEGIN TRANSACTION SELECT SUBSTRING(type_partnumber,1,13) item,type_description judul,type_materialtype tipe," & _
+                    "type_spl_material1 vendor,type_spl_material2 isbn,isnull(mp_nextprice,0) price," & _
+                    "disc1, discpurch FROM " & DB & ".dbo.MTIPE WITH(NOLOCK) " & _
+                    "INNER JOIN " & DB & ".dbo.MCTPROD WITH(NOLOCK) ON product_code=type_product AND product_group='" & group & "' " & _
+                    "INNER JOIN " & DB & ".dbo.MMCA WITH(NOLOCK) ON mat_tipe=type_materialtype AND mat_status='" & sts & "' " & _
+                    "INNER JOIN " & DB & ".dbo.MPRICE WITH(NOLOCK) on mp_partnumber=type_partnumber " & _
+                    "INNER JOIN " & DB & ".dbo.MPDISC WITH(NOLOCK) on product=type_discgroup " & _
+                    "WHERE MP_PriceGroup='" & GetValueParamText("HET PRICE") & "' " & _
+                    "AND mp_effectivedate <= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " & _
+                    "AND mp_expdate >= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " & _
+                    "AND exists (select * from " & DB & ".dbo.hkstok WITH(NOLOCK) where stok_partnumber=TYPE_PartNumber) " & _
+                    "AND salesorg='" & GetValueParamText("POS SLSORG") & "'and branch='" & GetValueParamText("DEFAULT BRANCH") & "' " & _
+                    "AND salesoffice='" & GetValueParamText("POS SALESOFFICE") & "' and discgroup='01' "
+
+
+
+
+            If product <> "" Then
+                query = query + " AND type_product='" & product & "'"
+            End If
+
+            query = query + " COMMIT TRANSACTION"
+
             With cm
                 .Connection = cn
-                .CommandText = "EXECUTE " & DB & ".dbo.P_GETPRODUCTS '" & opt & "','" & GetValueParamText("HET PRICE") & "','" & product & "','" & type & "','" & text & "'"
+                .CommandTimeout = 0
+                .CommandText = query
             End With
 
             da = New SqlDataAdapter
@@ -1117,6 +1145,60 @@ Module LoadData
             Throw ex
         End Try
     End Sub
+
+    Public Function GetProdhier1Item(ByVal prodhier1 As String) As DataTable
+        Try
+            dtTable = New DataTable
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " & _
+                                "WHERE type_prodhier1='" & prodhier1 & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+
+            Return dtTable
+
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Function
+
+    Public Function GetProdhier5Item(ByVal prodhier5 As String) As DataTable
+        Try
+            dtTable = New DataTable
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " & _
+                                "WHERE type_prodhier5='" & prodhier5 & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+
+            Return dtTable
+
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Function
 
     Public Sub LoadUsers(ByVal gridview As DataGridView)
         Try

@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports mainlib
 Imports genLib.General
+Imports saveLib.Save
 
 Public Class frmProducts
 
@@ -8,12 +9,11 @@ Public Class frmProducts
 
     Private Sub frmProducts_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Me.Load
         LoadImage()
-        LoadMaterialType(cmbType, gridAll, 0)
+        LoadProductGroup(cmbGroup, gridAll, 0)
         LoadProducts(cmbProduct, gridAll, 0)
 
-        cmbType.Text = "Any"
         cmbProduct.Text = "Any"
-        cmbFilter.SelectedIndex = 1
+        cmbStatus.SelectedIndex = 0
 
     End Sub
 
@@ -30,12 +30,12 @@ Public Class frmProducts
 
         btnRefresh.Image = mainClass.imgList.ImgBtnRefresh
 
-        picSearch.Image = mainClass.imgList.ImgLabelSearch
+
     End Sub
 
     Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.DoubleClick
-        If gridAll.Tag = "TYPE" Then
-            cmbType.SelectedValue = gridAll.SelectedCells(0).Value
+        If gridAll.Tag = "GROUP" Then
+            cmbGroup.SelectedValue = gridAll.SelectedCells(0).Value
 
         Else
             cmbProduct.SelectedValue = gridAll.SelectedCells(0).Value
@@ -44,14 +44,14 @@ Public Class frmProducts
         gridAll.Visible = False
     End Sub
 
-    Private Sub cmbType_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbType.Click, cmbProduct.Click
+    Private Sub cmbType_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbProduct.Click, cmbGroup.Click
         Try
 
             Dim senderCmb As ComboBox = DirectCast(sender, ComboBox)
 
             Select Case senderCmb.Tag
-                Case "TYPE"
-                    LoadMaterialType(senderCmb, gridAll, 1)
+                Case "GROUP"
+                    LoadProductGroup(senderCmb, gridAll, 1)
                 Case Else
                     LoadProducts(senderCmb, gridAll, 1)
             End Select
@@ -78,6 +78,7 @@ Public Class frmProducts
             MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
         End Try
     End Sub
+
     Private Sub GridProducts_CellContentClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles GridProducts.CellContentClick
         Dim senderGrid = DirectCast(sender, DataGridView)
 
@@ -101,11 +102,6 @@ Public Class frmProducts
 
     End Sub
 
-    Private Sub cmbType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbType.TextChanged
-        If cmbType.Text = "" Then
-            cmbType.Text = "Any"
-        End If
-    End Sub
 
     Private Sub cmbProduct_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbProduct.TextChanged
         If cmbProduct.Text = "" Then
@@ -164,9 +160,9 @@ Public Class frmProducts
     '    Me.Cursor = Cursors.Default
     'End Sub
 
-    Private Sub txtSearch_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtSearch.KeyUp
+    Private Sub txtSearch_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
         If e.KeyCode = Keys.Enter Then
-          
+
 
         End If
     End Sub
@@ -183,11 +179,12 @@ Public Class frmProducts
             Dim productcode As String
 
             Me.Cursor = Cursors.WaitCursor
-            If cmbType.Text = "Any" Then
-                typecode = ""
-            Else
-                typecode = cmbType.SelectedValue
 
+
+            If cmbStatus.SelectedIndex = 0 Then
+                typecode = "C"
+            Else
+                typecode = "G"
             End If
 
             If cmbProduct.Text = "Any" Then
@@ -196,7 +193,10 @@ Public Class frmProducts
                 productcode = cmbProduct.SelectedValue
             End If
 
-            'GETProducts(GridProducts, TabStatusItem.SelectedIndex, productcode, typecode, Text)
+            GETProducts(GridProducts, cmbGroup.SelectedValue, typecode, productcode)
+
+            lblRecords.Text = GridProducts.RowCount & " records"
+
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
@@ -205,4 +205,38 @@ Public Class frmProducts
         End Try
     End Sub
 
+    Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
+        Dim SFD As New SaveFileDialog
+        Dim strFileName As String = ""
+        Dim mDataset As DataSet
+
+        Try
+            SFD.InitialDirectory = "C:\"
+            SFD.Title = "Save Your File Spreadsheet"
+            SFD.Filter = "Microsoft Excel(*.xls)|*.xls|Comma Delimited File(*.csv)|*.Csv"
+            SFD.OverwritePrompt = True
+            SFD.ShowDialog()
+            strFileName = SFD.FileName
+
+            table = New DataTable
+            table = GridProducts.DataSource
+
+            ' If SFD.ShowDialog() = DialogResult.OK Then
+            If SFD.FilterIndex = 1 Then
+                mDataset = New DataSet("Data")
+
+                mDataset.Tables.Add(table.Copy)
+                If WriteXLSFile(strFileName, mDataset) Then
+                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                End If
+
+            Else
+                Call ExporttoCSV(table, strFileName, vbTab)
+                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+
+        End Try
+    End Sub
 End Class

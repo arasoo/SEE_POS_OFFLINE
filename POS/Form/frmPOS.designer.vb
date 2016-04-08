@@ -28,23 +28,6 @@ Partial Class frmPOS
         Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -62,26 +45,24 @@ Partial Class frmPOS
         Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GridSales = New System.Windows.Forms.DataGridView()
-        Me.colNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colUOM = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colQty = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colUnitPrice = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colAmount = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colCurrent = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colTaxRate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colTaxAmt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.coldisc1Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc1Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc2Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc2Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc3Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDisc3Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPromoID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuReportBestSeller = New System.Windows.Forms.ToolStripMenuItem()
@@ -127,6 +108,7 @@ Partial Class frmPOS
         Me.Label16 = New System.Windows.Forms.Label()
         Me.btnCancelMember = New System.Windows.Forms.Button()
         Me.lblScanStatus = New System.Windows.Forms.Label()
+        Me.PrintDocumentInvoice = New System.Drawing.Printing.PrintDocument()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -146,7 +128,25 @@ Partial Class frmPOS
         Me.DataGridViewTextBoxColumn17 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn18 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn19 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PrintDocumentInvoice = New System.Drawing.Printing.PrintDocument()
+        Me.colNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colUOM = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colQty = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colUnitPrice = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colAmount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCurrent = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTaxRate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTaxAmt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.coldisc1Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc1Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc2Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc2Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc3Rate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDisc3Amt = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPromoID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.GridSales, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.picLabel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -212,230 +212,6 @@ Partial Class frmPOS
         Me.GridSales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.GridSales.Size = New System.Drawing.Size(902, 417)
         Me.GridSales.TabIndex = 137
-        '
-        'colNo
-        '
-        Me.colNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colNo.DefaultCellStyle = DataGridViewCellStyle3
-        Me.colNo.Frozen = True
-        Me.colNo.HeaderText = "No."
-        Me.colNo.MaxInputLength = 4
-        Me.colNo.Name = "colNo"
-        Me.colNo.ReadOnly = True
-        Me.colNo.Width = 40
-        '
-        'colItem
-        '
-        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colItem.DefaultCellStyle = DataGridViewCellStyle4
-        Me.colItem.Frozen = True
-        Me.colItem.HeaderText = "Item Code"
-        Me.colItem.MaxInputLength = 13
-        Me.colItem.Name = "colItem"
-        Me.colItem.Width = 105
-        '
-        'colDescription
-        '
-        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colDescription.DefaultCellStyle = DataGridViewCellStyle5
-        Me.colDescription.Frozen = True
-        Me.colDescription.HeaderText = "Description"
-        Me.colDescription.Name = "colDescription"
-        Me.colDescription.ReadOnly = True
-        Me.colDescription.Width = 400
-        '
-        'colUOM
-        '
-        Me.colUOM.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colUOM.DefaultCellStyle = DataGridViewCellStyle6
-        Me.colUOM.Frozen = True
-        Me.colUOM.HeaderText = "UOM"
-        Me.colUOM.Name = "colUOM"
-        Me.colUOM.ReadOnly = True
-        Me.colUOM.Width = 50
-        '
-        'colQty
-        '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.Format = "N0"
-        DataGridViewCellStyle7.NullValue = "1"
-        Me.colQty.DefaultCellStyle = DataGridViewCellStyle7
-        Me.colQty.Frozen = True
-        Me.colQty.HeaderText = "Qty"
-        Me.colQty.Name = "colQty"
-        Me.colQty.Width = 45
-        '
-        'colUnitPrice
-        '
-        Me.colUnitPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.Format = "N0"
-        DataGridViewCellStyle8.NullValue = "0"
-        Me.colUnitPrice.DefaultCellStyle = DataGridViewCellStyle8
-        Me.colUnitPrice.Frozen = True
-        Me.colUnitPrice.HeaderText = "Unit Price"
-        Me.colUnitPrice.Name = "colUnitPrice"
-        Me.colUnitPrice.ReadOnly = True
-        Me.colUnitPrice.Width = 95
-        '
-        'colDisc
-        '
-        Me.colDisc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.Format = "N0"
-        DataGridViewCellStyle9.NullValue = "0"
-        Me.colDisc.DefaultCellStyle = DataGridViewCellStyle9
-        Me.colDisc.Frozen = True
-        Me.colDisc.HeaderText = "Discount"
-        Me.colDisc.Name = "colDisc"
-        Me.colDisc.ReadOnly = True
-        Me.colDisc.Width = 95
-        '
-        'colAmount
-        '
-        Me.colAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.Format = "N0"
-        DataGridViewCellStyle10.NullValue = "0"
-        Me.colAmount.DefaultCellStyle = DataGridViewCellStyle10
-        Me.colAmount.Frozen = True
-        Me.colAmount.HeaderText = "Amount"
-        Me.colAmount.Name = "colAmount"
-        Me.colAmount.ReadOnly = True
-        '
-        'colCurrent
-        '
-        Me.colCurrent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.Format = "N0"
-        DataGridViewCellStyle11.NullValue = "0"
-        Me.colCurrent.DefaultCellStyle = DataGridViewCellStyle11
-        Me.colCurrent.Frozen = True
-        Me.colCurrent.HeaderText = "Current"
-        Me.colCurrent.Name = "colCurrent"
-        Me.colCurrent.ReadOnly = True
-        Me.colCurrent.Visible = False
-        Me.colCurrent.Width = 95
-        '
-        'colTaxRate
-        '
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle12.Format = "N0"
-        DataGridViewCellStyle12.NullValue = "0"
-        Me.colTaxRate.DefaultCellStyle = DataGridViewCellStyle12
-        Me.colTaxRate.Frozen = True
-        Me.colTaxRate.HeaderText = "TaxRate"
-        Me.colTaxRate.Name = "colTaxRate"
-        Me.colTaxRate.ReadOnly = True
-        Me.colTaxRate.Visible = False
-        '
-        'colTaxAmt
-        '
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle13.Format = "N0"
-        DataGridViewCellStyle13.NullValue = "0"
-        Me.colTaxAmt.DefaultCellStyle = DataGridViewCellStyle13
-        Me.colTaxAmt.Frozen = True
-        Me.colTaxAmt.HeaderText = "Tax Amt"
-        Me.colTaxAmt.Name = "colTaxAmt"
-        Me.colTaxAmt.Visible = False
-        '
-        'coldisc1Rate
-        '
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.Format = "N0"
-        DataGridViewCellStyle14.NullValue = "0"
-        Me.coldisc1Rate.DefaultCellStyle = DataGridViewCellStyle14
-        Me.coldisc1Rate.Frozen = True
-        Me.coldisc1Rate.HeaderText = "Disc1Rate"
-        Me.coldisc1Rate.Name = "coldisc1Rate"
-        Me.coldisc1Rate.Visible = False
-        '
-        'colDisc1Amt
-        '
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.Format = "N0"
-        DataGridViewCellStyle15.NullValue = "0"
-        Me.colDisc1Amt.DefaultCellStyle = DataGridViewCellStyle15
-        Me.colDisc1Amt.Frozen = True
-        Me.colDisc1Amt.HeaderText = "Disc1Amt"
-        Me.colDisc1Amt.Name = "colDisc1Amt"
-        Me.colDisc1Amt.Visible = False
-        '
-        'colDisc2Rate
-        '
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.Format = "N0"
-        DataGridViewCellStyle16.NullValue = "0"
-        Me.colDisc2Rate.DefaultCellStyle = DataGridViewCellStyle16
-        Me.colDisc2Rate.Frozen = True
-        Me.colDisc2Rate.HeaderText = "Disc2Rate"
-        Me.colDisc2Rate.Name = "colDisc2Rate"
-        Me.colDisc2Rate.ReadOnly = True
-        Me.colDisc2Rate.Visible = False
-        '
-        'colDisc2Amt
-        '
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.Format = "N0"
-        DataGridViewCellStyle17.NullValue = "0"
-        Me.colDisc2Amt.DefaultCellStyle = DataGridViewCellStyle17
-        Me.colDisc2Amt.Frozen = True
-        Me.colDisc2Amt.HeaderText = "Disc2Amt"
-        Me.colDisc2Amt.Name = "colDisc2Amt"
-        Me.colDisc2Amt.ReadOnly = True
-        Me.colDisc2Amt.Visible = False
-        '
-        'colDisc3Rate
-        '
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.Format = "N0"
-        DataGridViewCellStyle18.NullValue = "0"
-        Me.colDisc3Rate.DefaultCellStyle = DataGridViewCellStyle18
-        Me.colDisc3Rate.Frozen = True
-        Me.colDisc3Rate.HeaderText = "Disc3Rate"
-        Me.colDisc3Rate.Name = "colDisc3Rate"
-        Me.colDisc3Rate.ReadOnly = True
-        Me.colDisc3Rate.Visible = False
-        '
-        'colDisc3Amt
-        '
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.Format = "N0"
-        DataGridViewCellStyle19.NullValue = "0"
-        Me.colDisc3Amt.DefaultCellStyle = DataGridViewCellStyle19
-        Me.colDisc3Amt.Frozen = True
-        Me.colDisc3Amt.HeaderText = "Disc3Amt"
-        Me.colDisc3Amt.Name = "colDisc3Amt"
-        Me.colDisc3Amt.ReadOnly = True
-        Me.colDisc3Amt.Visible = False
-        '
-        'colProduct
-        '
-        Me.colProduct.Frozen = True
-        Me.colProduct.HeaderText = "Product"
-        Me.colProduct.Name = "colProduct"
-        Me.colProduct.Visible = False
-        '
-        'colPromoID
-        '
-        Me.colPromoID.HeaderText = "PromoID"
-        Me.colPromoID.MaxInputLength = 20
-        Me.colPromoID.Name = "colPromoID"
-        Me.colPromoID.Visible = False
         '
         'ContextMenuStrip1
         '
@@ -687,6 +463,7 @@ Partial Class frmPOS
         Me.btnVoid.Text = "Void"
         Me.btnVoid.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnVoid.UseVisualStyleBackColor = True
+        Me.btnVoid.Visible = False
         '
         'btnBrowse
         '
@@ -1171,6 +948,230 @@ Partial Class frmPOS
         Me.DataGridViewTextBoxColumn19.MaxInputLength = 20
         Me.DataGridViewTextBoxColumn19.Name = "DataGridViewTextBoxColumn19"
         Me.DataGridViewTextBoxColumn19.Visible = False
+        '
+        'colNo
+        '
+        Me.colNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colNo.DefaultCellStyle = DataGridViewCellStyle3
+        Me.colNo.Frozen = True
+        Me.colNo.HeaderText = "No."
+        Me.colNo.MaxInputLength = 4
+        Me.colNo.Name = "colNo"
+        Me.colNo.ReadOnly = True
+        Me.colNo.Width = 40
+        '
+        'colItem
+        '
+        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colItem.DefaultCellStyle = DataGridViewCellStyle4
+        Me.colItem.Frozen = True
+        Me.colItem.HeaderText = "Item Code"
+        Me.colItem.MaxInputLength = 13
+        Me.colItem.Name = "colItem"
+        Me.colItem.Width = 105
+        '
+        'colDescription
+        '
+        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colDescription.DefaultCellStyle = DataGridViewCellStyle5
+        Me.colDescription.Frozen = True
+        Me.colDescription.HeaderText = "Description"
+        Me.colDescription.Name = "colDescription"
+        Me.colDescription.ReadOnly = True
+        Me.colDescription.Width = 400
+        '
+        'colUOM
+        '
+        Me.colUOM.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colUOM.DefaultCellStyle = DataGridViewCellStyle6
+        Me.colUOM.Frozen = True
+        Me.colUOM.HeaderText = "UOM"
+        Me.colUOM.Name = "colUOM"
+        Me.colUOM.ReadOnly = True
+        Me.colUOM.Width = 50
+        '
+        'colQty
+        '
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.Format = "N0"
+        DataGridViewCellStyle7.NullValue = "1"
+        Me.colQty.DefaultCellStyle = DataGridViewCellStyle7
+        Me.colQty.Frozen = True
+        Me.colQty.HeaderText = "Qty"
+        Me.colQty.Name = "colQty"
+        Me.colQty.Width = 45
+        '
+        'colUnitPrice
+        '
+        Me.colUnitPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.Format = "N0"
+        DataGridViewCellStyle8.NullValue = "0"
+        Me.colUnitPrice.DefaultCellStyle = DataGridViewCellStyle8
+        Me.colUnitPrice.Frozen = True
+        Me.colUnitPrice.HeaderText = "Unit Price"
+        Me.colUnitPrice.Name = "colUnitPrice"
+        Me.colUnitPrice.ReadOnly = True
+        Me.colUnitPrice.Width = 95
+        '
+        'colDisc
+        '
+        Me.colDisc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.Format = "N0"
+        DataGridViewCellStyle9.NullValue = "0"
+        Me.colDisc.DefaultCellStyle = DataGridViewCellStyle9
+        Me.colDisc.Frozen = True
+        Me.colDisc.HeaderText = "Discount"
+        Me.colDisc.Name = "colDisc"
+        Me.colDisc.ReadOnly = True
+        Me.colDisc.Width = 95
+        '
+        'colAmount
+        '
+        Me.colAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.Format = "N0"
+        DataGridViewCellStyle10.NullValue = "0"
+        Me.colAmount.DefaultCellStyle = DataGridViewCellStyle10
+        Me.colAmount.Frozen = True
+        Me.colAmount.HeaderText = "Amount"
+        Me.colAmount.Name = "colAmount"
+        Me.colAmount.ReadOnly = True
+        '
+        'colCurrent
+        '
+        Me.colCurrent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.Format = "N0"
+        DataGridViewCellStyle11.NullValue = "0"
+        Me.colCurrent.DefaultCellStyle = DataGridViewCellStyle11
+        Me.colCurrent.Frozen = True
+        Me.colCurrent.HeaderText = "Current"
+        Me.colCurrent.Name = "colCurrent"
+        Me.colCurrent.ReadOnly = True
+        Me.colCurrent.Visible = False
+        Me.colCurrent.Width = 95
+        '
+        'colTaxRate
+        '
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.Format = "N0"
+        DataGridViewCellStyle12.NullValue = "0"
+        Me.colTaxRate.DefaultCellStyle = DataGridViewCellStyle12
+        Me.colTaxRate.Frozen = True
+        Me.colTaxRate.HeaderText = "TaxRate"
+        Me.colTaxRate.Name = "colTaxRate"
+        Me.colTaxRate.ReadOnly = True
+        Me.colTaxRate.Visible = False
+        '
+        'colTaxAmt
+        '
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.Format = "N0"
+        DataGridViewCellStyle13.NullValue = "0"
+        Me.colTaxAmt.DefaultCellStyle = DataGridViewCellStyle13
+        Me.colTaxAmt.Frozen = True
+        Me.colTaxAmt.HeaderText = "Tax Amt"
+        Me.colTaxAmt.Name = "colTaxAmt"
+        Me.colTaxAmt.Visible = False
+        '
+        'coldisc1Rate
+        '
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.Format = "N0"
+        DataGridViewCellStyle14.NullValue = "0"
+        Me.coldisc1Rate.DefaultCellStyle = DataGridViewCellStyle14
+        Me.coldisc1Rate.Frozen = True
+        Me.coldisc1Rate.HeaderText = "Disc1Rate"
+        Me.coldisc1Rate.Name = "coldisc1Rate"
+        Me.coldisc1Rate.Visible = False
+        '
+        'colDisc1Amt
+        '
+        DataGridViewCellStyle15.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle15.Format = "N0"
+        DataGridViewCellStyle15.NullValue = "0"
+        Me.colDisc1Amt.DefaultCellStyle = DataGridViewCellStyle15
+        Me.colDisc1Amt.Frozen = True
+        Me.colDisc1Amt.HeaderText = "Disc1Amt"
+        Me.colDisc1Amt.Name = "colDisc1Amt"
+        Me.colDisc1Amt.Visible = False
+        '
+        'colDisc2Rate
+        '
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle16.Format = "N0"
+        DataGridViewCellStyle16.NullValue = "0"
+        Me.colDisc2Rate.DefaultCellStyle = DataGridViewCellStyle16
+        Me.colDisc2Rate.Frozen = True
+        Me.colDisc2Rate.HeaderText = "Disc2Rate"
+        Me.colDisc2Rate.Name = "colDisc2Rate"
+        Me.colDisc2Rate.ReadOnly = True
+        Me.colDisc2Rate.Visible = False
+        '
+        'colDisc2Amt
+        '
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle17.Format = "N0"
+        DataGridViewCellStyle17.NullValue = "0"
+        Me.colDisc2Amt.DefaultCellStyle = DataGridViewCellStyle17
+        Me.colDisc2Amt.Frozen = True
+        Me.colDisc2Amt.HeaderText = "Disc2Amt"
+        Me.colDisc2Amt.Name = "colDisc2Amt"
+        Me.colDisc2Amt.ReadOnly = True
+        Me.colDisc2Amt.Visible = False
+        '
+        'colDisc3Rate
+        '
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle18.Format = "N0"
+        DataGridViewCellStyle18.NullValue = "0"
+        Me.colDisc3Rate.DefaultCellStyle = DataGridViewCellStyle18
+        Me.colDisc3Rate.Frozen = True
+        Me.colDisc3Rate.HeaderText = "Disc3Rate"
+        Me.colDisc3Rate.Name = "colDisc3Rate"
+        Me.colDisc3Rate.ReadOnly = True
+        Me.colDisc3Rate.Visible = False
+        '
+        'colDisc3Amt
+        '
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.Format = "N0"
+        DataGridViewCellStyle19.NullValue = "0"
+        Me.colDisc3Amt.DefaultCellStyle = DataGridViewCellStyle19
+        Me.colDisc3Amt.Frozen = True
+        Me.colDisc3Amt.HeaderText = "Disc3Amt"
+        Me.colDisc3Amt.Name = "colDisc3Amt"
+        Me.colDisc3Amt.ReadOnly = True
+        Me.colDisc3Amt.Visible = False
+        '
+        'colProduct
+        '
+        Me.colProduct.Frozen = True
+        Me.colProduct.HeaderText = "Product"
+        Me.colProduct.Name = "colProduct"
+        Me.colProduct.Visible = False
+        '
+        'colPromoID
+        '
+        Me.colPromoID.HeaderText = "PromoID"
+        Me.colPromoID.MaxInputLength = 20
+        Me.colPromoID.Name = "colPromoID"
+        Me.colPromoID.Visible = False
         '
         'frmPOS
         '

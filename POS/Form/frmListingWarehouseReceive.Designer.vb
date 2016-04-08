@@ -101,7 +101,7 @@ Partial Class frmListingWarehouseReceive
         DataGridViewCellStyle1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridDetail.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.gridDetail.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gridDetail.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.gridDetail.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.gridDetail.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
@@ -290,8 +290,8 @@ Partial Class frmListingWarehouseReceive
         DataGridViewCellStyle13.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridHeader.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle13
         Me.GridHeader.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GridHeader.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.GridHeader.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.GridHeader.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D

@@ -23,7 +23,7 @@ Public Class frmWarehouseStockLevel
 
     End Sub
 
-    Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.DoubleClick
+    Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.Click
 
         If gridAll.Tag = "GROUP" Then
             cmbGroup.SelectedValue = gridAll.SelectedCells(0).Value
@@ -95,13 +95,17 @@ Public Class frmWarehouseStockLevel
 
                 With GridWarehouseStockLevel
                     .AutoGenerateColumns = False
-                    .Columns(0).DataPropertyName = "part_partnumber"
-                    .Columns(1).DataPropertyName = "type_description"
-                    .Columns(2).DataPropertyName = "type_materialtype"
-                    .Columns(3).DataPropertyName = "product_description"
-                    .Columns(4).DataPropertyName = "part_consigmentstock"
-                    .Columns(5).DataPropertyName = "part_rfsstock"
-                    .Columns(6).DataPropertyName = "part_totalstock"
+                    .Columns(0).DataPropertyName = "item"
+                    .Columns(1).DataPropertyName = "name"
+                    .Columns(2).DataPropertyName = "type"
+                    .Columns(3).DataPropertyName = "product"
+                    .Columns(4).DataPropertyName = "prodhier1"
+                    .Columns(5).DataPropertyName = "prodhier2"
+                    .Columns(6).DataPropertyName = "prodhier3"
+                    .Columns(7).DataPropertyName = "prodhier4"
+                    .Columns(8).DataPropertyName = "prodhier5"
+                    .Columns(9).DataPropertyName = "author"
+                    .Columns(10).DataPropertyName = "stock"
 
 
                 End With
@@ -216,20 +220,23 @@ Public Class frmWarehouseStockLevel
             Me.Cursor = Cursors.WaitCursor
             table = New DataTable
 
-            table = GetWarehouseStockLevel("", "", "", cmbWarehouse.SelectedValue, IIf(cmbFilter.SelectedIndex = 0, 1, 2), Trim(txtSearch.Text), "3")
+            table = GetWarehouseStockLevel("", "", "", cmbWarehouse.SelectedValue, cmbFilter.SelectedIndex + 1, Trim(txtSearch.Text), "3")
 
             If table.Rows.Count > 0 Then
 
                 With GridWarehouseStockLevel
                     .AutoGenerateColumns = False
-                    .Columns(0).DataPropertyName = "part_partnumber"
-                    .Columns(1).DataPropertyName = "type_description"
-                    .Columns(2).DataPropertyName = "type_materialtype"
-                    .Columns(3).DataPropertyName = "product_description"
-                    .Columns(4).DataPropertyName = "part_consigmentstock"
-                    .Columns(5).DataPropertyName = "part_rfsstock"
-                    .Columns(6).DataPropertyName = "part_totalstock"
-
+                    .Columns(0).DataPropertyName = "item"
+                    .Columns(1).DataPropertyName = "name"
+                    .Columns(2).DataPropertyName = "type"
+                    .Columns(3).DataPropertyName = "product"
+                    .Columns(4).DataPropertyName = "prodhier1"
+                    .Columns(5).DataPropertyName = "prodhier2"
+                    .Columns(6).DataPropertyName = "prodhier3"
+                    .Columns(7).DataPropertyName = "prodhier4"
+                    .Columns(8).DataPropertyName = "prodhier5"
+                    .Columns(9).DataPropertyName = "author"
+                    .Columns(10).DataPropertyName = "stock"
 
                 End With
 

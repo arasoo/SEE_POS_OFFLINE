@@ -158,7 +158,7 @@ Public Class frmListingSales
 
     Private Sub frmListingSales_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         LoadImage()
-
+        LoadSalesOrg(cmbSalesOrgPOS, gridAll, 0)
         cmbEmployeeID.Text = "Any"
     End Sub
 
@@ -214,7 +214,7 @@ Public Class frmListingSales
         End Try
     End Sub
 
-    Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.DoubleClick
+    Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.Click
         cmbEmployeeID.SelectedValue = gridAll.SelectedCells(0).Value
         gridAll.Visible = False
     End Sub
@@ -263,7 +263,4 @@ Public Class frmListingSales
         End If
     End Sub
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
-
-    End Sub
 End Class

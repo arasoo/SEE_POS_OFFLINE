@@ -238,7 +238,7 @@ Public Class frmInventorySupplier
 
             If cmbStatus.SelectedIndex = 0 Then
                 sts = ""
-                GridInventorySupplier.Columns(9).Visible = True
+                GridInventorySupplier.Columns(8).Visible = True
             Else
                 If cmbStatus.SelectedIndex = 1 Then
                     sts = "C"
@@ -246,22 +246,21 @@ Public Class frmInventorySupplier
                     sts = "G"
                 End If
 
-                GridInventorySupplier.Columns(9).Visible = False
+                GridInventorySupplier.Columns(8).Visible = False
             End If
             dt = ReportInventorySupplier(cmbSupplier.SelectedValue, sts, cmbWarehouse.SelectedValue)
 
             With GridInventorySupplier
                 .AutoGenerateColumns = False
-                .Columns(0).DataPropertyName = "iden"
-                .Columns(1).DataPropertyName = "vendor"
-                .Columns(2).DataPropertyName = "item"
-                .Columns(3).DataPropertyName = "judul"
-                .Columns(4).DataPropertyName = "product"
-                .Columns(5).DataPropertyName = "purchase"
-                .Columns(6).DataPropertyName = "discpurch"
-                .Columns(7).DataPropertyName = "stock"
-                .Columns(8).DataPropertyName = "amount"
-                .Columns(9).DataPropertyName = "sts"
+                .Columns(0).DataPropertyName = "vendor"
+                .Columns(1).DataPropertyName = "item"
+                .Columns(2).DataPropertyName = "judul"
+                .Columns(3).DataPropertyName = "product"
+                .Columns(4).DataPropertyName = "purchase"
+                .Columns(5).DataPropertyName = "discpurch"
+                .Columns(6).DataPropertyName = "stock"
+                .Columns(7).DataPropertyName = "amount"
+                .Columns(8).DataPropertyName = "sts"
 
             End With
 
@@ -278,12 +277,13 @@ Public Class frmInventorySupplier
             'tb.Text = sum.ToString()
 
             For i As Integer = 0 To GridInventorySupplier.RowCount - 1
-                amt += GridInventorySupplier.Rows(i).Cells(8).Value
-
+                amt += GridInventorySupplier.Rows(i).Cells(7).Value
+                qty += GridInventorySupplier.Rows(i).Cells(6).Value
 
             Next
 
             lblTotal.Text = String.Format("{0:#,##0}", amt)
+            lblTotalQty.Text = qty
 
             Me.Cursor = Cursors.Default
         Catch ex As Exception

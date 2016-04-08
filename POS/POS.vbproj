@@ -90,9 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="Class\CalendarCell.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Class\CalendarCell.vb" />
     <Compile Include="Class\Header.vb" />
     <Compile Include="Class\IStackedHeaderGenerator.vb" />
     <Compile Include="Class\RawPrinterHelper.vb" />
@@ -174,6 +172,12 @@
       <DependentUpon>frmEvent.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\frmEvent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmGetLastReceive.Designer.vb">
+      <DependentUpon>frmGetLastReceive.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmGetLastReceive.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmImportData.Designer.vb">
@@ -308,6 +312,12 @@
     <Compile Include="Form\frmProducts.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmRealStock.Designer.vb">
+      <DependentUpon>frmRealStock.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmRealStock.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\frmReportReview.Designer.vb">
       <DependentUpon>frmReportReview.vb</DependentUpon>
     </Compile>
@@ -350,6 +360,12 @@
     <Compile Include="Form\frmSetupSQL.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmStockAgingSupplier.Designer.vb">
+      <DependentUpon>frmStockAgingSupplier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmStockAgingSupplier.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\frmStockCard.Designer.vb">
       <DependentUpon>frmStockCard.vb</DependentUpon>
     </Compile>
@@ -360,6 +376,12 @@
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\frmSummarySalesItem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmSummarySalesProduct.Designer.vb">
+      <DependentUpon>frmSummarySalesProduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmSummarySalesProduct.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmTransfer.Designer.vb">
@@ -402,6 +424,12 @@
       <DependentUpon>FrmWR.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\FrmWR.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmBaseonSupplier.Designer.vb">
+      <DependentUpon>frmBaseonSupplier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmBaseonSupplier.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MDIMain.vb">
@@ -474,6 +502,9 @@
     <EmbeddedResource Include="Form\frmEvent.resx">
       <DependentUpon>frmEvent.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmGetLastReceive.resx">
+      <DependentUpon>frmGetLastReceive.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmImportData.resx">
       <DependentUpon>frmImportData.vb</DependentUpon>
     </EmbeddedResource>
@@ -543,6 +574,9 @@
     <EmbeddedResource Include="Form\frmProducts.resx">
       <DependentUpon>frmProducts.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmRealStock.resx">
+      <DependentUpon>frmRealStock.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmReportReview.resx">
       <DependentUpon>frmReportReview.vb</DependentUpon>
     </EmbeddedResource>
@@ -565,11 +599,17 @@
       <DependentUpon>frmSetupSQL.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmStockAgingSupplier.resx">
+      <DependentUpon>frmStockAgingSupplier.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmStockCard.resx">
       <DependentUpon>frmStockCard.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmSummarySalesItem.resx">
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmSummarySalesProduct.resx">
+      <DependentUpon>frmSummarySalesProduct.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmTransfer.resx">
       <DependentUpon>frmTransfer.vb</DependentUpon>
@@ -591,6 +631,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FrmWR.resx">
       <DependentUpon>FrmWR.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmBaseonSupplier.resx">
+      <DependentUpon>frmBaseonSupplier.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDIMain.resx">
       <SubType>Designer</SubType>

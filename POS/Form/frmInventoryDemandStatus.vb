@@ -3,6 +3,7 @@ Imports proLib.Process
 Imports sqlLib.Sql
 Imports saveLib.Save
 Imports mainlib
+Imports System.Windows.Forms
 
 Public Class frmInventoryDemandStatus
 
@@ -22,6 +23,8 @@ Public Class frmInventoryDemandStatus
         cmbFilter.SelectedIndex = 0
 
         firstLoad = True
+
+
 
     End Sub
 
@@ -355,5 +358,9 @@ Public Class frmInventoryDemandStatus
             btnPasteClipboard.Visible = True
         End If
 
+    End Sub
+
+    Private Sub btnPasteClipboard_Click(sender As Object, e As EventArgs) Handles btnPasteClipboard.Click
+     
     End Sub
 End Class

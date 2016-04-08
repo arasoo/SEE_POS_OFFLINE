@@ -117,4 +117,51 @@ Public Class frmValidateMember
 
         End If
     End Sub
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        Close()
+    End Sub
+
+    Private Sub btnApply_Click(sender As Object, e As EventArgs) Handles btnApply.Click
+        Try
+
+            If mState = 0 Then 'Member exists
+                If Not MemberExists(Trim(txtMember.Text)) = True Then
+                    MsgBox("Member not found!", MsgBoxStyle.Exclamation, Title)
+                    DialogResult = Windows.Forms.DialogResult.None
+                    Exit Sub
+                End If
+
+                table = New DataTable
+
+                table = GetDiscMember(GetValueParamText("POS SALESOFFICE"), Trim(txtMember.Text))
+
+                If table.Rows.Count > 0 Then
+                    mMemberCode = table.Rows(0).Item(3)
+                    mMemberName = table.Rows(0).Item(4)
+                    mMemberDisc = table.Rows(0).Item(5)
+                    mMemberMinPayment = table.Rows(0).Item(6)
+
+                    MsgBox("Member Valid", MsgBoxStyle.Information, Title)
+                    DialogResult = Windows.Forms.DialogResult.OK
+                Else
+                    MsgBox("No event disc for this member!", MsgBoxStyle.Exclamation, Title)
+                    DialogResult = Windows.Forms.DialogResult.None
+                    Exit Sub
+                End If
+            Else 'Employee ID Exists
+                If Not EmpIDExists(Trim(txtMember.Text), logOn) = True Then
+                    mEmployeeIDValid = False
+                Else
+                    mEmployeeIDValid = True
+                End If
+
+                DialogResult = Windows.Forms.DialogResult.OK
+            End If
+
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+        End Try
+
+    End Sub
 End Class

@@ -381,6 +381,8 @@ Public Class frmPOS
                 SaveDetailPayment(documentno)
                 SaveHeaderPayment(documentno)
 
+                UpdateHistoryPOS(documentno, "RC")
+
                 SaveDetailPOS(mDetailAmt, mDetailPPN, documentno)
                 SaveHeaderPOS(mDetailAmt, mDetailPPN, documentno)
 
@@ -391,7 +393,6 @@ Public Class frmPOS
                 '                                 mCustomer, mEmployeeID)
 
 
-                UpdateHistoryPOS(documentno, "RC")
                 UpdateHistoryPOS(Trim(lblInvoice.Text), mTransId)
 
                 printstate = 1
@@ -405,19 +406,20 @@ Public Class frmPOS
                 state = 0
                 DetailClear()
 
+                MsgBox("Change : " & fPayment.lblChange.Text, MsgBoxStyle.Information, "UANG KEMBALIAN")
+                fPayment.Close()
+
                 If GetValueParamNumber("AUTO POS") = 1 Then
                     state = 1
                     DetailClear()
                 End If
-
-                MsgBox("Change : " & fPayment.lblChange.Text, MsgBoxStyle.Information, "UANG KEMBALIAN")
-                fPayment.Close()
 
             Else
 
                 fPayment.Close()
 
             End If
+
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
@@ -1352,14 +1354,14 @@ finish:
 
             With cm
                 .Connection = cn
-                .CommandTimeout = 1000
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & receipt & "'"
                 .ExecuteNonQuery()
             End With
 
             With cm
                 .Connection = cn
-                .CommandTimeout = 1000
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tpayrech WHERE receiptno='" & receipt & "'"
                 .ExecuteNonQuery()
             End With
@@ -1433,20 +1435,21 @@ finish:
 
             With cm
                 .Connection = cn
-                .CommandTimeout = 1000
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & receipt & "'"
                 .ExecuteNonQuery()
             End With
 
             With cm
                 .Connection = cn
-                .CommandTimeout = 1000
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tpayrech WHERE receiptno='" & receipt & "'"
                 .ExecuteNonQuery()
             End With
 
             With cm
                 .Connection = cn
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tslsd WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
                 .ExecuteNonQuery()
             End With
@@ -1454,6 +1457,7 @@ finish:
             cm = New SqlCommand
             With cm
                 .Connection = cn
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tslsd_log WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
                 .ExecuteNonQuery()
             End With
@@ -1461,6 +1465,7 @@ finish:
             cm = New SqlCommand
             With cm
                 .Connection = cn
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tslsh WHERE hs_invoice='" & Trim(lblInvoice.Text) & "'"
                 .ExecuteNonQuery()
             End With
@@ -1468,6 +1473,7 @@ finish:
             cm = New SqlCommand
             With cm
                 .Connection = cn
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.tslsh_log WHERE hs_invoice='" & Trim(lblInvoice.Text) & "'"
                 .ExecuteNonQuery()
             End With
@@ -1475,6 +1481,7 @@ finish:
             cm = New SqlCommand
             With cm
                 .Connection = cn
+                .CommandTimeout = 0
                 .CommandText = "DELETE FROM " & DB & ".dbo.hkstok WHERE stok_document='" & Trim(lblInvoice.Text) & "'"
                 .ExecuteNonQuery()
             End With
@@ -1573,7 +1580,7 @@ finish:
                                                "'" & voucherAmt & "','" & GetValueParamText("VOUCHER CARDTYPE") & "'" & _
                                                ",'VOUCHER','" & GetValueParamText("VOUCHER EDC") & "','','',0,0,2,0)"
 
-                    .CommandTimeout = 1000
+                    .CommandTimeout = 0
                     .CommandText = query
                     .ExecuteNonQuery()
 
@@ -2587,10 +2594,10 @@ reason:
     End Sub
 
     Private Sub CheckPrinter()
-        Dim Printers As Object
-        Dim Printer As Object
-        Dim WMIObj As String
-        Dim lItem As ListViewItem
+        'Dim Printers As Object
+        'Dim Printer As Object
+        'Dim WMIObj As String
+        'Dim lItem As ListViewItem
 
         'WMIObj = "winmgmts://localhost"
         'Printers = GetObject(WMIObj).InstancesOf("win32_Printer")

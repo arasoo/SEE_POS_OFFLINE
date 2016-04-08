@@ -25,6 +25,8 @@ Partial Class frmValidateMember
         Me.txtMember = New System.Windows.Forms.TextBox()
         Me.lblNote = New System.Windows.Forms.Label()
         Me.memberPic = New System.Windows.Forms.PictureBox()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnApply = New System.Windows.Forms.Button()
         CType(Me.memberPic, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -60,13 +62,43 @@ Partial Class frmValidateMember
         Me.memberPic.TabIndex = 400
         Me.memberPic.TabStop = False
         '
+        'btnCancel
+        '
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.BackColor = System.Drawing.Color.White
+        Me.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Location = New System.Drawing.Point(319, 73)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(58, 27)
+        Me.btnCancel.TabIndex = 402
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'btnApply
+        '
+        Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnApply.BackColor = System.Drawing.Color.White
+        Me.btnApply.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.btnApply.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnApply.Location = New System.Drawing.Point(238, 73)
+        Me.btnApply.Name = "btnApply"
+        Me.btnApply.Size = New System.Drawing.Size(75, 27)
+        Me.btnApply.TabIndex = 401
+        Me.btnApply.Text = "Apply"
+        Me.btnApply.UseVisualStyleBackColor = True
+        '
         'frmValidateMember
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.SteelBlue
-        Me.ClientSize = New System.Drawing.Size(398, 86)
+        Me.ClientSize = New System.Drawing.Size(398, 112)
         Me.ControlBox = False
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.memberPic)
         Me.Controls.Add(Me.lblNote)
         Me.Controls.Add(Me.txtMember)
@@ -84,4 +116,6 @@ Partial Class frmValidateMember
     Friend WithEvents txtMember As System.Windows.Forms.TextBox
     Friend WithEvents lblNote As System.Windows.Forms.Label
     Friend WithEvents memberPic As System.Windows.Forms.PictureBox
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnApply As System.Windows.Forms.Button
 End Class

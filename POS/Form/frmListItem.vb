@@ -67,15 +67,13 @@ Public Class frmListItem
                 query = query + "WHERE mtipe.type_materialinfo LIKE '%' + '" & Trim(text) & "' + '%' AND mtipe.type_status<>1 "
             End If
 
-            query = query + "AND EXISTS (SELECT hkstok.* FROM dbo.hkstok WHERE hkstok.stok_partnumber=mtipe.type_partnumber AND hkstok.stok_warehouse='" & GetValueParamText("DEFAULT WH") & "') "
-
             query = query + "AND mpart.Part_WH='" & GetValueParamText("DEFAULT WH") & "' " & _
                             "AND mpart.Part_Branch='" & GetValueParamText("DEFAULT BRANCH") & "' "
 
             If GetValueParamText("STOCK MINUS") = 0 Then
                 query = query + "AND mpart.part_rfsstock<>0 "
-            Else
-                query = query + "AND mpart.part_rfsstock=0 "
+                query = query + "AND EXISTS (SELECT hkstok.* FROM dbo.hkstok WHERE hkstok.stok_partnumber=mtipe.type_partnumber AND hkstok.stok_warehouse='" & GetValueParamText("DEFAULT WH") & "') "
+
             End If
 
             '

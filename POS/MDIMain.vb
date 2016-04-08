@@ -164,7 +164,7 @@ Public Class MDIMain
         Else
             Me.BackgroundImage = Nothing
         End If
-     
+
         Me.Hide()
 
 
@@ -472,7 +472,14 @@ ShowMainMenu:
         mnuStripSub.Visible = True
     End Sub
 
-    Private Sub MDIMain_Shown(sender As Object, e As System.EventArgs) Handles Me.Shown
-
+    Private Sub mnuTools_Click(sender As Object, e As EventArgs) Handles mnuTools.Click
+        'set focus
+        ClearButtonStyle()
+        mnuTools.BackColor = Color.White
+        mnuTools.ForeColor = Color.Black
+        mnuTools.Font = New Font("Tahoma", 8, FontStyle.Bold)
+        SubMenuTools(mnuStripSub)
+        Me.Text = "TMBookstore - Tools"
+        mnuStripSub.Visible = True
     End Sub
 End Class

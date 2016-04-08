@@ -36,15 +36,15 @@ Public Class frmBestSeller
                     .Columns(0).DataPropertyName = "Item"
                     .Columns(1).DataPropertyName = "Judul"
                     .Columns(2).DataPropertyName = "Product"
-                    .Columns(3).DataPropertyName = "Sales"
-                    .Columns(4).DataPropertyName = "Stock"
-              
+                    .Columns(3).DataPropertyName = "HET"
+                    .Columns(4).DataPropertyName = "Sales"
+                    .Columns(5).DataPropertyName = "Stock"
 
                 End With
 
                 GridBestSeller.DataSource = table
 
-
+             
             Else
                 GridBestSeller.DataSource = Nothing
 
@@ -239,6 +239,25 @@ Public Class frmBestSeller
 
     Private Sub GridBestSeller_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles GridBestSeller.CellContentClick
 
+    End Sub
+
+    Private Sub CalculateStockToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CalculateStockToolStripMenuItem.Click
+        Try
+            Dim temp As New DataTable
+            Dim lastSaldo As Integer
+
+            temp = GETStockCard(GridBestSeller.SelectedCells(0).Value, cmbWarehouse.SelectedValue, "2012-06-01", Format(GetValueParamDate("SYSTEM DATE"), formatDate))
+
+            lastSaldo = temp.Rows(temp.Rows.Count - 1).Item(9)
+
+            'REPAIR RFS
+            RepairRFS(Trim(GridBestSeller.SelectedCells(0).Value), cmbWarehouse.SelectedValue, lastSaldo)
+
+
+            MsgBox("Calculate Finish", MsgBoxStyle.Information, Title)
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+        End Try
     End Sub
 End Class
       

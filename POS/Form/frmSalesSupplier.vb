@@ -277,11 +277,13 @@ Public Class frmSalesSupplier
 
             For i As Integer = 0 To GridSalesSupplier.RowCount - 1
                 amt += GridSalesSupplier.Rows(i).Cells(7).Value
-
+                qty += GridSalesSupplier.Rows(i).Cells(6).Value
 
             Next
 
             lblTotal.Text = String.Format("{0:#,##0}", amt)
+            lblTotalQty.Text = qty
+
 
             Me.Cursor = Cursors.Default
         Catch ex As Exception

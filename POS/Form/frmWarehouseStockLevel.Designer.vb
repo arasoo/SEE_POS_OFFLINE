@@ -30,7 +30,14 @@ Partial Class frmWarehouseStockLevel
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -40,18 +47,22 @@ Partial Class frmWarehouseStockLevel
         Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gridAll = New System.Windows.Forms.DataGridView()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.picLabel = New System.Windows.Forms.PictureBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.GridWarehouseStockLevel = New System.Windows.Forms.DataGridView()
+        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colType = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProdhier1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProdhier2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProdhier3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProdhier4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProdhier5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colAuthor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colRFS = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.CalculateStockToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnPrint = New System.Windows.Forms.Button()
@@ -78,13 +89,10 @@ Partial Class frmWarehouseStockLevel
         Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colType = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colConsigment = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colRFS = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colTotal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn10 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn11 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.gridAll, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picLabel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridWarehouseStockLevel, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -196,8 +204,8 @@ Partial Class frmWarehouseStockLevel
         DataGridViewCellStyle6.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridWarehouseStockLevel.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.GridWarehouseStockLevel.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GridWarehouseStockLevel.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.GridWarehouseStockLevel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.GridWarehouseStockLevel.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
@@ -211,33 +219,33 @@ Partial Class frmWarehouseStockLevel
         Me.GridWarehouseStockLevel.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.GridWarehouseStockLevel.ColumnHeadersHeight = 30
         Me.GridWarehouseStockLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.GridWarehouseStockLevel.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colItem, Me.colDescription, Me.colType, Me.colProduct, Me.colConsigment, Me.colRFS, Me.colTotal})
+        Me.GridWarehouseStockLevel.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colItem, Me.colDescription, Me.colType, Me.colProduct, Me.colProdhier1, Me.colProdhier2, Me.colProdhier3, Me.colProdhier4, Me.colProdhier5, Me.colAuthor, Me.colRFS})
         Me.GridWarehouseStockLevel.ContextMenuStrip = Me.ContextMenuStrip1
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.GridWarehouseStockLevel.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.GridWarehouseStockLevel.DefaultCellStyle = DataGridViewCellStyle13
         Me.GridWarehouseStockLevel.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
         Me.GridWarehouseStockLevel.EnableHeadersVisualStyles = False
         Me.GridWarehouseStockLevel.GridColor = System.Drawing.Color.Silver
         Me.GridWarehouseStockLevel.Location = New System.Drawing.Point(12, 113)
         Me.GridWarehouseStockLevel.MultiSelect = False
         Me.GridWarehouseStockLevel.Name = "GridWarehouseStockLevel"
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Khaki
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.GridWarehouseStockLevel.RowHeadersDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.Khaki
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.GridWarehouseStockLevel.RowHeadersDefaultCellStyle = DataGridViewCellStyle14
         Me.GridWarehouseStockLevel.RowHeadersVisible = False
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GridWarehouseStockLevel.RowsDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle15.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GridWarehouseStockLevel.RowsDefaultCellStyle = DataGridViewCellStyle15
         Me.GridWarehouseStockLevel.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White
         Me.GridWarehouseStockLevel.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GridWarehouseStockLevel.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.GradientInactiveCaption
@@ -247,16 +255,118 @@ Partial Class frmWarehouseStockLevel
         Me.GridWarehouseStockLevel.Size = New System.Drawing.Size(862, 441)
         Me.GridWarehouseStockLevel.TabIndex = 411
         '
+        'colItem
+        '
+        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colItem.DefaultCellStyle = DataGridViewCellStyle8
+        Me.colItem.Frozen = True
+        Me.colItem.HeaderText = "Item Code"
+        Me.colItem.MaxInputLength = 13
+        Me.colItem.Name = "colItem"
+        Me.colItem.ReadOnly = True
+        '
+        'colDescription
+        '
+        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colDescription.DefaultCellStyle = DataGridViewCellStyle9
+        Me.colDescription.Frozen = True
+        Me.colDescription.HeaderText = "Description"
+        Me.colDescription.Name = "colDescription"
+        Me.colDescription.ReadOnly = True
+        Me.colDescription.Width = 450
+        '
+        'colType
+        '
+        Me.colType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colType.DefaultCellStyle = DataGridViewCellStyle10
+        Me.colType.Frozen = True
+        Me.colType.HeaderText = "Type"
+        Me.colType.Name = "colType"
+        Me.colType.ReadOnly = True
+        Me.colType.Width = 50
+        '
+        'colProduct
+        '
+        Me.colProduct.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colProduct.DefaultCellStyle = DataGridViewCellStyle11
+        Me.colProduct.Frozen = True
+        Me.colProduct.HeaderText = "Product"
+        Me.colProduct.Name = "colProduct"
+        Me.colProduct.ReadOnly = True
+        Me.colProduct.Width = 200
+        '
+        'colProdhier1
+        '
+        Me.colProdhier1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProdhier1.HeaderText = "Prodhier1"
+        Me.colProdhier1.Name = "colProdhier1"
+        Me.colProdhier1.Width = 70
+        '
+        'colProdhier2
+        '
+        Me.colProdhier2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProdhier2.HeaderText = "Prodhier2"
+        Me.colProdhier2.Name = "colProdhier2"
+        Me.colProdhier2.Width = 70
+        '
+        'colProdhier3
+        '
+        Me.colProdhier3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProdhier3.HeaderText = "Prodhier3"
+        Me.colProdhier3.Name = "colProdhier3"
+        Me.colProdhier3.Width = 70
+        '
+        'colProdhier4
+        '
+        Me.colProdhier4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProdhier4.HeaderText = "Prodhier4"
+        Me.colProdhier4.Name = "colProdhier4"
+        Me.colProdhier4.Width = 70
+        '
+        'colProdhier5
+        '
+        Me.colProdhier5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProdhier5.HeaderText = "Prodhier5"
+        Me.colProdhier5.Name = "colProdhier5"
+        Me.colProdhier5.Width = 70
+        '
+        'colAuthor
+        '
+        Me.colAuthor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colAuthor.HeaderText = "Author"
+        Me.colAuthor.Name = "colAuthor"
+        Me.colAuthor.Width = 130
+        '
+        'colRFS
+        '
+        Me.colRFS.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.Format = "N0"
+        DataGridViewCellStyle12.NullValue = "0"
+        Me.colRFS.DefaultCellStyle = DataGridViewCellStyle12
+        Me.colRFS.HeaderText = "Stock"
+        Me.colRFS.Name = "colRFS"
+        Me.colRFS.ReadOnly = True
+        Me.colRFS.Width = 50
+        '
         'ContextMenuStrip1
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CalculateStockToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(159, 26)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(156, 26)
         '
         'CalculateStockToolStripMenuItem
         '
         Me.CalculateStockToolStripMenuItem.Name = "CalculateStockToolStripMenuItem"
-        Me.CalculateStockToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
+        Me.CalculateStockToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
         Me.CalculateStockToolStripMenuItem.Text = "Calculate Stock"
         '
         'btnPrint
@@ -386,7 +496,7 @@ Partial Class frmWarehouseStockLevel
         Me.cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbFilter.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbFilter.FormattingEnabled = True
-        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description"})
+        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description", "ISBN", "Prodhier1", "Prodhier4", "Prodhier5"})
         Me.cmbFilter.Location = New System.Drawing.Point(12, 563)
         Me.cmbFilter.Name = "cmbFilter"
         Me.cmbFilter.Size = New System.Drawing.Size(108, 21)
@@ -486,9 +596,9 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn1.DataPropertyName = "item"
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle16
         Me.DataGridViewTextBoxColumn1.Frozen = True
         Me.DataGridViewTextBoxColumn1.HeaderText = "Item Code"
         Me.DataGridViewTextBoxColumn1.MaxInputLength = 13
@@ -500,9 +610,9 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn2.DataPropertyName = "judul"
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle17
         Me.DataGridViewTextBoxColumn2.Frozen = True
         Me.DataGridViewTextBoxColumn2.HeaderText = "Description"
         Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
@@ -513,8 +623,8 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn3.DataPropertyName = "tipe"
-        DataGridViewCellStyle20.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridViewTextBoxColumn3.DefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridViewTextBoxColumn3.DefaultCellStyle = DataGridViewCellStyle18
         Me.DataGridViewTextBoxColumn3.Frozen = True
         Me.DataGridViewTextBoxColumn3.HeaderText = "Status"
         Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
@@ -525,8 +635,8 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn4.DataPropertyName = "vendor"
-        DataGridViewCellStyle21.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridViewTextBoxColumn4.DefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridViewTextBoxColumn4.DefaultCellStyle = DataGridViewCellStyle19
         Me.DataGridViewTextBoxColumn4.Frozen = True
         Me.DataGridViewTextBoxColumn4.HeaderText = "Vendor"
         Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
@@ -537,8 +647,8 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn5.DataPropertyName = "isbn"
-        DataGridViewCellStyle22.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridViewTextBoxColumn5.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle20.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridViewTextBoxColumn5.DefaultCellStyle = DataGridViewCellStyle20
         Me.DataGridViewTextBoxColumn5.Frozen = True
         Me.DataGridViewTextBoxColumn5.HeaderText = "ISBN"
         Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
@@ -549,10 +659,10 @@ Partial Class frmWarehouseStockLevel
         '
         Me.DataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.DataGridViewTextBoxColumn6.DataPropertyName = "price"
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle23.Format = "C0"
-        DataGridViewCellStyle23.NullValue = "0"
-        Me.DataGridViewTextBoxColumn6.DefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle21.Format = "C0"
+        DataGridViewCellStyle21.NullValue = "0"
+        Me.DataGridViewTextBoxColumn6.DefaultCellStyle = DataGridViewCellStyle21
         Me.DataGridViewTextBoxColumn6.Frozen = True
         Me.DataGridViewTextBoxColumn6.HeaderText = "Price"
         Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
@@ -563,93 +673,47 @@ Partial Class frmWarehouseStockLevel
         'DataGridViewTextBoxColumn7
         '
         Me.DataGridViewTextBoxColumn7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.DataGridViewTextBoxColumn7.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.DataGridViewTextBoxColumn7.DefaultCellStyle = DataGridViewCellStyle22
         Me.DataGridViewTextBoxColumn7.HeaderText = "Total"
         Me.DataGridViewTextBoxColumn7.Name = "DataGridViewTextBoxColumn7"
         Me.DataGridViewTextBoxColumn7.Width = 60
         '
-        'colItem
+        'DataGridViewTextBoxColumn8
         '
-        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colItem.DefaultCellStyle = DataGridViewCellStyle8
-        Me.colItem.Frozen = True
-        Me.colItem.HeaderText = "Item Code"
-        Me.colItem.MaxInputLength = 13
-        Me.colItem.Name = "colItem"
-        Me.colItem.ReadOnly = True
+        Me.DataGridViewTextBoxColumn8.HeaderText = "Prodhier4"
+        Me.DataGridViewTextBoxColumn8.Name = "DataGridViewTextBoxColumn8"
         '
-        'colDescription
+        'DataGridViewTextBoxColumn9
         '
-        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colDescription.DefaultCellStyle = DataGridViewCellStyle9
-        Me.colDescription.Frozen = True
-        Me.colDescription.HeaderText = "Description"
-        Me.colDescription.Name = "colDescription"
-        Me.colDescription.ReadOnly = True
-        Me.colDescription.Width = 450
+        Me.DataGridViewTextBoxColumn9.HeaderText = "Prodhier5"
+        Me.DataGridViewTextBoxColumn9.Name = "DataGridViewTextBoxColumn9"
         '
-        'colType
+        'DataGridViewTextBoxColumn10
         '
-        Me.colType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colType.DefaultCellStyle = DataGridViewCellStyle10
-        Me.colType.Frozen = True
-        Me.colType.HeaderText = "Type"
-        Me.colType.Name = "colType"
-        Me.colType.ReadOnly = True
-        Me.colType.Width = 50
+        Me.DataGridViewTextBoxColumn10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle23.Format = "N0"
+        DataGridViewCellStyle23.NullValue = "0"
+        Me.DataGridViewTextBoxColumn10.DefaultCellStyle = DataGridViewCellStyle23
+        Me.DataGridViewTextBoxColumn10.HeaderText = "Stock"
+        Me.DataGridViewTextBoxColumn10.Name = "DataGridViewTextBoxColumn10"
+        Me.DataGridViewTextBoxColumn10.ReadOnly = True
+        Me.DataGridViewTextBoxColumn10.Width = 60
         '
-        'colProduct
+        'DataGridViewTextBoxColumn11
         '
-        Me.colProduct.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colProduct.DefaultCellStyle = DataGridViewCellStyle11
-        Me.colProduct.Frozen = True
-        Me.colProduct.HeaderText = "Product"
-        Me.colProduct.Name = "colProduct"
-        Me.colProduct.ReadOnly = True
-        Me.colProduct.Width = 200
-        '
-        'colConsigment
-        '
-        Me.colConsigment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle12.Format = "N0"
-        DataGridViewCellStyle12.NullValue = "0"
-        Me.colConsigment.DefaultCellStyle = DataGridViewCellStyle12
-        Me.colConsigment.HeaderText = "Consi"
-        Me.colConsigment.Name = "colConsigment"
-        Me.colConsigment.Width = 60
-        '
-        'colRFS
-        '
-        Me.colRFS.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle13.Format = "N0"
-        DataGridViewCellStyle13.NullValue = "0"
-        Me.colRFS.DefaultCellStyle = DataGridViewCellStyle13
-        Me.colRFS.HeaderText = "RFS"
-        Me.colRFS.Name = "colRFS"
-        Me.colRFS.ReadOnly = True
-        Me.colRFS.Width = 60
-        '
-        'colTotal
-        '
-        Me.colTotal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle14.Format = "N0"
-        DataGridViewCellStyle14.NullValue = "0"
-        Me.colTotal.DefaultCellStyle = DataGridViewCellStyle14
-        Me.colTotal.HeaderText = "Total"
-        Me.colTotal.Name = "colTotal"
-        Me.colTotal.Width = 60
+        Me.DataGridViewTextBoxColumn11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle24.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle24.Format = "N0"
+        DataGridViewCellStyle24.NullValue = "0"
+        Me.DataGridViewTextBoxColumn11.DefaultCellStyle = DataGridViewCellStyle24
+        Me.DataGridViewTextBoxColumn11.HeaderText = "Stock"
+        Me.DataGridViewTextBoxColumn11.Name = "DataGridViewTextBoxColumn11"
+        Me.DataGridViewTextBoxColumn11.ReadOnly = True
+        Me.DataGridViewTextBoxColumn11.Width = 50
         '
         'frmWarehouseStockLevel
         '
@@ -717,13 +781,6 @@ Partial Class frmWarehouseStockLevel
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents CalculateStockToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents lblRecords As System.Windows.Forms.Label
-    Friend WithEvents colItem As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colDescription As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colType As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colProduct As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colConsigment As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colRFS As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents colTotal As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn7 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cmbStatus As System.Windows.Forms.ComboBox
@@ -731,4 +788,19 @@ Partial Class frmWarehouseStockLevel
     Friend WithEvents cmbGroup As System.Windows.Forms.ComboBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents cmbStock As System.Windows.Forms.ComboBox
+    Friend WithEvents DataGridViewTextBoxColumn8 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn9 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn10 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colItem As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDescription As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colType As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProduct As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProdhier1 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProdhier2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProdhier3 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProdhier4 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colProdhier5 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colAuthor As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colRFS As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn11 As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

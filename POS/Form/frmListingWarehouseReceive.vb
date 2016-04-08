@@ -1,6 +1,7 @@
 ﻿Imports genLib.General
 Imports proLib.Process
 Imports sqlLib.Sql
+Imports saveLib.Save
 Imports mainlib
 
 Public Class frmListingWarehouseReceive
@@ -254,4 +255,38 @@ Public Class frmListingWarehouseReceive
         End If
     End Sub
 
+    Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
+        Dim SFD As New SaveFileDialog
+        Dim strFileName As String = ""
+        Dim mDataset As DataSet
+
+        Try
+            SFD.InitialDirectory = "C:\"
+            SFD.Title = "Save Your File Spreadsheet"
+            SFD.Filter = "Microsoft Excel(*.xls)|*.xls|Comma Delimited File(*.csv)|*.Csv"
+            SFD.OverwritePrompt = True
+            SFD.ShowDialog()
+            strFileName = SFD.FileName
+
+            table = New DataTable
+            table = GridHeader.DataSource
+
+            ' If SFD.ShowDialog() = DialogResult.OK Then
+            If SFD.FilterIndex = 1 Then
+                mDataset = New DataSet("Data")
+
+                mDataset.Tables.Add(table.Copy)
+                If WriteXLSFile(strFileName, mDataset) Then
+                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                End If
+
+            Else
+                Call ExporttoCSV(table, strFileName, vbTab)
+                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+
+        End Try
+    End Sub
 End Class

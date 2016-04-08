@@ -2,16 +2,17 @@
 Imports mainlib
 Imports sqlLib.Sql
 Imports proLib.Process
+Imports saveLib.Save
 
 Public Class frmListingWarehouseMovement
 
     Private seqnum As Integer
-    Private firstLoad As Boolean = False
 
     Private Sub frmListingWarehouseMovement_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         LoadImage()
 
         cmbStatus.SelectedIndex = 0
+        cmbOption.SelectedIndex = 0
 
     End Sub
 
@@ -79,41 +80,6 @@ Public Class frmListingWarehouseMovement
 
     Private Sub btnClose_Click(sender As System.Object, e As System.EventArgs) Handles btnClose.Click
         Close()
-    End Sub
-
-    Private Sub GridHeader_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridHeader.SelectionChanged
-        If firstLoad = True Then
-
-            If GridHeader.RowCount > 0 Then
-
-                GetDetailMovement()
-
-            End If
-
-
-        End If
-    End Sub
-
-    Private Sub GetDetailMovement()
-        table = New DataTable
-
-        table = ListingMovementDetail(GridHeader.SelectedCells(0).Value)
-
-        seqnum = 0
-
-        If table.Rows.Count > 0 Then
-            gridDetail.Rows.Clear()
-            For i As Integer = 0 To table.Rows.Count - 1
-                seqnum += 1
-
-                gridDetail.Rows.Add(New Object() {seqnum _
-                                                   , Trim(table.Rows(i).Item("Item")) _
-                                                   , Trim(table.Rows(i).Item("Judul")) _
-                                                    , table.Rows(i).Item("UOM") _
-                                                   , table.Rows(i).Item("Qty")})
-            Next
-
-        End If
     End Sub
 
     Private Sub cmbStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbStatus.SelectedIndexChanged
@@ -216,38 +182,102 @@ Public Class frmListingWarehouseMovement
 
             Me.Cursor = Cursors.WaitCursor
 
-            firstLoad = False
-
             table = New DataTable
 
-            table = RptListingWarehouseMovement(cmbSupplier.SelectedValue, dtFrom.Value, dtTo.Value, cmbStatus.SelectedIndex)
+            GridHeader.DataSource = Nothing
+            gridDetail.DataSource = Nothing
 
-            With GridHeader
-                .AutoGenerateColumns = False
-                .Columns(0).DataPropertyName = "docno"
-                .Columns(2).DataPropertyName = "docdate"
-                .Columns(3).DataPropertyName = "trnid"
-                .Columns(4).DataPropertyName = "supp"
-                .Columns(5).DataPropertyName = "cust"
-                .Columns(6).DataPropertyName = "note"
-                .Columns(7).DataPropertyName = "sts"
+            If cmbOption.SelectedIndex = 0 Then 'by header
+                table = RptListingWarehouseMovement(IIf(cmbSupplier.Text = "Any", "All", cmbSupplier.SelectedValue), dtFrom.Value, dtTo.Value, cmbStatus.SelectedIndex)
 
-            End With
+                With GridHeader
+                    .AutoGenerateColumns = False
+                    .Columns(0).DataPropertyName = "docno"
+                    .Columns(1).DataPropertyName = "docdate"
+                    .Columns(2).DataPropertyName = "trnid"
+                    .Columns(3).DataPropertyName = "supp"
+                    .Columns(4).DataPropertyName = "cust"
+                    .Columns(5).DataPropertyName = "towh"
+                    .Columns(6).DataPropertyName = "note"
+                    .Columns(7).DataPropertyName = "sts"
+                End With
 
-            GridHeader.DataSource = table
+                GridHeader.DataSource = table
 
-            If GridHeader.RowCount > 0 Then
-                GetDetailMovement()
-                firstLoad = True
-            Else
+            Else 'by detail
+                table = ListingMovementDetail(IIf(cmbSupplier.Text = "Any", "All", cmbSupplier.SelectedValue), dtFrom.Value, dtTo.Value, cmbStatus.SelectedIndex)
 
-                firstLoad = False
+                With gridDetail
+                    .AutoGenerateColumns = False
+                    .Columns(0).DataPropertyName = "docno"
+                    .Columns(1).DataPropertyName = "docdate"
+                    .Columns(2).DataPropertyName = "vendor"
+                    .Columns(3).DataPropertyName = "item"
+                    .Columns(4).DataPropertyName = "judul"
+                    .Columns(5).DataPropertyName = "uom"
+                    .Columns(6).DataPropertyName = "qty"
+
+                End With
+
+                gridDetail.DataSource = table
             End If
+
+         
 
             Me.Cursor = Cursors.Default
 
         Catch ex As Exception
             Me.Cursor = Cursors.Default
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+
+        End Try
+    End Sub
+
+    Private Sub cmbOption_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbOption.SelectedIndexChanged
+        If cmbOption.SelectedIndex = 0 Then
+            GridHeader.Visible = True
+            gridDetail.Visible = False
+        Else
+            GridHeader.Visible = False
+            gridDetail.Visible = True
+        End If
+    End Sub
+
+    Private Sub btnExport_Click(sender As Object, e As EventArgs) Handles btnExport.Click
+        Dim SFD As New SaveFileDialog
+        Dim strFileName As String = ""
+        Dim mDataset As DataSet
+
+        Try
+            SFD.InitialDirectory = "C:\"
+            SFD.Title = "Save Your File Spreadsheet"
+            SFD.Filter = "Microsoft Excel(*.xls)|*.xls|Comma Delimited File(*.csv)|*.Csv"
+            SFD.OverwritePrompt = True
+            SFD.ShowDialog()
+            strFileName = SFD.FileName
+
+            table = New DataTable
+            If cmbOption.SelectedIndex = 0 Then
+                table = GridHeader.DataSource
+            Else
+                table = gridDetail.DataSource
+            End If
+
+
+            ' If SFD.ShowDialog() = DialogResult.OK Then
+            If SFD.FilterIndex = 1 Then
+                mDataset = New DataSet("Data")
+
+                mDataset.Tables.Add(table.Copy)
+                If WriteXLSFile(strFileName, mDataset) Then
+                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                End If
+
+            Else
+                Call ExporttoCSV(table, strFileName, vbTab)
+                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+            End If
+        Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
 
         End Try

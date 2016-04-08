@@ -44,7 +44,7 @@ Partial Class MDIMain
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.linkLogOut = New System.Windows.Forms.LinkLabel()
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.mnuTools = New System.Windows.Forms.ToolStripButton()
         Me.mnuMain.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -55,7 +55,7 @@ Partial Class MDIMain
         Me.mnuMain.BackColor = System.Drawing.Color.SteelBlue
         Me.mnuMain.Font = New System.Drawing.Font("Comic Sans MS", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.mnuMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.mnuSales, Me.mnuCustomers, Me.mnuProducts, Me.mnuInventory, Me.mnuFinance, Me.mnuAccounting, Me.mnuHRDGA, Me.mnuReport, Me.mnuSetup})
+        Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuSales, Me.mnuCustomers, Me.mnuProducts, Me.mnuInventory, Me.mnuFinance, Me.mnuAccounting, Me.mnuHRDGA, Me.mnuReport, Me.mnuSetup, Me.mnuTools})
         Me.mnuMain.Location = New System.Drawing.Point(0, 0)
         Me.mnuMain.Name = "mnuMain"
         Me.mnuMain.Size = New System.Drawing.Size(991, 30)
@@ -313,11 +313,18 @@ Partial Class MDIMain
         Me.linkLogOut.TabStop = True
         Me.linkLogOut.Text = "Log Out"
         '
-        'ToolStripLabel1
+        'mnuTools
         '
-        Me.ToolStripLabel1.AutoSize = False
-        Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(0, 27)
+        Me.mnuTools.BackColor = System.Drawing.Color.SteelBlue
+        Me.mnuTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.mnuTools.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.mnuTools.ForeColor = System.Drawing.Color.White
+        Me.mnuTools.Image = CType(resources.GetObject("mnuTools.Image"), System.Drawing.Image)
+        Me.mnuTools.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.mnuTools.Name = "mnuTools"
+        Me.mnuTools.Size = New System.Drawing.Size(36, 27)
+        Me.mnuTools.Tag = "TOL"
+        Me.mnuTools.Text = "Tools"
         '
         'MDIMain
         '
@@ -370,6 +377,6 @@ Partial Class MDIMain
     Friend WithEvents mnuSetup As System.Windows.Forms.ToolStripButton
     Friend WithEvents linkLogOut As System.Windows.Forms.LinkLabel
     Friend WithEvents mnuHRDGA As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents mnuTools As System.Windows.Forms.ToolStripButton
 
 End Class

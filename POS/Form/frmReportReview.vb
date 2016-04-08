@@ -42,7 +42,7 @@ Class frmReportViewer
     End Property
 
     Private Sub frmReportViewer_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        ReportViewer1.LocalReport.ReleaseSandboxAppDomain()
+        'ReportViewer1.LocalReport.ReleaseSandboxAppDomain()
     End Sub
 
     Private Sub frmReportViewer_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -81,7 +81,7 @@ Class frmReportViewer
             ' tells the viewer to refresh with the currently loaded report
             Me.ReportViewer1.RefreshReport()
 
-            ReportViewer1.LocalReport.ReleaseSandboxAppDomain()
+            'ReportViewer1.LocalReport.ReleaseSandboxAppDomain()
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
 

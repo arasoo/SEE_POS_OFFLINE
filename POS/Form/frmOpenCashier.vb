@@ -27,8 +27,6 @@ Public Class frmOpenCashier
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
-
-
             If cmbEmployeeID.Text = "" Then
                 MsgBox("Please choose employee ID", MsgBoxStyle.Exclamation, Title)
                 Exit Sub
