@@ -31,6 +31,7 @@ Partial Class MDIMain
         Me.mnuHRDGA = New System.Windows.Forms.ToolStripButton()
         Me.mnuReport = New System.Windows.Forms.ToolStripButton()
         Me.mnuSetup = New System.Windows.Forms.ToolStripButton()
+        Me.mnuTools = New System.Windows.Forms.ToolStripButton()
         Me.mnuStripSub = New System.Windows.Forms.MenuStrip()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.statusPeriod = New System.Windows.Forms.ToolStripStatusLabel()
@@ -44,7 +45,6 @@ Partial Class MDIMain
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.linkLogOut = New System.Windows.Forms.LinkLabel()
-        Me.mnuTools = New System.Windows.Forms.ToolStripButton()
         Me.mnuMain.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -178,6 +178,19 @@ Partial Class MDIMain
         Me.mnuSetup.Tag = "SET"
         Me.mnuSetup.Text = "Setup"
         '
+        'mnuTools
+        '
+        Me.mnuTools.BackColor = System.Drawing.Color.SteelBlue
+        Me.mnuTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.mnuTools.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.mnuTools.ForeColor = System.Drawing.Color.White
+        Me.mnuTools.Image = CType(resources.GetObject("mnuTools.Image"), System.Drawing.Image)
+        Me.mnuTools.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.mnuTools.Name = "mnuTools"
+        Me.mnuTools.Size = New System.Drawing.Size(36, 27)
+        Me.mnuTools.Tag = "TOL"
+        Me.mnuTools.Text = "Tools"
+        '
         'mnuStripSub
         '
         Me.mnuStripSub.AutoSize = False
@@ -295,7 +308,7 @@ Partial Class MDIMain
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(149, 23)
         Me.Label1.TabIndex = 245
-        Me.Label1.Text = "Version : 2.0.2"
+        Me.Label1.Text = "Version : 2.0.3"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'linkLogOut
@@ -312,19 +325,6 @@ Partial Class MDIMain
         Me.linkLogOut.TabIndex = 247
         Me.linkLogOut.TabStop = True
         Me.linkLogOut.Text = "Log Out"
-        '
-        'mnuTools
-        '
-        Me.mnuTools.BackColor = System.Drawing.Color.SteelBlue
-        Me.mnuTools.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.mnuTools.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.mnuTools.ForeColor = System.Drawing.Color.White
-        Me.mnuTools.Image = CType(resources.GetObject("mnuTools.Image"), System.Drawing.Image)
-        Me.mnuTools.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.mnuTools.Name = "mnuTools"
-        Me.mnuTools.Size = New System.Drawing.Size(36, 27)
-        Me.mnuTools.Tag = "TOL"
-        Me.mnuTools.Text = "Tools"
         '
         'MDIMain
         '

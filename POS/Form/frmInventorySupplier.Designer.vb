@@ -27,6 +27,10 @@ Partial Class frmInventorySupplier
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -43,10 +47,6 @@ Partial Class frmInventorySupplier
         Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.cmbWarehouse = New System.Windows.Forms.ComboBox()
         Me.btnExport = New System.Windows.Forms.Button()
@@ -55,6 +55,15 @@ Partial Class frmInventorySupplier
         Me.btnRefresh = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.GridInventorySupplier = New System.Windows.Forms.DataGridView()
+        Me.colVendor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colPurchase = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDiscPurch = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colStock = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colSalesAmount = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colSts = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.picTitle = New System.Windows.Forms.PictureBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -71,15 +80,6 @@ Partial Class frmInventorySupplier
         Me.DataGridViewTextBoxColumn9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn10 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn11 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colVendor = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colProduct = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colPurchase = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDiscPurch = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colStock = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colSalesAmount = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colSts = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.lblTotalQty = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -250,6 +250,83 @@ Partial Class frmInventorySupplier
         Me.GridInventorySupplier.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.GridInventorySupplier.Size = New System.Drawing.Size(905, 357)
         Me.GridInventorySupplier.TabIndex = 453
+        '
+        'colVendor
+        '
+        Me.colVendor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colVendor.HeaderText = "Vendor"
+        Me.colVendor.Name = "colVendor"
+        '
+        'colItem
+        '
+        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colItem.HeaderText = "Item"
+        Me.colItem.Name = "colItem"
+        '
+        'colDescription
+        '
+        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colDescription.HeaderText = "Description"
+        Me.colDescription.Name = "colDescription"
+        Me.colDescription.Width = 400
+        '
+        'colProduct
+        '
+        Me.colProduct.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colProduct.HeaderText = "Product"
+        Me.colProduct.Name = "colProduct"
+        Me.colProduct.Width = 170
+        '
+        'colPurchase
+        '
+        Me.colPurchase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle3.Format = "N0"
+        DataGridViewCellStyle3.NullValue = "0"
+        Me.colPurchase.DefaultCellStyle = DataGridViewCellStyle3
+        Me.colPurchase.HeaderText = "Purchase"
+        Me.colPurchase.Name = "colPurchase"
+        Me.colPurchase.Width = 70
+        '
+        'colDiscPurch
+        '
+        Me.colDiscPurch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle4.Format = "N2"
+        DataGridViewCellStyle4.NullValue = "0"
+        Me.colDiscPurch.DefaultCellStyle = DataGridViewCellStyle4
+        Me.colDiscPurch.HeaderText = "DiscPurch"
+        Me.colDiscPurch.Name = "colDiscPurch"
+        Me.colDiscPurch.Width = 60
+        '
+        'colStock
+        '
+        Me.colStock.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle5.Format = "N0"
+        DataGridViewCellStyle5.NullValue = "0"
+        Me.colStock.DefaultCellStyle = DataGridViewCellStyle5
+        Me.colStock.HeaderText = "Stock"
+        Me.colStock.Name = "colStock"
+        Me.colStock.Width = 50
+        '
+        'colSalesAmount
+        '
+        Me.colSalesAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle6.Format = "N0"
+        DataGridViewCellStyle6.NullValue = "0"
+        Me.colSalesAmount.DefaultCellStyle = DataGridViewCellStyle6
+        Me.colSalesAmount.HeaderText = "Amount"
+        Me.colSalesAmount.Name = "colSalesAmount"
+        Me.colSalesAmount.Width = 80
+        '
+        'colSts
+        '
+        Me.colSts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colSts.HeaderText = "Status"
+        Me.colSts.Name = "colSts"
+        Me.colSts.Visible = False
         '
         'picTitle
         '
@@ -488,83 +565,6 @@ Partial Class frmInventorySupplier
         Me.DataGridViewTextBoxColumn11.Name = "DataGridViewTextBoxColumn11"
         Me.DataGridViewTextBoxColumn11.Visible = False
         Me.DataGridViewTextBoxColumn11.Width = 60
-        '
-        'colVendor
-        '
-        Me.colVendor.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colVendor.HeaderText = "Vendor"
-        Me.colVendor.Name = "colVendor"
-        '
-        'colItem
-        '
-        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colItem.HeaderText = "Item"
-        Me.colItem.Name = "colItem"
-        '
-        'colDescription
-        '
-        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colDescription.HeaderText = "Description"
-        Me.colDescription.Name = "colDescription"
-        Me.colDescription.Width = 400
-        '
-        'colProduct
-        '
-        Me.colProduct.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colProduct.HeaderText = "Product"
-        Me.colProduct.Name = "colProduct"
-        Me.colProduct.Width = 170
-        '
-        'colPurchase
-        '
-        Me.colPurchase.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle3.Format = "N0"
-        DataGridViewCellStyle3.NullValue = "0"
-        Me.colPurchase.DefaultCellStyle = DataGridViewCellStyle3
-        Me.colPurchase.HeaderText = "Purchase"
-        Me.colPurchase.Name = "colPurchase"
-        Me.colPurchase.Width = 70
-        '
-        'colDiscPurch
-        '
-        Me.colDiscPurch.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle4.Format = "N2"
-        DataGridViewCellStyle4.NullValue = "0"
-        Me.colDiscPurch.DefaultCellStyle = DataGridViewCellStyle4
-        Me.colDiscPurch.HeaderText = "DiscPurch"
-        Me.colDiscPurch.Name = "colDiscPurch"
-        Me.colDiscPurch.Width = 60
-        '
-        'colStock
-        '
-        Me.colStock.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle5.Format = "N0"
-        DataGridViewCellStyle5.NullValue = "0"
-        Me.colStock.DefaultCellStyle = DataGridViewCellStyle5
-        Me.colStock.HeaderText = "Stock"
-        Me.colStock.Name = "colStock"
-        Me.colStock.Width = 50
-        '
-        'colSalesAmount
-        '
-        Me.colSalesAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle6.Format = "N0"
-        DataGridViewCellStyle6.NullValue = "0"
-        Me.colSalesAmount.DefaultCellStyle = DataGridViewCellStyle6
-        Me.colSalesAmount.HeaderText = "Amount"
-        Me.colSalesAmount.Name = "colSalesAmount"
-        Me.colSalesAmount.Width = 80
-        '
-        'colSts
-        '
-        Me.colSts.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colSts.HeaderText = "Status"
-        Me.colSts.Name = "colSts"
-        Me.colSts.Visible = False
         '
         'Label5
         '

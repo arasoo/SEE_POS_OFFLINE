@@ -94,6 +94,8 @@ Public Class frmPOS
     Private kasir As String
     Private fPayment As frmPayment
 
+    Private documentno As String
+
     Private backupPOSItem As DataTable
 
 #End Region
@@ -338,12 +340,16 @@ Public Class frmPOS
 
     Private Sub Payment()
         Dim decTemp As Decimal
+        Dim step_process As Integer = 0
+
         fPayment = New frmPayment
 
         Try
             Me.Cursor = Cursors.WaitCursor
+
             If GridSales.Rows.Count = 0 Then
                 MsgBox("No Transaction!!", MsgBoxStyle.Exclamation, Title)
+                Me.Cursor = Cursors.Default
                 Exit Sub
             End If
 
@@ -352,11 +358,11 @@ Public Class frmPOS
                 If CheckStockMinus(Trim(GridSales.Rows(i).Cells(1).Value), GridSales.Rows(i).Cells(4).Value) = True Then
 
                     MsgBox("Item " & Trim(GridSales.Rows(i).Cells(1).Value) & " Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    Me.Cursor = Cursors.Default
                     Exit Sub
 
                 End If
             Next
-
 
             Decimal.TryParse(lblTotal.Text, decTemp)
             Dim strTemp As String = Str(decTemp)
@@ -375,33 +381,10 @@ Public Class frmPOS
 
             If fPayment.ShowDialog = Windows.Forms.DialogResult.OK Then
 
-                Dim documentno As String = GetLastTransNo("RC")
-                Dim mDetailAmt, mDetailPPN As Decimal
-
-                SaveDetailPayment(documentno)
-                SaveHeaderPayment(documentno)
-
-                UpdateHistoryPOS(documentno, "RC")
-
-                SaveDetailPOS(mDetailAmt, mDetailPPN, documentno)
-                SaveHeaderPOS(mDetailAmt, mDetailPPN, documentno)
-
-                ''get tax invoice
-                'GETTaxInvoice(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), _
-                '                                 GetValueParamText("TAX ORG"), lblInvoice.Text, _
-                '                                 Format(GetValueParamDate("SYSTEM DATE"), formatDate), _
-                '                                 mCustomer, mEmployeeID)
-
-
-                UpdateHistoryPOS(Trim(lblInvoice.Text), mTransId)
+                SavePayment()
 
                 printstate = 1
                 PrintInvoice("----TRANSACTION----")
-
-                If GetValueParamNumber("POSTING INVOICE") = 1 Then
-                    PostingSales(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), _
-                                                                 lblInvoice.Text)
-                End If
 
                 state = 0
                 DetailClear()
@@ -409,10 +392,6 @@ Public Class frmPOS
                 MsgBox("Change : " & fPayment.lblChange.Text, MsgBoxStyle.Information, "UANG KEMBALIAN")
                 fPayment.Close()
 
-                If GetValueParamNumber("AUTO POS") = 1 Then
-                    state = 1
-                    DetailClear()
-                End If
 
             Else
 
@@ -420,26 +399,391 @@ Public Class frmPOS
 
             End If
 
-            Me.Cursor = Cursors.Default
+            If GetValueParamNumber("AUTO POS") = 1 Then
+                state = 1
+                DetailClear()
+            End If
+
         Catch ex As Exception
-            Me.Cursor = Cursors.Default
-            state = 0
-            DetailClear()
+
 
             MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
 
-    Private Sub LockVoucherPayment()
-        If fPayment.voucherState = 1 Then 'lock voucher code
-            If fPayment.tableVoucher.Rows.Count > 0 Then
-                For i As Integer = 0 To fPayment.tableVoucher.Rows.Count - 1
-                    LockVoucherCode(fPayment.tableVoucher.Rows(i).Item(0), fPayment.tableVoucher.Rows(i).Item(1), _
-                                    lblInvoice.Text, mEmployeeID)
+    Private Sub SavePayment()
+        Try
+
+            Dim discPercItem As Decimal = 0
+            Dim statusItem As String = ""
+            Dim detailamount As Decimal = 0
+            Dim detailppn As Decimal = 0
+
+            Dim totalAmount As Decimal = 0
+            Dim totalppn As Decimal = 0
+
+            Dim mtotaldisc1 As Decimal = TotalDisc1()
+            Dim mtotaldisc2 As Decimal = TotalDisc2()
+            Dim mtotaldisc3 As Decimal = TotalDisc3()
+            Dim mTotalPajak As Decimal = Math.Round(TotalPajak(), 2)
+            Dim mPPN As Decimal = IIf(mTotalPajak = 0, 0, Default_PPN)
+            Dim mDPP As Decimal = Math.Round(TotalDPP(), 2)
+            Dim mGrossAmount As Decimal = Math.Round(GrossAmount(), 2)
+            Dim mAfterDiscount As Decimal = Math.Round(AfterDiscount(), 2)
+            Dim mTotalAmount As Decimal = mAfterDiscount + Math.Round(CDec(mTotalPajak), 2)
+
+            Dim mchargerate As Decimal = 0
+            Dim counter As Integer = 0
+            Dim voucherAmt As Decimal = 0
+
+
+            ct = Nothing
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            ct = cn.BeginTransaction("Save Payment")
+
+            'Save Detail POS
+            With cm
+                .Connection = cn
+                .Transaction = ct
+                For i As Integer = 0 To GridSales.Rows.Count - 1
+
+                    detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(11).Value / 100)
+
+                    If GridSales.Rows(i).Cells(13).Value > 0 Then
+                        detailamount += detailamount - (CDec(detailamount) * GridSales.Rows(i).Cells(13).Value / 100)
+                    End If
+
+                    If GridSales.Rows(i).Cells(15).Value > 0 Then
+                        detailamount = 0
+                        detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(15).Value / 100)
+                    End If
+
+                    discPercItem = (GridSales.Rows(i).Cells(6).Value * 100) / GridSales.Rows(i).Cells(5).Value
+                    detailppn = Math.Round(CDec(GridSales.Rows(i).Cells(10).Value), 2) * GridSales.Rows(i).Cells(4).Value
+
+                    query = "INSERT INTO " & DB & ".dbo.tslsd (ds_invoice,ds_trntype,ds_partnumber,ds_orderdate,ds_invoicedate," &
+                                    "ds_product,ds_batchno,ds_dn,ds_orderno,ds_price,ds_pricedisp,ds_qty,ds_uom,ds_uomunit," &
+                                    "ds_disc1,ds_disc2,ds_disc3,ds_amount,ds_cogs,ds_ordered_qty,ds_pct_D4,ds_disc4,ds_disc5," &
+                                    "ds_dpp,ds_pctppn,ds_pctpph,ds_pctppnbm,ds_ppn,ds_pph,ds_ppnbm,ds_internalcost,ds_internalcost2," &
+                                    "ds_internalcost3,ds_internalcost4) VALUES (" &
+                                    "'" & Trim(lblInvoice.Text) & "','" & mTransId & "','" & GridSales.Rows(i).Cells(1).Value & "'," &
+                                    "'" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," &
+                                    "'" & GridSales.Rows(i).Cells(17).Value & "','" & GridSales.Rows(i).Cells(18).Value & "','','','" & Math.Round(CDec(GridSales.Rows(i).Cells(8).Value), 2) & "'," &
+                                    "'" & Math.Round(CDec(GridSales.Rows(i).Cells(5).Value), 2) & "','" & GridSales.Rows(i).Cells(4).Value & "'," &
+                                    "'" & GridSales.Rows(i).Cells(3).Value & "','1','" & Math.Round(CDec(GridSales.Rows(i).Cells(11).Value), 2) & "'," &
+                                    "'" & Math.Round(CDec(GridSales.Rows(i).Cells(13).Value), 2) & "','" & CDec(Math.Round(GridSales.Rows(i).Cells(15).Value, 2)) & "'," &
+                                    "'" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," &
+                                    "'0','" & GridSales.Rows(i).Cells(4).Value & "','0','0','0','" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," &
+                                    "'" & GridSales.Rows(i).Cells(9).Value & "','0','0','" & detailppn & "'," &
+                                    "'0','0','0','0','0','0')"
+                    .CommandText = query
+                    .ExecuteNonQuery()
+
+                    Dim dataTemp As New DataTable
+
+                    If cn.State = ConnectionState.Closed Then cn.Open()
+                    cm = New SqlCommand
+                    With cm
+                        .Connection = cn
+                        .Transaction = ct
+                        .CommandText = "SELECT Mat_Status FROM " & DB & ".dbo.mtipe " &
+                                        "INNER JOIN " & DB & ".dbo.mmca on type_materialtype=mat_tipe " &
+                                        "WHERE type_partnumber='" & GridSales.Rows(i).Cells(1).Value & "'"
+                    End With
+
+                    da = New SqlDataAdapter
+                    With da
+                        .SelectCommand = cm
+                        .Fill(dataTemp)
+                    End With
+
+                    statusItem = dataTemp.Rows(0).Item(0)
+
+                    'Call NewTransactionStock(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") _
+                    '                         , mTransIdCode, "C", mCustomer, Trim(lblInvoice.Text), mWh _
+                    '                         , GridSales.Rows(i).Cells(1).Value, GridSales.Rows(i).Cells(4).Value, "-" _
+                    '                         , GridSales.Rows(i).Cells(17).Value, IIf(statusItem = "G", 4, 6) _
+                    '                         , GridSales.Rows(i).Cells(2).Value, GridSales.Rows(i).Cells(3).Value)
+
+                    If cn.State = ConnectionState.Closed Then cn.Open()
+
+                    With cm
+                        .Connection = cn
+                        .Transaction = ct
+                        .CommandText = "INSERT INTO " & DB & ".dbo.hkstok " &
+                                               " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                               "'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                               " '" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'" &
+                                               ",'" & GridSales.Rows(i).Cells(1).Value & "','" & GridSales.Rows(i).Cells(4).Value & "'" &
+                                               ",'" & mTransIdCode & "','-',0,'" & Trim(lblInvoice.Text) & "','C'" &
+                                               ",'" & mCustomer & "','" & GridSales.Rows(i).Cells(17).Value & "','" & mWh & "'," &
+                                               "'" & IIf(statusItem = "G", 4, 6) & "')"
+                        .ExecuteNonQuery()
+
+
+                    End With
+
+                    If cn.State = ConnectionState.Closed Then cn.Open()
+
+                    With cm
+                        .Connection = cn
+                        .Transaction = ct
+                        If PartExitst(GridSales.Rows(i).Cells(1).Value, GetValueParamText("DEFAULT BRANCH"), mWh) = True Then
+
+                            .CommandText = "UPDATE " & DB & ".dbo.mpart " &
+                                            " SET part_consigmentstock=part_consigmentstock - " & GridSales.Rows(i).Cells(4).Value &
+                                            ",part_rfsstock=part_rfsstock - " & GridSales.Rows(i).Cells(4).Value &
+                                            ",part_description='" & Replace(GridSales.Rows(i).Cells(2).Value, "'", "''") & "'" &
+                                            " WHERE part_partnumber='" & GridSales.Rows(i).Cells(1).Value & "'" &
+                                            " AND Part_Branch='" & GetValueParamText("DEFAULT BRANCH") & "'" &
+                                            " AND Part_WH = '" & mWh & "'"
+
+                        Else
+
+                            .CommandText = "INSERT INTO " & DB & ".dbo.mpart " &
+                                            " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                            "'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                            "'" & GridSales.Rows(i).Cells(1).Value & "'," &
+                                            "'" & GridSales.Rows(i).Cells(17).Value & "'," &
+                                            "'" & GetValueParamText("DEFAULT BRANCH") & "','" & mWh & "'," &
+                                            "'" & Replace(GridSales.Rows(i).Cells(2).Value, "'", "''") & "'," &
+                                            "'" & GridSales.Rows(i).Cells(3).Value & "',0,0,0,0,0,0,0,'" & 0 - GridSales.Rows(i).Cells(4).Value & "',0,0,0,0,0,0,0,0," &
+                                            "'" & 0 - GridSales.Rows(i).Cells(4).Value & "',0,0,0,0,0,0,'','',0,0)"
+
+
+                        End If
+
+                        .ExecuteNonQuery()
+
+                    End With
+
+
+
+                    totalAmount += Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value
+                    totalppn += Math.Round(CDec(detailppn), 2)
+
+                    detailamount = 0
                 Next
+
+            End With
+
+            'Save Header POS
+
+            If mAfterDiscount <> totalAmount Or mTotalPajak <> totalppn Then
+                mTotalAmount = totalAmount + totalppn
             End If
-        End If
+
+            If mrounding = 0 Then
+
+                mrounding = Math.Round(mTotalAmount, 0) - mTotalAmount
+            End If
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            query = "INSERT INTO " & DB & ".dbo.tslsh (hs_company,hs_branch,hs_salesorg,hs_salesoffice,hs_taxorg," &
+                                "hs_invoice,hs_invoicedate,hs_deliverydate,hs_warehouse,hs_flag_kanvas,hs_customer,hs_qq," &
+                                "hs_payer,hs_salesman,hs_trnid,hs_paytype,hs_currency,hs_top,hs_terms_of_payment,hs_due_date," &
+                                "hs_due_date_delivery,hs_product,hs_note,hs_projectid,hs_grossamount,hs_disc3_afteramt," &
+                                "hs_disc4_afteramt,hs_total_disc1,hs_total_disc2,hs_total_disc3,hs_disc4amt,hs_pct_disc_4," &
+                                "hs_disc5,hs_nsudah_disc,hs_pct_ppn,hs_ppn,hs_pph,hs_ppnbm,hs_totalamount,hs_dppayamount," &
+                                "hs_payamount,hs_spbno,hs_flag_gateway,hs_flag_spb,hs_flag_posting,hs_flag_boleh_prn," &
+                                "hs_flag_pra_posting,hs_nomor_kanvas,hs_taxno,hs_delivery,hs_journalcode,hs_costcenter," &
+                                "hs_counter_print,hs_nomor_vouch,hs_counter_dth,hs_item,hs_reffnumber,hs_createuser," &
+                                "hs_createdate,hs_createtime,hs_ledgerno,hs_exchrate,hs_fiscalrate,hs_roundingamt,hs_vatno,hs_employeeid)" &
+                                "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                "'" & mSlsOrg & "','" & mSalesOffice & "','01','" & Trim(lblInvoice.Text) & "'," &
+                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," &
+                                "'" & Default_WH & "','N','" & mCustomer & "','" & mcqq & "','" & mCustomer & "'," &
+                                "'" & mSalesman & "','" & mTransIdCode & "','T','IDR','T0',0," &
+                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," &
+                                "'','" & mMemberCode & "','" & GetComputerName() & "','" & mGrossAmount & "','" & mAfterDiscount & "','" & mAfterDiscount & "',0,0,0,0,0,0," &
+                                "'" & mAfterDiscount & "','" & mPPN & "','" & Math.Round(CDec(mTotalPajak), 2) & "',0,0,'" & mTotalAmount & "'," &
+                                "0,'" & mTotalAmount & "','','N','Y','N','Y','N','" & IIf(mMemberCode <> "", mMemberCode, "") & "',0,'','300','" & mCostCenter & "',1,'',0,'" & GridSales.RowCount & "',0,'" & logOn & "'," &
+                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(Now(), "HHmmss") & "'," &
+                                "'',1,1,'" & mrounding & "','','" & mEmployeeID & "')"
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .Transaction = ct
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+            'Update POS
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .Transaction = ct
+                .CommandText = "UPDATE " & DB & ".dbo.hdoc SET Pos_Completed=9" &
+                                " WHERE Pos_Document='" & Trim(lblInvoice.Text) & "' AND Pos_TransDoc='" & mTransId & "'"
+                .ExecuteNonQuery()
+            End With
+
+            'Save Header Payment
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            query = "INSERT INTO " & DB & ".dbo.tpayrech (Company,Branch,Receiptno,DocumentDate,Note,Currency," &
+                            "SalesOrderNo,SalesAmount,Charges,CashAmount,CardAmount,ReturnAmount,PayAmount,ValidFlag,CloseFlag," &
+                            "ReffDocument,CreateUser,CreateDate,CloseUser,EmployeeID,RoundingAmount) " &
+                            "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                            "'" & documentno & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," &
+                            "'','IDR','" & lblInvoice.Text & "','" & CDec(fPayment.lblSubTotal.Text) - CDec(fPayment.txtCharge.Text) & "'," &
+                            "'" & CDec(fPayment.txtCharge.Text) & "','" & CDec(fPayment.txtCashAmount.Text) & "','" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtVoucherAmount.Text) & "'," &
+                            "'" & CDec(fPayment.lblChange.Text) & "','" & CDec(fPayment.lblPaid.Text) & "'," &
+                            "'N','N','','" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd " & GetTimeNow()) & "'," &
+                            "'','" & mEmployeeID & "','" & CDec(mrounding) & "')"
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .Transaction = ct
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+            If fPayment.tableVoucher.Rows.Count > 0 Then
+                If fPayment.voucherState = 1 Then 'lock voucher code
+                    If fPayment.tableVoucher.Rows.Count > 0 Then
+                        For i As Integer = 0 To fPayment.tableVoucher.Rows.Count - 1
+                            If cn.State = ConnectionState.Closed Then cn.Open()
+
+                            query = "UPDATE " & DB & ".dbo.mvoucherd SET invoice='" & Trim(lblInvoice.Text) & "'," &
+                                                    "used_at='" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," &
+                                                    "employeeid='" & mEmployeeID & "' " &
+                                                    "WHERE voucherid='" & fPayment.tableVoucher.Rows(i).Item(0) & "' " &
+                                                    "AND vouchercode='" & fPayment.tableVoucher.Rows(i).Item(1) & "'"
+
+                            cm = New SqlCommand
+                            With cm
+                                .Connection = cn
+                                .Transaction = ct
+                                .CommandText = query
+                                .ExecuteNonQuery()
+                            End With
+                        Next
+                    End If
+                End If
+            End If
+
+            'Save Detail Payment
+
+            seqnum = 0
+
+            If CDec(fPayment.txtCharge.Text) = 0 Then
+                mchargerate = 0
+            Else
+                mchargerate = (CDec(fPayment.txtCharge.Text) * 100) / CDec(fPayment.txtCardAmount.Text)
+            End If
+
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+
+                If fPayment.voucherState = 1 Then
+
+                    voucherAmt = CDec(fPayment.txtVoucherAmount.Text)
+
+                    seqnum += 1
+                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+                                               "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+                                               " VALUES ('" & documentno & "','" & seqnum & "','04','" & voucherAmt & "'," &
+                                               "'" & voucherAmt & "','" & GetValueParamText("VOUCHER CARDTYPE") & "'" &
+                                               ",'VOUCHER','" & GetValueParamText("VOUCHER EDC") & "','','',0,0,2,0)"
+
+                    .Transaction = ct
+                    .CommandText = query
+                    .ExecuteNonQuery()
+
+                End If
+
+
+                If cn.State = ConnectionState.Closed Then cn.Open()
+                If fPayment.cashState = 1 Then
+
+                    seqnum += 1
+                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+                                                  "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+                                                  " VALUES ('" & documentno & "','" & seqnum & "','01','" & CDec(fPayment.txtCashAmount.Text) & "'," &
+                                                  "'" & CDec(fPayment.txtCashAmount.Text) & "','','','','','',0,0,1," &
+                                                  "'" & CDec(fPayment.lblChange.Text) & "' )"
+                    .Transaction = ct
+                    .CommandText = query
+                    .ExecuteNonQuery()
+                End If
+
+                If cn.State = ConnectionState.Closed Then cn.Open()
+
+                If fPayment.cardState = 1 Then
+
+
+                    seqnum += 1
+
+                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+                                                  "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+                                                  " VALUES ('" & documentno & "','" & seqnum & "','02','" & CDec(fPayment.txtCardAmount.Text) & "'," &
+                                                  "'" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtCharge.Text) & "','" & fPayment.cmbCardType.SelectedValue & "'," &
+                                                  "'" & Trim(fPayment.txtCardNo.Text) & "','" & fPayment.cmbEDC.SelectedValue & "'," &
+                                                  "'" & Trim(fPayment.txtApproval.Text) & "','" & Trim(fPayment.txtCardName.Text) & "'," &
+                                                  "'" & CDec(fPayment.txtCharge.Text) & "','" & (CDec(fPayment.txtCharge.Text) / CDec(fPayment.txtCardAmount.Text)) * 100 & "'," &
+                                                  "2,0)"
+                    .Transaction = ct
+                    .CommandText = query
+                    .ExecuteNonQuery()
+                End If
+
+
+            End With
+
+
+            'Update Payment
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .Transaction = ct
+                .CommandText = "UPDATE " & DB & ".dbo.hdoc SET Pos_Completed=9" &
+                                " WHERE Pos_Document='" & documentno & "' AND Pos_TransDoc='RC'"
+                .ExecuteNonQuery()
+            End With
+
+            'AUTO POSTING
+
+            If GetValueParamNumber("POSTING INVOICE") = 1 Then
+
+                If cn.State = ConnectionState.Closed Then cn.Open()
+
+                query = "EXECUTE " & DB & ".dbo.p_posting_sales_pos '" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                        "'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                        "'" & Trim(lblInvoice.Text) & "','SYSTEM','N'"
+
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    .CommandText = query
+                    .ExecuteNonQuery()
+                End With
+            End If
+
+            ct.Commit()
+
+        Catch ex As Exception
+            ct.Rollback()
+            Throw ex
+        Finally
+            If cn.State = ConnectionState.Open Then cn.Close()
+        End Try
     End Sub
 
     Private Sub txtItem_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtItem.DoubleClick
@@ -467,10 +811,14 @@ Public Class frmPOS
                 If Trim(txtItem.Text) = "" Then Exit Sub
                 dataCust = New DataTable
                 Cursor = Cursors.WaitCursor
-                'Start Get Cust
-                lblScanStatus.Text = "Status : Start Get detail customer..."
+
                 dataCust = GetDetailCust(mCustomer)
-                lblScanStatus.Text = "Status : Finish Get detail customer..."
+
+                If dataCust.Rows.Count = 0 Then
+                    MsgBox("Customer not found", MsgBoxStyle.Exclamation, Title)
+                    GoTo finish
+
+                End If
 
                 If dataCust.Rows.Count > 0 Then mcqq = dataCust.Rows(0).Item(2)
 
@@ -508,14 +856,11 @@ Public Class frmPOS
                 End If
 
 
-
-                lblScanStatus.Text = "Status : Start check detail item..."
                 Call CheckDetailItem()
-                lblScanStatus.Text = "Status : Finish check detail item..."
 
                 If chckScan.Checked = True Then ' scan one by one
 
-                    lblScanStatus.Text = "Status : Start check stock minus..."
+
                     If CheckStockMinus(Trim(txtItem.Text), txtQty.Text) = True Then
 
                         MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, Title)
@@ -523,10 +868,6 @@ Public Class frmPOS
 
                     End If
 
-                    lblScanStatus.Text = "Status : Finish check stock minus..."
-
-
-                    lblScanStatus.Text = "Status : Start insert item..."
                     If GridSales.Rows.Count > 0 Then
                         If IsExists(Trim(txtItem.Text)) Then
                             Calculate(Trim(txtItem.Text))
@@ -556,7 +897,7 @@ Public Class frmPOS
                         Total()
                     End If
                     lblEventNote.Text = ""
-                    lblScanStatus.Text = "Status : Finish insert item..."
+
                     txtItem.Clear()
                     lblTotalQty.Text = TotalQty()
 
@@ -565,7 +906,7 @@ Public Class frmPOS
                 End If
 
 finish:
-                lblScanStatus.Text = "Status : ..."
+
                 Cursor = Cursors.Default
             Catch ex As Exception
                 Cursor = Cursors.Default
@@ -580,6 +921,7 @@ finish:
         Try
             Dim ExistsBestPrice As Boolean = False
             Dim DiscBestPrice As Decimal = 0
+            Dim DetailBestPrice As New DataTable
             Dim totalItem As Integer = 0
             promoid = ""
 
@@ -594,6 +936,7 @@ finish:
             dataItem = New DataTable
 
             dataItem = GetDetailItemPOS(Trim(txtItem.Text), dataCust.Rows(0).Item("Cust_Discgroup"), dataCust.Rows(0).Item("Cust_Pricegroup"))
+
 
             If Not dataItem.Rows.Count > 0 Then
                 MsgBox("No data for this item!", MsgBoxStyle.Exclamation, Title)
@@ -656,17 +999,18 @@ finish:
                 Else
                     'BEST PRICE OVERLOAD MAX ITEM
                     totalItem = BestPriceOverload()
-                    If totalItem = GetValueParamNumber("MAX ITEM") Then
+                    DetailBestPrice = BestPriceDetail()
+                    If totalItem >= DetailBestPrice.Rows(0).Item(2) Then
                         ExistsBestPrice = False
                         DiscBestPrice = 0
-                        GoTo OtherPromo
+                        GoTo otherpromo
                     End If
 
                     DiscBestPrice = GetDiscBestPrice(dataItem.Rows(0).Item("DiscPurch"), dataItem.Rows(0).Item("Disc1_Rate"))
 
                     'best price < 20% goto other promo
-                    If DiscBestPrice < GetValueParamNumber("MIN MARGIN") Then
-                        GoTo OtherPromo
+                    If DiscBestPrice < DetailBestPrice.Rows(0).Item(0) Then
+                        GoTo otherpromo
                     End If
 
                     'cek event promo vs best price
@@ -1153,6 +1497,7 @@ finish:
             seqnum = 0
 
             lblInvoice.Text = GetLastTransNo(mTransId)
+            documentno = GetLastTransNo("RC")
             GridSales.Enabled = True
 
 
@@ -1179,7 +1524,7 @@ finish:
                 txtQty.Enabled = True
             End If
             txtItem.Enabled = True
-            lblScanStatus.Text = "Status : ..."
+
             txtItem.Focus()
         ElseIf state = 2 Then 'browse
 
@@ -1240,7 +1585,7 @@ finish:
             mMemberDisc = 0
             mMemberMinPayment = 0
             lblMember.Text = "-"
-            lblScanStatus.Text = "Status : ..."
+
             btnCancelMember.Visible = False
             btnNew.Focus()
         End If
@@ -1261,384 +1606,272 @@ finish:
     End Sub
 
     Private Sub btnPayment_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPayment.Click
-        If SalesOrderNoExists(Trim(lblInvoice.Text)) = True Then
 
-            MsgBox("Invoice Exists!!!, Please Try Again", MsgBoxStyle.Exclamation, "System Exception")
-            'clear
-            state = 0
-            DetailClear()
-
-            'reinvoice again
-            state = 1
-            DetailClear()
-
-        Else
-            Payment()
-        End If
-
+        Payment()
 
     End Sub
 
-    Private Sub SaveDetailPOS(ByRef mAmount As Decimal, ByRef mPPN As Decimal, receipt As String)
-        Try
-            Dim discPercItem As Decimal = 0
-            Dim statusItem As String = ""
-            Dim detailamount As Decimal = 0
-            Dim detailppn As Decimal = 0
-
-            Dim totalAmount As Decimal = 0
-            Dim totalppn As Decimal = 0
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-
-            With cm
-                .Connection = cn
-
-                For i As Integer = 0 To GridSales.Rows.Count - 1
-
-
-                    detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(11).Value / 100)
-
-                    If GridSales.Rows(i).Cells(13).Value > 0 Then
-                        detailamount += detailamount - (CDec(detailamount) * GridSales.Rows(i).Cells(13).Value / 100)
-                    End If
-
-                    If GridSales.Rows(i).Cells(15).Value > 0 Then
-                        detailamount = 0
-                        detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(15).Value / 100)
-                    End If
-
-                    discPercItem = (GridSales.Rows(i).Cells(6).Value * 100) / GridSales.Rows(i).Cells(5).Value
-                    detailppn = Math.Round(CDec(GridSales.Rows(i).Cells(10).Value), 2) * GridSales.Rows(i).Cells(4).Value
-
-                    query = "INSERT INTO " & DB & ".dbo.tslsd (ds_invoice,ds_trntype,ds_partnumber,ds_orderdate,ds_invoicedate," & _
-                                    "ds_product,ds_batchno,ds_dn,ds_orderno,ds_price,ds_pricedisp,ds_qty,ds_uom,ds_uomunit," & _
-                                    "ds_disc1,ds_disc2,ds_disc3,ds_amount,ds_cogs,ds_ordered_qty,ds_pct_D4,ds_disc4,ds_disc5," & _
-                                    "ds_dpp,ds_pctppn,ds_pctpph,ds_pctppnbm,ds_ppn,ds_pph,ds_ppnbm,ds_internalcost,ds_internalcost2," & _
-                                    "ds_internalcost3,ds_internalcost4) VALUES (" & _
-                                    "'" & Trim(lblInvoice.Text) & "','" & mTransId & "','" & GridSales.Rows(i).Cells(1).Value & "'," & _
-                                    "'" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," & _
-                                    "'" & GridSales.Rows(i).Cells(17).Value & "','" & GridSales.Rows(i).Cells(18).Value & "','','','" & Math.Round(CDec(GridSales.Rows(i).Cells(8).Value), 2) & "'," & _
-                                    "'" & Math.Round(CDec(GridSales.Rows(i).Cells(5).Value), 2) & "','" & GridSales.Rows(i).Cells(4).Value & "'," & _
-                                    "'" & GridSales.Rows(i).Cells(3).Value & "','1','" & Math.Round(CDec(GridSales.Rows(i).Cells(11).Value), 2) & "'," & _
-                                    "'" & Math.Round(CDec(GridSales.Rows(i).Cells(13).Value), 2) & "','" & CDec(Math.Round(GridSales.Rows(i).Cells(15).Value, 2)) & "'," & _
-                                    "'" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," & _
-                                    "'0','" & GridSales.Rows(i).Cells(4).Value & "','0','0','0','" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," & _
-                                    "'" & GridSales.Rows(i).Cells(9).Value & "','0','0','" & detailppn & "'," & _
-                                    "'0','0','0','0','0','0')"
-                    .CommandTimeout = 1000
-                    .CommandText = query
-                    .ExecuteNonQuery()
-
-                    statusItem = GetStatusItem(GridSales.Rows(i).Cells(1).Value)
-
-                    Call NewTransactionStock(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") _
-                                             , mTransIdCode, "C", mCustomer, Trim(lblInvoice.Text), mWh _
-                                             , GridSales.Rows(i).Cells(1).Value, GridSales.Rows(i).Cells(4).Value, "-", GridSales.Rows(i).Cells(17).Value, IIf(statusItem = "G", 4, 6) _
-                                             , GridSales.Rows(i).Cells(2).Value, GridSales.Rows(i).Cells(3).Value)
-
-                    totalAmount += Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value
-                    totalppn += Math.Round(CDec(detailppn), 2)
-
-                    detailamount = 0
-                Next
-                cn.Close()
-            End With
-
-            mAmount = totalAmount
-            mPPN = totalppn
-
-        Catch ex As Exception
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & receipt & "'"
-                .ExecuteNonQuery()
-            End With
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrech WHERE receiptno='" & receipt & "'"
-                .ExecuteNonQuery()
-            End With
-
-
-            cm.CommandText = "DELETE FROM " & DB & ".dbo.tslsd WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
-            cm.ExecuteNonQuery()
-            cm.CommandText = "DELETE FROM " & DB & ".dbo.tslsd_log WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
-            cm.ExecuteNonQuery()
-            cm.CommandText = "DELETE FROM " & DB & ".dbo.hkstok WHERE stok_document='" & Trim(lblInvoice.Text) & "'"
-            cm.ExecuteNonQuery()
-            cn.Close()
-            Throw ex
-        End Try
-    End Sub
-
-    Private Sub SaveHeaderPOS(ByVal mHeaderAmt As Decimal, ByVal mHeaderPPN As Decimal, receipt As String)
-        Try
-            Dim mtotaldisc1 As Decimal = TotalDisc1()
-            Dim mtotaldisc2 As Decimal = TotalDisc2()
-            Dim mtotaldisc3 As Decimal = TotalDisc3()
-            Dim mTotalPajak As Decimal = Math.Round(TotalPajak(), 2)
-            Dim mPPN As Decimal = IIf(mTotalPajak = 0, 0, Default_PPN)
-            Dim mDPP As Decimal = Math.Round(TotalDPP(), 2)
-            Dim mGrossAmount As Decimal = Math.Round(GrossAmount(), 2)
-            Dim mAfterDiscount As Decimal = Math.Round(AfterDiscount(), 2)
-            Dim mTotalAmount As Decimal = mAfterDiscount + Math.Round(CDec(mTotalPajak), 2)
-
-            If mAfterDiscount <> mHeaderAmt Or mTotalPajak <> mHeaderPPN Then
-                mTotalAmount = mHeaderAmt + mHeaderPPN
-            End If
-
-            If mrounding = 0 Then
-                mrounding = Math.Round(mTotalAmount, 0) - mTotalAmount
-            End If
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "INSERT INTO " & DB & ".dbo.tslsh (hs_company,hs_branch,hs_salesorg,hs_salesoffice,hs_taxorg," & _
-                                "hs_invoice,hs_invoicedate,hs_deliverydate,hs_warehouse,hs_flag_kanvas,hs_customer,hs_qq," & _
-                                "hs_payer,hs_salesman,hs_trnid,hs_paytype,hs_currency,hs_top,hs_terms_of_payment,hs_due_date," & _
-                                "hs_due_date_delivery,hs_product,hs_note,hs_projectid,hs_grossamount,hs_disc3_afteramt," & _
-                                "hs_disc4_afteramt,hs_total_disc1,hs_total_disc2,hs_total_disc3,hs_disc4amt,hs_pct_disc_4," & _
-                                "hs_disc5,hs_nsudah_disc,hs_pct_ppn,hs_ppn,hs_pph,hs_ppnbm,hs_totalamount,hs_dppayamount," & _
-                                "hs_payamount,hs_spbno,hs_flag_gateway,hs_flag_spb,hs_flag_posting,hs_flag_boleh_prn," & _
-                                "hs_flag_pra_posting,hs_nomor_kanvas,hs_taxno,hs_delivery,hs_journalcode,hs_costcenter," & _
-                                "hs_counter_print,hs_nomor_vouch,hs_counter_dth,hs_item,hs_reffnumber,hs_createuser," & _
-                                "hs_createdate,hs_createtime,hs_ledgerno,hs_exchrate,hs_fiscalrate,hs_roundingamt,hs_vatno,hs_employeeid)" & _
-                                "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," & _
-                                "'" & mSlsOrg & "','" & mSalesOffice & "','01','" & Trim(lblInvoice.Text) & "'," & _
-                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," & _
-                                "'" & Default_WH & "','N','" & mCustomer & "','" & mcqq & "','" & mCustomer & "'," & _
-                                "'" & mSalesman & "','" & mTransIdCode & "','T','IDR','T0',0," & _
-                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," & _
-                                "'','" & mMemberCode & "','" & GetComputerName() & "','" & mGrossAmount & "','" & mAfterDiscount & "','" & mAfterDiscount & "',0,0,0,0,0,0," & _
-                                "'" & mAfterDiscount & "','" & mPPN & "','" & Math.Round(CDec(mTotalPajak), 2) & "',0,0,'" & mTotalAmount & "'," & _
-                                "0,'" & mTotalAmount & "','','N','Y','N','Y','N','" & IIf(mMemberCode <> "", mMemberCode, "") & "',0,'','" & GETPOSJournalCode(mTransIdCode) & "','" & mCostCenter & "',1,'',0,'" & GridSales.RowCount & "',0,'" & logOn & "'," & _
-                                "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(Now(), "HHmmss") & "'," & _
-                                "'',1,1,'" & mrounding & "','','" & mEmployeeID & "')"
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 1000
-                .CommandText = query
-                .ExecuteNonQuery()
-            End With
-
-            cn.Close()
-        Catch ex As Exception
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & receipt & "'"
-                .ExecuteNonQuery()
-            End With
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrech WHERE receiptno='" & receipt & "'"
-                .ExecuteNonQuery()
-            End With
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tslsd WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
-                .ExecuteNonQuery()
-            End With
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tslsd_log WHERE ds_invoice='" & Trim(lblInvoice.Text) & "'"
-                .ExecuteNonQuery()
-            End With
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tslsh WHERE hs_invoice='" & Trim(lblInvoice.Text) & "'"
-                .ExecuteNonQuery()
-            End With
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tslsh_log WHERE hs_invoice='" & Trim(lblInvoice.Text) & "'"
-                .ExecuteNonQuery()
-            End With
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.hkstok WHERE stok_document='" & Trim(lblInvoice.Text) & "'"
-                .ExecuteNonQuery()
-            End With
-
-            cn.Close()
-            Throw ex
-        End Try
-    End Sub
-
-    Private Sub SaveHeaderPayment(ByVal no As String)
-
-        Try
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "INSERT INTO " & DB & ".dbo.tpayrech (Company,Branch,Receiptno,DocumentDate,Note,Currency," & _
-                            "SalesOrderNo,SalesAmount,Charges,CashAmount,CardAmount,ReturnAmount,PayAmount,ValidFlag,CloseFlag," & _
-                            "ReffDocument,CreateUser,CreateDate,CloseUser,EmployeeID,RoundingAmount) " & _
-                            "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," & _
-                            "'" & no & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," & _
-                            "'','IDR','" & lblInvoice.Text & "','" & CDec(fPayment.lblSubTotal.Text) - CDec(fPayment.txtCharge.Text) & "'," & _
-                            "'" & CDec(fPayment.txtCharge.Text) & "','" & CDec(fPayment.txtCashAmount.Text) & "','" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtVoucherAmount.Text) & "'," & _
-                            "'" & CDec(fPayment.lblChange.Text) & "','" & CDec(fPayment.lblPaid.Text) & "'," & _
-                            "'N','N','','" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd " & GetTimeNow()) & "'," & _
-                            "'','" & mEmployeeID & "','" & CDec(mrounding) & "')"
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-                .CommandTimeout = 1000
-                .CommandText = query
-                .ExecuteNonQuery()
-            End With
-
-            If fPayment.tableVoucher.Rows.Count > 0 Then
-                LockVoucherPayment()
-            End If
-
-            cn.Close()
-        Catch ex As Exception
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 1000
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & no & "'"
-                .ExecuteNonQuery()
-            End With
-
-            With cm
-                .Connection = cn
-                .CommandTimeout = 1000
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrech WHERE receiptno='" & no & "'"
-                .ExecuteNonQuery()
-            End With
-       
-            cn.Close()
-            Throw ex
-        End Try
-    End Sub
-
-    Private Sub SaveDetailPayment(ByVal no As String)
-
-        Dim mchargerate As Decimal = 0
-        Dim counter As Integer = 0
-        Dim voucherAmt As Decimal = 0
-
-        seqnum = 0
-        Try
-            If CDec(fPayment.txtCharge.Text) = 0 Then
-                mchargerate = 0
-            Else
-                mchargerate = (CDec(fPayment.txtCharge.Text) * 100) / CDec(fPayment.txtCardAmount.Text)
-            End If
-
-
-            If cn.State = ConnectionState.Closed Then cn.Open()
-
-            cm = New SqlCommand
-            With cm
-                .Connection = cn
-
-                If fPayment.voucherState = 1 Then
-
-                    'If fPayment.cashState = 1 Or fPayment.cardState = 1 Then
-                    voucherAmt = CDec(fPayment.txtVoucherAmount.Text)
-                    'Else
-                    '    If CDec(fPayment.lblSubTotal.Text) < CDec(fPayment.txtVoucherAmount.Text) Then
-                    '        voucherAmt = CDec(fPayment.lblSubTotal.Text)
-                    '    End If
-
-                    'End If
-
-                    seqnum += 1
-                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," & _
-                                               "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" & _
-                                               " VALUES ('" & no & "','" & seqnum & "','04','" & voucherAmt & "'," & _
-                                               "'" & voucherAmt & "','" & GetValueParamText("VOUCHER CARDTYPE") & "'" & _
-                                               ",'VOUCHER','" & GetValueParamText("VOUCHER EDC") & "','','',0,0,2,0)"
-
-                    .CommandTimeout = 0
-                    .CommandText = query
-                    .ExecuteNonQuery()
-
-                End If
-
-
-                If cn.State = ConnectionState.Closed Then cn.Open()
-                If fPayment.cashState = 1 Then
-
-                    seqnum += 1
-                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," & _
-                                                  "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" & _
-                                                  " VALUES ('" & no & "','" & seqnum & "','01','" & CDec(fPayment.txtCashAmount.Text) & "'," & _
-                                                  "'" & CDec(fPayment.txtCashAmount.Text) & "','','','','','',0,0,1," & _
-                                                  "'" & CDec(fPayment.lblChange.Text) & "' )"
-                    .CommandTimeout = 0
-                    .CommandText = query
-                    .ExecuteNonQuery()
-                End If
-
-                If cn.State = ConnectionState.Closed Then cn.Open()
-
-                If fPayment.cardState = 1 Then
-
-
-                    seqnum += 1
-
-                    query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," & _
-                                                  "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" & _
-                                                  " VALUES ('" & no & "','" & seqnum & "','02','" & CDec(fPayment.txtCardAmount.Text) & "'," & _
-                                                  "'" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtCharge.Text) & "','" & fPayment.cmbCardType.SelectedValue & "'," & _
-                                                  "'" & Trim(fPayment.txtCardNo.Text) & "','" & fPayment.cmbEDC.SelectedValue & "'," & _
-                                                  "'" & Trim(fPayment.txtApproval.Text) & "','" & Trim(fPayment.txtCardName.Text) & "'," & _
-                                                  "'" & CDec(fPayment.txtCharge.Text) & "','" & (CDec(fPayment.txtCharge.Text) / CDec(fPayment.txtCardAmount.Text)) * 100 & "'," & _
-                                                  "2,0)"
-                    .CommandTimeout = 0
-                    .CommandText = query
-                    .ExecuteNonQuery()
-                End If
-
-
-            End With
-
-            cn.Close()
-        Catch ex As Exception
-            With cm
-                .Connection = cn
-                .CommandTimeout = 0
-                .CommandText = "DELETE FROM " & DB & ".dbo.tpayrecd WHERE receiptno='" & no & "'"
-                .ExecuteNonQuery()
-            End With
-         
-            cn.Close()
-            Throw ex
-        End Try
-
-
-    End Sub
+    'Private Sub SaveDetailPOS(ByRef mAmount As Decimal, ByRef mPPN As Decimal, ByVal receipt As String)
+    '    Try
+    '        Dim discPercItem As Decimal = 0
+    '        Dim statusItem As String = ""
+    '        Dim detailamount As Decimal = 0
+    '        Dim detailppn As Decimal = 0
+
+    '        Dim totalAmount As Decimal = 0
+    '        Dim totalppn As Decimal = 0
+
+    '        If cn.State = ConnectionState.Closed Then cn.Open()
+
+    '        With cm
+    '            .Connection = cn
+
+    '            For i As Integer = 0 To GridSales.Rows.Count - 1
+
+
+    '                detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(11).Value / 100)
+
+    '                If GridSales.Rows(i).Cells(13).Value > 0 Then
+    '                    detailamount += detailamount - (CDec(detailamount) * GridSales.Rows(i).Cells(13).Value / 100)
+    '                End If
+
+    '                If GridSales.Rows(i).Cells(15).Value > 0 Then
+    '                    detailamount = 0
+    '                    detailamount += GridSales.Rows(i).Cells(8).Value - (CDec(GridSales.Rows(i).Cells(8).Value) * GridSales.Rows(i).Cells(15).Value / 100)
+    '                End If
+
+    '                discPercItem = (GridSales.Rows(i).Cells(6).Value * 100) / GridSales.Rows(i).Cells(5).Value
+    '                detailppn = Math.Round(CDec(GridSales.Rows(i).Cells(10).Value), 2) * GridSales.Rows(i).Cells(4).Value
+
+    '                query = "INSERT INTO " & DB & ".dbo.tslsd (ds_invoice,ds_trntype,ds_partnumber,ds_orderdate,ds_invoicedate," &
+    '                                "ds_product,ds_batchno,ds_dn,ds_orderno,ds_price,ds_pricedisp,ds_qty,ds_uom,ds_uomunit," &
+    '                                "ds_disc1,ds_disc2,ds_disc3,ds_amount,ds_cogs,ds_ordered_qty,ds_pct_D4,ds_disc4,ds_disc5," &
+    '                                "ds_dpp,ds_pctppn,ds_pctpph,ds_pctppnbm,ds_ppn,ds_pph,ds_ppnbm,ds_internalcost,ds_internalcost2," &
+    '                                "ds_internalcost3,ds_internalcost4) VALUES (" &
+    '                                "'" & Trim(lblInvoice.Text) & "','" & mTransId & "','" & GridSales.Rows(i).Cells(1).Value & "'," &
+    '                                "'" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," &
+    '                                "'" & GridSales.Rows(i).Cells(17).Value & "','" & GridSales.Rows(i).Cells(18).Value & "','','','" & Math.Round(CDec(GridSales.Rows(i).Cells(8).Value), 2) & "'," &
+    '                                "'" & Math.Round(CDec(GridSales.Rows(i).Cells(5).Value), 2) & "','" & GridSales.Rows(i).Cells(4).Value & "'," &
+    '                                "'" & GridSales.Rows(i).Cells(3).Value & "','1','" & Math.Round(CDec(GridSales.Rows(i).Cells(11).Value), 2) & "'," &
+    '                                "'" & Math.Round(CDec(GridSales.Rows(i).Cells(13).Value), 2) & "','" & CDec(Math.Round(GridSales.Rows(i).Cells(15).Value, 2)) & "'," &
+    '                                "'" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," &
+    '                                "'0','" & GridSales.Rows(i).Cells(4).Value & "','0','0','0','" & Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value & "'," &
+    '                                "'" & GridSales.Rows(i).Cells(9).Value & "','0','0','" & detailppn & "'," &
+    '                                "'0','0','0','0','0','0')"
+    '                .CommandTimeout = 1000
+    '                .CommandText = query
+    '                .ExecuteNonQuery()
+
+    '                statusItem = GetStatusItem(GridSales.Rows(i).Cells(1).Value)
+
+    '                Call NewTransactionStock(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") _
+    '                                         , mTransIdCode, "C", mCustomer, Trim(lblInvoice.Text), mWh _
+    '                                         , GridSales.Rows(i).Cells(1).Value, GridSales.Rows(i).Cells(4).Value, "-", GridSales.Rows(i).Cells(17).Value, IIf(statusItem = "G", 4, 6) _
+    '                                         , GridSales.Rows(i).Cells(2).Value, GridSales.Rows(i).Cells(3).Value)
+
+    '                totalAmount += Math.Round(CDec(detailamount), 2) * GridSales.Rows(i).Cells(4).Value
+    '                totalppn += Math.Round(CDec(detailppn), 2)
+
+    '                detailamount = 0
+    '            Next
+    '            cn.Close()
+    '        End With
+
+    '        mAmount = totalAmount
+    '        mPPN = totalppn
+
+    '    Catch ex As Exception
+
+    '        cn.Close()
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Private Sub SaveHeaderPOS(ByVal mHeaderAmt As Decimal, ByVal mHeaderPPN As Decimal, receipt As String)
+    '    Try
+    '        Dim mtotaldisc1 As Decimal = TotalDisc1()
+    '        Dim mtotaldisc2 As Decimal = TotalDisc2()
+    '        Dim mtotaldisc3 As Decimal = TotalDisc3()
+    '        Dim mTotalPajak As Decimal = Math.Round(TotalPajak(), 2)
+    '        Dim mPPN As Decimal = IIf(mTotalPajak = 0, 0, Default_PPN)
+    '        Dim mDPP As Decimal = Math.Round(TotalDPP(), 2)
+    '        Dim mGrossAmount As Decimal = Math.Round(GrossAmount(), 2)
+    '        Dim mAfterDiscount As Decimal = Math.Round(AfterDiscount(), 2)
+    '        Dim mTotalAmount As Decimal = mAfterDiscount + Math.Round(CDec(mTotalPajak), 2)
+
+    '        If mAfterDiscount <> mHeaderAmt Or mTotalPajak <> mHeaderPPN Then
+    '            mTotalAmount = mHeaderAmt + mHeaderPPN
+    '        End If
+
+    '        If mrounding = 0 Then
+    '            mrounding = Math.Round(mTotalAmount, 0) - mTotalAmount
+    '        End If
+
+    '        If cn.State = ConnectionState.Closed Then cn.Open()
+    '        query = "INSERT INTO " & DB & ".dbo.tslsh (hs_company,hs_branch,hs_salesorg,hs_salesoffice,hs_taxorg," &
+    '                            "hs_invoice,hs_invoicedate,hs_deliverydate,hs_warehouse,hs_flag_kanvas,hs_customer,hs_qq," &
+    '                            "hs_payer,hs_salesman,hs_trnid,hs_paytype,hs_currency,hs_top,hs_terms_of_payment,hs_due_date," &
+    '                            "hs_due_date_delivery,hs_product,hs_note,hs_projectid,hs_grossamount,hs_disc3_afteramt," &
+    '                            "hs_disc4_afteramt,hs_total_disc1,hs_total_disc2,hs_total_disc3,hs_disc4amt,hs_pct_disc_4," &
+    '                            "hs_disc5,hs_nsudah_disc,hs_pct_ppn,hs_ppn,hs_pph,hs_ppnbm,hs_totalamount,hs_dppayamount," &
+    '                            "hs_payamount,hs_spbno,hs_flag_gateway,hs_flag_spb,hs_flag_posting,hs_flag_boleh_prn," &
+    '                            "hs_flag_pra_posting,hs_nomor_kanvas,hs_taxno,hs_delivery,hs_journalcode,hs_costcenter," &
+    '                            "hs_counter_print,hs_nomor_vouch,hs_counter_dth,hs_item,hs_reffnumber,hs_createuser," &
+    '                            "hs_createdate,hs_createtime,hs_ledgerno,hs_exchrate,hs_fiscalrate,hs_roundingamt,hs_vatno,hs_employeeid)" &
+    '                            "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," &
+    '                            "'" & mSlsOrg & "','" & mSalesOffice & "','01','" & Trim(lblInvoice.Text) & "'," &
+    '                            "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," &
+    '                            "'" & Default_WH & "','N','" & mCustomer & "','" & mcqq & "','" & mCustomer & "'," &
+    '                            "'" & mSalesman & "','" & mTransIdCode & "','T','IDR','T0',0," &
+    '                            "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'," &
+    '                            "'','" & mMemberCode & "','" & GetComputerName() & "','" & mGrossAmount & "','" & mAfterDiscount & "','" & mAfterDiscount & "',0,0,0,0,0,0," &
+    '                            "'" & mAfterDiscount & "','" & mPPN & "','" & Math.Round(CDec(mTotalPajak), 2) & "',0,0,'" & mTotalAmount & "'," &
+    '                            "0,'" & mTotalAmount & "','','N','Y','N','Y','N','" & IIf(mMemberCode <> "", mMemberCode, "") & "',0,'','" & GETPOSJournalCode(mTransIdCode) & "','" & mCostCenter & "',1,'',0,'" & GridSales.RowCount & "',0,'" & logOn & "'," &
+    '                            "'" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "','" & Format(Now(), "HHmmss") & "'," &
+    '                            "'',1,1,'" & mrounding & "','','" & mEmployeeID & "')"
+    '        cm = New SqlCommand
+    '        With cm
+    '            .Connection = cn
+    '            .CommandTimeout = 1000
+    '            .CommandText = query
+    '            .ExecuteNonQuery()
+    '        End With
+
+    '        cn.Close()
+    '    Catch ex As Exception
+
+    '        cn.Close()
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Private Sub SaveHeaderPayment(ByVal no As String)
+
+    '    Try
+
+    '        If cn.State = ConnectionState.Closed Then cn.Open()
+    '        query = "INSERT INTO " & DB & ".dbo.tpayrech (Company,Branch,Receiptno,DocumentDate,Note,Currency," &
+    '                        "SalesOrderNo,SalesAmount,Charges,CashAmount,CardAmount,ReturnAmount,PayAmount,ValidFlag,CloseFlag," &
+    '                        "ReffDocument,CreateUser,CreateDate,CloseUser,EmployeeID,RoundingAmount) " &
+    '                        "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & GetValueParamText("DEFAULT BRANCH") & "'," &
+    '                        "'" & no & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'," &
+    '                        "'','IDR','" & lblInvoice.Text & "','" & CDec(fPayment.lblSubTotal.Text) - CDec(fPayment.txtCharge.Text) & "'," &
+    '                        "'" & CDec(fPayment.txtCharge.Text) & "','" & CDec(fPayment.txtCashAmount.Text) & "','" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtVoucherAmount.Text) & "'," &
+    '                        "'" & CDec(fPayment.lblChange.Text) & "','" & CDec(fPayment.lblPaid.Text) & "'," &
+    '                        "'N','N','','" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd " & GetTimeNow()) & "'," &
+    '                        "'','" & mEmployeeID & "','" & CDec(mrounding) & "')"
+
+    '        cm = New SqlCommand
+    '        With cm
+    '            .Connection = cn
+    '            .CommandTimeout = 1000
+    '            .CommandText = query
+    '            .ExecuteNonQuery()
+    '        End With
+
+    '        If fPayment.tableVoucher.Rows.Count > 0 Then
+    '            LockVoucherPayment()
+    '        End If
+
+    '        cn.Close()
+    '    Catch ex As Exception
+    '        cn.Close()
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Private Sub SaveDetailPayment(ByVal no As String)
+
+    '    Dim mchargerate As Decimal = 0
+    '    Dim counter As Integer = 0
+    '    Dim voucherAmt As Decimal = 0
+
+    '    seqnum = 0
+    '    Try
+    '        If CDec(fPayment.txtCharge.Text) = 0 Then
+    '            mchargerate = 0
+    '        Else
+    '            mchargerate = (CDec(fPayment.txtCharge.Text) * 100) / CDec(fPayment.txtCardAmount.Text)
+    '        End If
+
+
+    '        If cn.State = ConnectionState.Closed Then cn.Open()
+
+    '        cm = New SqlCommand
+    '        With cm
+    '            .Connection = cn
+
+    '            If fPayment.voucherState = 1 Then
+
+    '                'If fPayment.cashState = 1 Or fPayment.cardState = 1 Then
+    '                voucherAmt = CDec(fPayment.txtVoucherAmount.Text)
+    '                'Else
+    '                '    If CDec(fPayment.lblSubTotal.Text) < CDec(fPayment.txtVoucherAmount.Text) Then
+    '                '        voucherAmt = CDec(fPayment.lblSubTotal.Text)
+    '                '    End If
+
+    '                'End If
+
+    '                seqnum += 1
+    '                query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+    '                                           "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+    '                                           " VALUES ('" & no & "','" & seqnum & "','04','" & voucherAmt & "'," &
+    '                                           "'" & voucherAmt & "','" & GetValueParamText("VOUCHER CARDTYPE") & "'" &
+    '                                           ",'VOUCHER','" & GetValueParamText("VOUCHER EDC") & "','','',0,0,2,0)"
+
+    '                .CommandTimeout = 0
+    '                .CommandText = query
+    '                .ExecuteNonQuery()
+
+    '            End If
+
+
+    '            If cn.State = ConnectionState.Closed Then cn.Open()
+    '            If fPayment.cashState = 1 Then
+
+    '                seqnum += 1
+    '                query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+    '                                              "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+    '                                              " VALUES ('" & no & "','" & seqnum & "','01','" & CDec(fPayment.txtCashAmount.Text) & "'," &
+    '                                              "'" & CDec(fPayment.txtCashAmount.Text) & "','','','','','',0,0,1," &
+    '                                              "'" & CDec(fPayment.lblChange.Text) & "' )"
+    '                .CommandTimeout = 0
+    '                .CommandText = query
+    '                .ExecuteNonQuery()
+    '            End If
+
+    '            If cn.State = ConnectionState.Closed Then cn.Open()
+
+    '            If fPayment.cardState = 1 Then
+
+
+    '                seqnum += 1
+
+    '                query = "INSERT INTO " & DB & ".dbo.tpayrecd (receiptno,item,paytype,amount,fullamount,cardtype,cardno," &
+    '                                              "edcid,approvalcode,cardname,bankchargeamt,bankchargepct,type,chargeamount)" &
+    '                                              " VALUES ('" & no & "','" & seqnum & "','02','" & CDec(fPayment.txtCardAmount.Text) & "'," &
+    '                                              "'" & CDec(fPayment.txtCardAmount.Text) + CDec(fPayment.txtCharge.Text) & "','" & fPayment.cmbCardType.SelectedValue & "'," &
+    '                                              "'" & Trim(fPayment.txtCardNo.Text) & "','" & fPayment.cmbEDC.SelectedValue & "'," &
+    '                                              "'" & Trim(fPayment.txtApproval.Text) & "','" & Trim(fPayment.txtCardName.Text) & "'," &
+    '                                              "'" & CDec(fPayment.txtCharge.Text) & "','" & (CDec(fPayment.txtCharge.Text) / CDec(fPayment.txtCardAmount.Text)) * 100 & "'," &
+    '                                              "2,0)"
+    '                .CommandTimeout = 0
+    '                .CommandText = query
+    '                .ExecuteNonQuery()
+    '            End If
+
+
+    '        End With
+
+    '        cn.Close()
+    '    Catch ex As Exception
+
+    '        cn.Close()
+    '        Throw ex
+    '    End Try
+
+
+    'End Sub
 
     Private Function SubTotal() As Decimal
         Dim total As Decimal = 0
@@ -1926,15 +2159,29 @@ finish:
         'text &= ControlChars.NewLine
         'text = text & vbCrLf & vbCrLf & vbCrLf & vbCrLf & vbCrLf & vbCrLf & vbCrLf & vbCrLf & vbCrLf
 
-        FILE_NAME = Application.StartupPath & "\struk.txt"
+        'Create Directory Struk
 
+        Dim dir As String = "Invoice List" & "\" & GetValueParamText("SYSTEM DATE")
+        Dim dir_emp As String = Trim(lblEmpName.Text)
 
-        If File.Exists(FILE_NAME) Then
-            Dim objWriter As New System.IO.StreamWriter(FILE_NAME)
-            objWriter.Write(text)
-            objWriter.Close()
-
+        If Not Directory.Exists(Application.StartupPath & "\" & dir) Then
+            Directory.CreateDirectory(Application.StartupPath & "\" & dir)
         End If
+
+        If Not Directory.Exists(Application.StartupPath & "\" & dir & "\" & dir_emp) Then
+            Directory.CreateDirectory(Application.StartupPath & "\" & dir & "\" & dir_emp)
+        End If
+
+        FILE_NAME = Application.StartupPath & "\" & dir & "\" & dir_emp & "\" & lblInvoice.Text & ".txt"
+
+        If Not File.Exists(FILE_NAME) Then
+            File.Create(FILE_NAME).Dispose()
+        End If
+
+        Dim objWriter As New System.IO.StreamWriter(FILE_NAME)
+        objWriter.Write(text)
+        objWriter.Close()
+
 
         If File.Exists(Application.StartupPath & "\CashDrawer.exe") Then
             Shell(Application.StartupPath & "\CashDrawer.exe")
@@ -2615,4 +2862,5 @@ reason:
         '    End Select
         'Next
     End Sub
+
 End Class

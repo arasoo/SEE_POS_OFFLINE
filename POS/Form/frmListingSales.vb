@@ -6,6 +6,8 @@ Imports saveLib.Save
 Imports System.IO
 Imports mainlib
 Imports sqlLib.Sql
+Imports System.ComponentModel
+
 
 Public Class frmListingSales
 
@@ -52,6 +54,7 @@ Public Class frmListingSales
                 GetDetailInvoice()
                 firstLoad = True
             Else
+                gridDetail.Rows.Clear()
                 firstLoad = False
 
             End If
@@ -83,7 +86,7 @@ Public Class frmListingSales
             Next
         End If
 
-        lblTotal.Text = String.Format("{0:#,##0}", Math.Round(total, 0))
+        lblTotal.Text = String.Format("{0:#,##0}", Math.Floor(total))
         lblTotalCash.Text = String.Format("{0:#,##0}", Math.Round(totalCash, 0))
         lblTotalCard.Text = String.Format("{0:#,##0}", Math.Round(totalCard, 0))
         lblTotalRounding.Text = String.Format("{0:#,##0}", Math.Round(totalRounding, 0))

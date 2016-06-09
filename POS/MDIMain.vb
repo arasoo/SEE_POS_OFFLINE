@@ -247,9 +247,6 @@ ShowMainMenu:
             'LoadMenuParent First
             MenuParent(tblMenuAccess)
 
-            'close event
-            Call CloseEvent()
-
             'close voucher
             Call CloseVoucher()
 

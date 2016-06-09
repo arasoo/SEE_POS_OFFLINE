@@ -337,11 +337,12 @@ Public Class frmInventorySupplier
 
     Private Sub GridSalesSupplier_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridInventorySupplier.DoubleClick
         If GridInventorySupplier.SelectedCells(2).Value <> "" Then
-            frmStockCard.ItemCode = GridInventorySupplier.SelectedCells(2).Value
-            frmStockCard.Description = GridInventorySupplier.SelectedCells(3).Value
-            frmStockCard.WHCode = GetValueParamText("DEFAULT WH")
-            frmStockCard.WHName = GetDetailWH(GetValueParamText("DEFAULT WH"))
+            frmStockCard.ItemCode = GridInventorySupplier.SelectedCells(1).Value
+            frmStockCard.Description = GridInventorySupplier.SelectedCells(2).Value
+            frmStockCard.WHCode = cmbWarehouse.SelectedValue
+            frmStockCard.WHName = cmbWarehouse.Text
             frmStockCard.ShowDialog()
         End If
     End Sub
+
 End Class

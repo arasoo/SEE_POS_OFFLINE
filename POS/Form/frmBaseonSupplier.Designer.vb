@@ -149,9 +149,9 @@ Partial Class frmBaseonSupplier
         Me.Label3.ForeColor = System.Drawing.Color.Black
         Me.Label3.Location = New System.Drawing.Point(55, 8)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(210, 23)
+        Me.Label3.Size = New System.Drawing.Size(252, 23)
         Me.Label3.TabIndex = 501
-        Me.Label3.Text = "BASE ON SUPPLIER"
+        Me.Label3.Text = "BASE ON SUPPLIER - SALES"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'dtTo
@@ -338,7 +338,7 @@ Partial Class frmBaseonSupplier
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.GridBaseOnSupplier)
         Me.Name = "frmBaseonSupplier"
-        Me.Text = "Base On Supplier"
+        Me.Text = "Base On Supplier - Sales"
         CType(Me.picLabel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.GridBaseOnSupplier, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

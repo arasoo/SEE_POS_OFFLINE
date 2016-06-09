@@ -143,14 +143,29 @@ Module CreateSubMenu
             .Name = "mnuInterfacing"
         End With
 
-        mnuMain.Items.Add(mnuSalesReport)
-        mnuMain.Items.Add(mnuInventoryReport)
+        If Not CanViewMenu(mnuSalesReport.Name) = False Then mnuMain.Items.Add(mnuSalesReport)
+        If Not CanViewMenu(mnuInventoryReport.Name) = False Then mnuMain.Items.Add(mnuInventoryReport)
         mnuMain.Items.Add(mnuInterfacing)
 
         AddHandler mnuInterfacing.Click, AddressOf MenuItemClicked
         DropMenuSalesReport(mnuSalesReport)
         DropMenuInventoryReport(mnuInventoryReport)
     End Sub
+
+    Private Function CanViewMenu(mnuName As String) As Boolean
+        For i As Integer = 0 To tblMenuAccess.Rows.Count - 1
+
+            If tblMenuAccess.Rows(i).Item(3) = mnuName And Not tblMenuAccess.Rows(i).Item(4) = 0 Then
+                If tblMenuAccess.Rows(i).Item(10) = True Then
+                    Return True
+                End If
+            End If
+
+        Next
+
+        Return False
+
+    End Function
 
     Public Sub SubMenuProducts(ByVal mnuMain As MenuStrip)
         Dim mnuProducts As ToolStripMenuItem
@@ -431,6 +446,7 @@ Module CreateSubMenu
     Private Sub DropMenuStoresFinance(ByVal stores As ToolStripMenuItem)
         Dim mnuSalesReturn As ToolStripMenuItem
         Dim mnuPosEndofDay As ToolStripMenuItem
+        Dim mnuClosingCashier As ToolStripMenuItem
 
         mnuSalesReturn = New ToolStripMenuItem
         With mnuSalesReturn
@@ -445,11 +461,19 @@ Module CreateSubMenu
 
         End With
 
+        mnuClosingCashier = New ToolStripMenuItem
+        With mnuClosingCashier
+            .Text = "Closing Cashier"
+            .Name = "mnuClosingCashier"
+
+        End With
+
         AddHandler mnuSalesReturn.Click, AddressOf MenuItemClicked
         AddHandler mnuPosEndofDay.Click, AddressOf MenuItemClicked
+        AddHandler mnuClosingCashier.Click, AddressOf MenuItemClicked
         stores.DropDownItems.Add(mnuSalesReturn)
         stores.DropDownItems.Add(mnuPosEndofDay)
-
+        stores.DropDownItems.Add(mnuClosingCashier)
     End Sub
 
     Private Sub DropMenuStoresInventory(ByVal stores As ToolStripMenuItem)
@@ -698,7 +722,7 @@ Module CreateSubMenu
 
         mnuBaseOnSupplier = New ToolStripMenuItem
         With mnuBaseOnSupplier
-            .Text = "Base On Supplier"
+            .Text = "Base On Supplier - Sales"
             .Name = "mnuBaseOnSupplier"
         End With
 
@@ -746,7 +770,7 @@ Module CreateSubMenu
         Dim mnuHeaderSupplier As ToolStripMenuItem
         Dim mnuInventorySupplier As ToolStripMenuItem
         Dim mnuStockAgingSupplier As ToolStripMenuItem
-
+        Dim mnuBaseOnSupplierInventory As ToolStripMenuItem
 
         'Inventory Menu
 
@@ -809,7 +833,11 @@ Module CreateSubMenu
             .Name = "mnuStockAgingSupplier"
         End With
 
-
+        mnuBaseOnSupplierInventory = New ToolStripMenuItem
+        With mnuBaseOnSupplierInventory
+            .Text = "Base On Supplier - Inventory"
+            .Name = "mnuBaseOnSupplierInventory"
+        End With
         'Inventory Report
         'mnu.DropDownItems.Add(mnuStoreStockLevel)
         mnu.DropDownItems.Add(mnuHeaderStores)
@@ -820,6 +848,7 @@ Module CreateSubMenu
         mnu.DropDownItems.Add(mnuHeaderSupplier)
         mnu.DropDownItems.Add(mnuInventorySupplier)
         mnu.DropDownItems.Add(mnuStockAgingSupplier)
+        mnu.DropDownItems.Add(mnuBaseOnSupplierInventory)
 
         'AddHandler mnuStoreStockLevel.Click, AddressOf MenuItemClicked
         AddHandler mnuWarehouseStockLevel.Click, AddressOf MenuItemClicked
@@ -828,7 +857,7 @@ Module CreateSubMenu
         AddHandler mnuInventoryDemand.Click, AddressOf MenuItemClicked
         AddHandler mnuInventorySupplier.Click, AddressOf MenuItemClicked
         AddHandler mnuStockAgingSupplier.Click, AddressOf MenuItemClicked
-
+        AddHandler mnuBaseOnSupplierInventory.Click, AddressOf MenuItemClicked
     End Sub
 
     Private Sub MenuItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -1130,6 +1159,15 @@ Module CreateSubMenu
                     AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
                     MDIMain.Text = "TMBookstore - Sales"
 
+                Case "mnuClosingCashier"
+                    frm = frmClosingCashier
+                    frm.MdiParent = MDIMain
+                    frm.WindowState = FormWindowState.Maximized
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Finance"
+
                 Case "mnuWarehouseStockLevel"
                     frm = frmWarehouseStockLevel
                     frm.MdiParent = MDIMain
@@ -1172,6 +1210,14 @@ Module CreateSubMenu
                     MDIMain.Text = "TMBookstore - Reports"
                 Case "mnuStockAgingSupplier"
                     frm = frmStockAgingSupplier
+                    frm.MdiParent = MDIMain
+                    frm.WindowState = FormWindowState.Maximized
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Reports"
+                Case "mnuBaseOnSupplierInventory"
+                    frm = frmBaseOnSupplier2
                     frm.MdiParent = MDIMain
                     frm.WindowState = FormWindowState.Maximized
                     frm.Show()

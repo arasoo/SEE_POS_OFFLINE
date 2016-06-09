@@ -146,10 +146,8 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT TrnCode Code,Description Name FROM " & DB & ".dbo.mktrd " & _
-                                "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " & _
-                                "WHERE stok_txcode=TrnCode) " & _
-                                "AND TrnCode NOT IN ('DO1')"
+                .CommandText = "SELECT TrnCode Code,Description Name FROM " & DB & ".dbo.mktrd "
+
             End With
 
             da = New SqlDataAdapter
@@ -1382,15 +1380,6 @@ createLastDoc:
                     doc = ""
                     GoTo createLastDoc
                 End If
-
-            End If
-
-            If SalesOrderNoExists(doc) = True Then
-                'create ulang last doc
-
-                UpdateHistoryPOS(doc, "FP")
-                doc = ""
-                GoTo createLastDoc
 
             End If
 

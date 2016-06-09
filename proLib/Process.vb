@@ -181,7 +181,7 @@ Public Class Process
         End Try
     End Sub
 
-    Private Shared Function PartExitst(ByVal kode As String, ByVal b As String, ByVal w As String) As Boolean
+    Public Shared Function PartExitst(ByVal kode As String, ByVal b As String, ByVal w As String) As Boolean
         Dim result As Boolean = False
         data = New DataTable
         Try
@@ -189,9 +189,9 @@ Public Class Process
 
             With cm
                 .Connection = cn
-                .CommandText = "SELECT part_partnumber FROM " & DB & ".dbo.mpart" & _
-                                " WHERE part_partnumber='" & kode & "' " & _
-                                " AND Part_Branch='" & b & "'" & _
+                .CommandText = "SELECT part_partnumber FROM " & DB & ".dbo.mpart" &
+                                " WHERE part_partnumber='" & kode & "' " &
+                                " AND Part_Branch='" & b & "'" &
                                 " AND Part_WH='" & w & "'"
             End With
 

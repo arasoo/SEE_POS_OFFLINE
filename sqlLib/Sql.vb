@@ -427,13 +427,12 @@ Public Class Sql
                             "ELSE 'Draft' END sts FROM " & DB & ".dbo.ttsh WITH(NOLOCK) where hts_date BETWEEN '" & Format(fromDt, formatDate) & "' AND '" & Format(toDt, formatDate) & "' " & _
                             "AND hts_trnid = 'MM410'"
                 Case Else
-                    query = "SELECT hlbm_wrs docno,(SELECT DISTINCT dlbm_reffdoc FROM " & DB & ".dbo.twrsd" & _
-                            " WHERE dlbm_wrs=hlbm_wrs)AS pono,hlbm_date docdate,hlbm_trnid trnid,hlbm_dn dn," & _
-                            "hlbm_dndate dndate,hlbm_note note," & _
-                            "CASE WHEN hlbm_flag_validate='Y' AND hlbm_flag_posting='Y' then 'Posted' " & _
-                            "WHEN hlbm_flag_validate='Y' AND hlbm_flag_posting='N' then 'Receive' " & _
-                            "ELSE 'Draft' END sts FROM " & DB & ".dbo.twrsh WITH(NOLOCK) where hlbm_date BETWEEN '" & Format(fromDt, formatDate) & "' AND '" & Format(toDt, formatDate) & "' " & _
-                            "AND hlbm_trnid = 'TR100'"
+                    query = "SELECT hts_doi docno,hts_date docdate,hts_trnid trnid,hts_supplier supp," &
+                            "hts_customer cust,hts_to_wh towh,hts_reffdoc dn,hts_note note," &
+                            "CASE WHEN hts_pickflag='Y' AND hts_postingflag='Y' then 'Posted' " &
+                            "WHEN hts_pickflag='Y' AND hts_postingflag='N' then 'Validate' " &
+                            "ELSE 'Draft' END sts FROM " & DB & ".dbo.ttsh WITH(NOLOCK) where hts_date BETWEEN '" & Format(fromDt, formatDate) & "' AND '" & Format(toDt, formatDate) & "' " &
+                            "AND hts_trnid = 'MM106'"
 
 
             End Select
@@ -536,30 +535,30 @@ Public Class Sql
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             If GetValueParamNumber("SYSTEM SQL") = 1 Then
-                query = "SELECT MDiscD.PromoID,MdiscH.Description,MdiscH.DiscType,MDiscD.PartNumber as item," & _
-                        "MDiscD.Description as description,MDiscD.Disc FROM MDiscD,MdiscH " & _
-                        "WHERE ( MDiscD.PromoID = MdiscH.PromoID ) and  " & _
-                        "( ( MdiscH.Salesoffice = '" & salesoffice & "' ) AND  " & _
-                        "( MdiscH.PeriodFrom <= '" & Format(today, formatDate) & "' ) AND  " & _
-                        "( MdiscH.Periodto >= '" & Format(today, formatDate) & "' ) AND  " & _
-                        "(MDiscD.PartNumber = '" & kode & "' AND  " & _
-                        "MDiscD.Prodhier = '1') OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(discgroup) & "' AND  " & _
-                        "MDiscD.Prodhier = '2') OR  " & _
-                        "(MDiscD.PartNumber = '" & product & "' AND  " & _
-                        "MDiscD.Prodhier = '3') OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(prodhier1) & "' AND  " & _
-                        "MDiscD.Prodhier = '4') OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(prodhier2) & "' AND  " & _
-                        "MDiscD.Prodhier = '5') OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(prodhier3) & "' AND  " & _
-                        "MDiscD.Prodhier = '6')  OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(prodhier4) & "' AND  " & _
-                        "MDiscD.Prodhier = '7')  OR  " & _
-                        "(MDiscD.PartNumber = '" & Trim(prodhier5) & "' AND  " & _
-                        "MDiscD.Prodhier = '8') ) AND " & _
-                        "mdisch.Validflag='Y' AND " & _
-                        "mdisch.Closeflag='N' AND " & _
+                query = "SELECT MDiscD.PromoID,MdiscH.Description,MdiscH.DiscType,MDiscD.PartNumber as item," &
+                        "MDiscD.Description as description,MDiscD.Disc FROM MDiscD,MdiscH " &
+                        "WHERE ( MDiscD.PromoID = MdiscH.PromoID ) and  " &
+                        "( ( MdiscH.Salesoffice = '" & salesoffice & "' ) AND  " &
+                        "( MdiscH.PeriodFrom <= '" & Format(today, formatDate) & "' ) AND  " &
+                        "( MdiscH.Periodto >= '" & Format(today, formatDate) & "' ) AND  " &
+                        "(MDiscD.PartNumber = '" & kode & "' AND  " &
+                        "MDiscD.Prodhier = '1') OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(discgroup) & "' AND  " &
+                        "MDiscD.Prodhier = '2') OR  " &
+                        "(MDiscD.PartNumber = '" & product & "' AND  " &
+                        "MDiscD.Prodhier = '3') OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(prodhier1) & "' AND  " &
+                        "MDiscD.Prodhier = '4') OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(prodhier2) & "' AND  " &
+                        "MDiscD.Prodhier = '5') OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(prodhier3) & "' AND  " &
+                        "MDiscD.Prodhier = '6')  OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(prodhier4) & "' AND  " &
+                        "MDiscD.Prodhier = '7')  OR  " &
+                        "(MDiscD.PartNumber = '" & Trim(prodhier5) & "' AND  " &
+                        "MDiscD.Prodhier = '8') ) AND " &
+                        "mdisch.Validflag='Y' AND " &
+                        "mdisch.Closeflag='N' AND " &
                         "mdisch.DiscType=10"
             Else
                 query = "EXECUTE " & DB & ".dbo.P_PROMO_BESTPRICE '" & salesoffice & "','" & kode & "'"
@@ -926,26 +925,83 @@ Public Class Sql
 
             If cn.State = ConnectionState.Closed Then cn.Open()
 
-            query = "with temp (code,name,consi,credit) AS ( " & _
-                    "select sup_supplier,sup_name,SUM(ds_ppn+ds_dpp),0 from tslsd WITH(NOLOCK) " & _
-                    "inner join MTIPE WITH(NOLOCK) on TYPE_PartNumber=DS_PartNumber " & _
-                            "and TYPE_MaterialType in ('510','520','610') " & _
-                            "and TYPE_Status<>1 " & _
-                    "inner join MSPL WITH(NOLOCK) on SUP_Supplier=TYPE_ProdHier5 and SUP_Sts=0 " & _
-                    "where ds_invoicedate between '" & Format(dtFrom, formatDate) & "' " & _
-                    "and '" & Format(dtTo, formatDate) & "' " & _
-                    "group by sup_supplier,sup_name " & _
-                    "union all " & _
-                    "select sup_supplier,sup_name,0,SUM(ds_ppn+ds_dpp) from tslsd WITH(NOLOCK) " & _
-                    "inner join MTIPE WITH(NOLOCK) on TYPE_PartNumber=DS_PartNumber " & _
-                            "and TYPE_MaterialType in ('001','002','600') " & _
-                            "and TYPE_Status<>1 " & _
-                    "inner join MSPL WITH(NOLOCK) on SUP_Supplier=TYPE_ProdHier5 and SUP_Sts=0 " & _
-                    "where ds_invoicedate between '" & Format(dtFrom, formatDate) & "' " & _
-                    "and '" & Format(dtTo, formatDate) & "' " & _
-                    "group by sup_supplier,sup_name " & _
-                    ") SELECT code,name,sum(consi)consi,sum(credit)credit from temp WITH(NOLOCK) " & _
+            query = "with temp (code,name,consi,credit) AS ( " &
+                    "select sup_supplier,sup_name,SUM(ds_ppn+ds_dpp),0 from tslsd WITH(NOLOCK) " &
+                    "inner join MTIPE WITH(NOLOCK) on TYPE_PartNumber=DS_PartNumber " &
+                            "and TYPE_MaterialType in ('510','520','610') " &
+                            "and TYPE_Status<>1 " &
+                    "inner join MSPL WITH(NOLOCK) on SUP_Supplier=TYPE_ProdHier5 and SUP_Sts=0 " &
+                    "where ds_invoicedate between '" & Format(dtFrom, formatDate) & "' " &
+                    "and '" & Format(dtTo, formatDate) & "' " &
+                    "group by sup_supplier,sup_name " &
+                    "union all " &
+                    "select sup_supplier,sup_name,0,SUM(ds_ppn+ds_dpp) from tslsd WITH(NOLOCK) " &
+                    "inner join MTIPE WITH(NOLOCK) on TYPE_PartNumber=DS_PartNumber " &
+                            "and TYPE_MaterialType in ('001','002','600') " &
+                            "and TYPE_Status<>1 " &
+                    "inner join MSPL WITH(NOLOCK) on SUP_Supplier=TYPE_ProdHier5 and SUP_Sts=0 " &
+                    "where ds_invoicedate between '" & Format(dtFrom, formatDate) & "' " &
+                    "and '" & Format(dtTo, formatDate) & "' " &
+                    "group by sup_supplier,sup_name " &
+                    ") SELECT code,name,sum(consi)consi,sum(credit)credit from temp WITH(NOLOCK) " &
                     "group by code,name "
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandType = CommandType.Text
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+
+        Return dtTable
+    End Function
+
+    Public Shared Function ReportBaseOnSupplier2() As DataTable
+        Try
+            dtTable = New DataTable
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+
+            query = "with temp (code,name,consi,credit) AS( " &
+                  "select type_prodhier5,sup_name,SUM(part_rfsstock * mp_nextprice),0 " &
+                  "FROM " & DB & ".dbo.MTIPE WITH (NOLOCK) " &
+                  "inner join MPRICE on MP_PartNumber=TYPE_PartNumber and MP_PriceGroup='01' " &
+                  "left join " & DB & ".dbo.MSPL With (NOLOCK) On SUP_Supplier=TYPE_ProdHier5 " &
+                  "inner join " & DB & ".dbo.MPART WITH (NOLOCK) on PART_PartNumber=TYPE_PartNumber " &
+                  "AND PART_WH='" & GetValueParamText("DEFAULT WH") & "' " &
+                  "where TYPE_MaterialType in ('510','520','610') " &
+                  "AND MP_EffectiveDate <= GETDATE() and MP_ExpDate >= GETDATE() " &
+                  "group by type_prodhier5,sup_name " &
+                  "having sum(part_rfsstock)<>0 " &
+                  "union all " &
+                  "select type_prodhier5,sup_name,0,SUM(part_rfsstock*mp_nextprice) " &
+                  "FROM " & DB & ".dbo.MTIPE WITH (NOLOCK) " &
+                  "inner join MPRICE on MP_PartNumber=TYPE_PartNumber and MP_PriceGroup='01' " &
+                  "left join " & DB & ".dbo.MSPL WITH (NOLOCK) on SUP_Supplier=TYPE_ProdHier5 " &
+                  "inner join " & DB & ".dbo.MPART WITH (NOLOCK) on PART_PartNumber=TYPE_PartNumber " &
+                  "AND PART_WH='" & GetValueParamText("DEFAULT WH") & "' " &
+                  "where TYPE_MaterialType in ('001','002','600') " &
+                  "AND MP_EffectiveDate <= GETDATE() and MP_ExpDate >= GETDATE() " &
+                  "group by type_prodhier5,sup_name " &
+                  "having sum(part_rfsstock)<>0 " &
+                  ")SELECT code,name,sum(consi)consi,sum(credit)credit from temp " &
+                   "group by code,name " &
+                   "order by name "
 
             cm = New SqlCommand
             With cm
@@ -1131,7 +1187,7 @@ Public Class Sql
 
                 query = query + "and part_wh='" & wh & "' and exists(select * FROM " & DB & ".dbo.hkstok " &
                      "where stok_partnumber=part_partnumber " &
-                     "and stok_txcode IN ('GR102','GR101','GR410')) and discgroup='01' " &
+                     "and stok_txcode IN ('GR102','GR101','GR410','GR501')) and discgroup='01' " &
                      "and salesorg='" & GetValueParamText("POS SLSORG") & "' " &
                      "And salesoffice='" & GetValueParamText("POS SALESOFFICE") & "' And part_rfsstock <> 0 " &
                      "GROUP BY part_partnumber,type_description,product_description," &
@@ -1268,15 +1324,58 @@ Public Class Sql
         End Try
     End Function
 
-    Public Shared Function DailySalesPayments(ByVal slsorg As String, ByVal emp As String, ByVal dtFrom As Date, _
+    Public Shared Function DailySalesPayments(ByVal slsorg As String, ByVal emp As String, ByVal dtFrom As Date,
                                              ByVal dtTo As Date) As DataTable
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
             dtTable = New DataTable
 
 
-            query = "EXECUTE " & DB & ".dbo.P_DAILY_SALES_PAYMENTS '" & Format(dtFrom, formatDate) & "','" & Format(dtTo, "yyyy-MM-dd") & "'," & _
+            query = "EXECUTE " & DB & ".dbo.P_DAILY_SALES_PAYMENTS '" & Format(dtFrom, formatDate) & "','" & Format(dtTo, "yyyy-MM-dd") & "'," &
                                 "'" & slsorg & "','" & emp & "'"
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandTimeout = 180
+                .CommandText = query
+
+
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+
+
+            Return dtTable
+            cm.CommandTimeout = 30
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            cm.CommandTimeout = 30
+            Throw ex
+        End Try
+    End Function
+
+    Public Shared Function ClosingCashier(ByVal dtFrom As Date,
+                                             ByVal dtTo As Date) As DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+
+
+            query = "SELECT cashierbal_id,cashierbal_userid,cashierbal_opendate" &
+                            ",cashierbal_amount,cashierbal_totalcash" &
+                            ",cashierbal_totalcard,cashierbal_totalcharge," &
+                            "cashierbal_totalvoucher,cashierbal_closedate," &
+                            "cashierbal_note,cashierbal_employeeId " &
+                            "FROM " & DB & ".dbo.cashierbalance " &
+                    "WHERE YEAR(cashierbal_opendate)='" & Format(dtFrom, "yyyy") & "' " &
+                    "AND MONTH(cashierbal_opendate)='" & Format(dtFrom, "MM") & "'"
 
             cm = New SqlCommand
             With cm
@@ -1315,10 +1414,10 @@ Public Class Sql
 
             With cm
                 .Connection = cn
-                .CommandText = "SELECT RTRIM(LTRIM(dlbm_partnumber)) Item,type_description Judul," & _
+                .CommandText = "Select RTRIM(LTRIM(dlbm_partnumber)) Item,type_description Judul," & _
                                 "type_uom UOM,dlbm_stockqty Qty " & _
                                 "FROM " & DB & ".dbo.twrsd " & _
-                                "INNER JOIN " & DB & ".dbo.mtipe on type_partnumber=dlbm_partnumber " & _
+                                "INNER JOIN " & DB & ".dbo.mtipe On type_partnumber=dlbm_partnumber " & _
                                 "WHERE dlbm_wrs = '" & doc & "' ORDER BY type_description ASC"
             End With
 
@@ -1388,9 +1487,23 @@ Public Class Sql
 
                     If kode <> "All" Then query = query & "AND hts_supplier='" & kode & "'"
                 Case 1
+                    query = "SELECT hts_doi docno,hts_date docdate,type_spl_material1 vendor," &
+                            "LTRIM(RTRIM(dts_partnumber)) item,type_description judul,type_uom uom,dts_qty qty " &
+                            "FROM " & DB & ".dbo.ttsh INNER JOIN " & DB & ".dbo.ttsd WITH(NOLOCK) ON dts_doi=hts_doi " &
+                            "INNER JOIN " & DB & ".dbo.mtipe WITH(NOLOCK) on type_partnumber=dts_partnumber " &
+                            "where hts_date BETWEEN '" & Format(fromDt, formatDate) & "' AND '" & Format(toDt, formatDate) & "' " &
+                            "AND hts_trnid = 'MM410' "
 
+                    If kode <> "All" Then query = query & "AND hts_wh='" & kode & "'"
                 Case Else
+                    query = "SELECT hts_doi docno,hts_date docdate,type_spl_material1 vendor," &
+                            "LTRIM(RTRIM(dts_partnumber)) item,type_description judul,type_uom uom,dts_qty qty " &
+                            "FROM " & DB & ".dbo.ttsh INNER JOIN " & DB & ".dbo.ttsd WITH(NOLOCK) ON dts_doi=hts_doi " &
+                            "INNER JOIN " & DB & ".dbo.mtipe WITH(NOLOCK) on type_partnumber=dts_partnumber " &
+                            "where hts_date BETWEEN '" & Format(fromDt, formatDate) & "' AND '" & Format(toDt, formatDate) & "' " &
+                            "AND hts_trnid = 'MM106' "
 
+                    If kode <> "All" Then query = query & "AND hts_wh='" & kode & "'"
 
 
             End Select
@@ -1743,7 +1856,7 @@ Public Class Sql
                                        Optional ByVal userPost As String = "SYSTEM", Optional ByVal sts As String = "N")
 
         Try
-            dtTable = New DataTable
+
             If cn.State = ConnectionState.Closed Then cn.Open()
 
 
@@ -1769,7 +1882,7 @@ Public Class Sql
     Public Shared Sub LockVoucherCode(ByVal id As String, ByVal code As String, ByVal invoice As String, ByVal empId As String)
 
         Try
-            dtTable = New DataTable
+
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             query = "UPDATE " & DB & ".dbo.mvoucherd SET invoice='" & invoice & "'," & _
@@ -3121,10 +3234,39 @@ Public Class Sql
             dtTable = New Datatable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
-            query = "SELECT userid,s.menudata,menuparent,menuform,menulevel,menuseq,menulabel," & _
-                    "haschild,menulock,lockmessage,isselect,isinsert,isedit,isdelete,isprint FROM MENUACCESS s with (nolock) " & _
-                    "INNER JOIN menus m ON s.menudata=m.menudata " & _
+            query = "SELECT userid,s.menudata,menuparent,menuform,menulevel,menuseq,menulabel," &
+                    "haschild,menulock,lockmessage,isselect,isinsert,isedit,isdelete,isprint FROM " & DB & ".dbo.MENUACCESS s " &
+                    "INNER JOIN menus m ON s.menudata=m.menudata " &
                     "WHERE userid='" & userid & "' ORDER BY menuparent,menuseq"
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            Return dtTable
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Function
+
+    Public Shared Function GetAllMenuAccess() As DataTable
+
+        Try
+            dtTable = New DataTable
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            query = "SELECT menudata,menuparent,menuform,menulevel,menuseq,menulabel," &
+                    "haschild,menulock,lockmessage FROM " & DB & ".dbo.menus ORDER BY menuparent,menuseq"
 
             cm = New SqlCommand
             With cm
@@ -3324,7 +3466,6 @@ Public Class Sql
                 .ExecuteNonQuery()
             End With
 
-
             cn.Close()
         Catch ex As Exception
             cn.Close()
@@ -3399,9 +3540,9 @@ Public Class Sql
             dtTable = New Datatable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
-            query = "SELECT count(mdiscd.partnumber) FROM " & DB & ".dbo.mdiscd " & _
-                    "INNER JOIN " & DB & ".dbo.mdisch on mdisch.promoid=mdiscd.promoid " & _
-                    "WHERE mdisch.description='BEST PRICE' " & _
+            query = "SELECT count(mdiscd.partnumber) FROM " & DB & ".dbo.mdiscd " &
+                    "INNER JOIN " & DB & ".dbo.mdisch on mdisch.promoid=mdiscd.promoid " &
+                    "WHERE mdisch.description='BEST PRICE' " &
                     "AND mdisch.periodfrom='" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "'"
 
             cm = New SqlCommand
@@ -3425,6 +3566,40 @@ Public Class Sql
             Throw ex
         End Try
     End Function
+
+    Public Shared Function BestPriceDetail() As DataTable
+
+        Try
+            dtTable = New DataTable
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            query = "SELECT minMargin,MaxDisc,MaxItem FROM " & DB & ".dbo.mdisch " &
+                    "WHERE mdisch.description='BEST PRICE' AND mdisch.disctype=10  " &
+                    "AND mdisch.periodfrom='" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' "
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            Return dtTable
+
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Function
+
+
 
     Public Shared Function GetParameter() As DataTable
 
@@ -3568,16 +3743,107 @@ Public Class Sql
         End Try
     End Function
 
-    Public Shared Function SalesOrderNoExists(ByVal doc As String) As Boolean
+    Public Shared Function InvoiceExists(ByVal doc As String) As Boolean
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
             dtTable = New DataTable
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandTimeout = 1000
-                .CommandText = "SELECT salesorderno FROM " & DB & ".dbo.tpayrech " & _
-                                " WHERE salesorderno='" & doc & "'"
+                .CommandTimeout = 0
+                .CommandText = "SELECT hs_invoice FROM " & DB & ".dbo.tslsh " &
+                                " WHERE hs_invoice='" & doc & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            If dtTable.Rows.Count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+
+        Catch ex As Exception
+
+            Throw ex
+        End Try
+    End Function
+
+    Public Shared Function InvoiceDetailExists(ByVal doc As String) As Boolean
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandText = "SELECT ds_invoice FROM " & DB & ".dbo.tslsd " &
+                                " WHERE ds_invoice='" & doc & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            If dtTable.Rows.Count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+
+        Catch ex As Exception
+
+            Throw ex
+        End Try
+    End Function
+
+    Public Shared Function PaymentExists(ByVal doc As String, receipt As String) As Boolean
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandText = "SELECT salesorderno FROM " & DB & ".dbo.tpayrech " &
+                                "WHERE salesorderno='" & doc & "' " &
+                                "AND receiptno='" & receipt & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            If dtTable.Rows.Count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+
+        Catch ex As Exception
+
+            Throw ex
+        End Try
+    End Function
+
+    Public Shared Function PaymentDetailExists(ByVal doc As String) As Boolean
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandText = "SELECT receiptno FROM " & DB & ".dbo.tpayrecd " &
+                                " WHERE receiptno='" & doc & "'"
             End With
 
             da = New SqlDataAdapter

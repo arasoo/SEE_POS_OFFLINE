@@ -4,6 +4,7 @@ Public Class DBConnection
 
     Public Shared cn As New SqlConnection
     Public Shared cm As SqlCommand
+    Public Shared ct As SqlTransaction
     Public Shared da As SqlDataAdapter
 
     Public Shared Sub OpenConnectionWindows(ByVal server As String, ByVal database As String)

@@ -5,6 +5,8 @@ Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports mainlib
 Imports sqlLib.Sql
+Imports connLib.DBConnection
+Imports System.Data.SqlClient
 
 Public Class FrmWR
     Private state As Integer
@@ -632,21 +634,66 @@ block:
                     DNNo = mReffno
                 End If
 
+                ct = Nothing
 
-                InsertDetailBM(mtransID, Trim(lblDocNo.Text), "PO", mReffno, temp, hcustSupp, hcustSuppCode)
+                If cn.State = ConnectionState.Closed Then cn.Open()
+
+                ct = cn.BeginTransaction("Save Receive")
+
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    For i As Integer = 0 To temp.Rows.Count - 1
+                        .CommandText = "INSERT INTO " & DB & ".dbo.twrsd " &
+                                        "(dlbm_wrs,dlbm_refftype,dlbm_reffdoc,dlbm_partnumber,dlbm_product,dlbm_uom,dlbm_storeuom," &
+                                        "dlbm_entryqty,dlbm_stockqty,dlbm_payqty,dlbm_binqty,dlbm_cost,dlbm_batcno,dlbm_description," &
+                                        "dlbm_costcenter,dlbm_freightcost,dlbm_costunit,dlbm_exchrate) " &
+                                        "VALUES ('" & Trim(lblDocNo.Text) & "','PO','" & mReffno & "','" & temp.Rows(i).Item(0) & "','" & temp.Rows(i).Item(2) & "'" &
+                                        ",'" & temp.Rows(i).Item(3) & "','" & temp.Rows(i).Item(3) & "','" & temp.Rows(i).Item(4) & "'" &
+                                        ",'" & temp.Rows(i).Item(4) & "',0,'" & temp.Rows(i).Item(4) & "',0,'','" & Replace(temp.Rows(i).Item(1), "'", "''") & "'" &
+                                        ",'',0,0,1)"
+                        .ExecuteNonQuery()
+
+                    Next
+
+                End With
 
 
                 'save header
-                InsertHeaderBM(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Trim(lblDocNo.Text) _
-                               , dtDate.Value, GetValueParamText("DEFAULT WH"), IIf(mflag = 0, mfromWH, ""), mtransID, mSuppCode _
-                               , DNNo, dtDNDate.Value, Trim(txtNote.Text), IIf(mflag = 0, 5, 1))
+                If cn.State = ConnectionState.Closed Then cn.Open()
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    .CommandText = "INSERT INTO " & DB & ".dbo.twrsh " &
+                                    "(hlbm_company,hlbm_branch,hlbm_wrs,hlbm_date,hlbm_dc,hlbm_wh,hlbm_trnid,hlbm_type," &
+                                    "hlbm_supplier,hlbm_customer,hlbm_fwh,hlbm_dn,hlbm_dndate,hlbm_note,hlbm_flag_aloc," &
+                                    "hlbm_flag_rls,hlbm_flag_posting,hlbm_flag_validate,hlbm_journal,hlbm_creator,hlbm_createdate," &
+                                    "hlbm_createtime,hlbm_last_modifier,hlbm_modifytime) " &
+                                    "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                    "'" & GetValueParamText("DEFAULT BRANCH") & "','" & Trim(lblDocNo.Text) & "'," &
+                                    "'" & Format(dtDate.Value, formatDate) & "'" &
+                                    ",'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                    "'" & GetValueParamText("DEFAULT WH") & "','" & mtransID & "','" & IIf(mflag = 0, 5, 1) & "','" & mSuppCode & "'" &
+                                    ",'','" & IIf(mflag = 0, mfromWH, "") & "','" & DNNo & "','" & Format(dtDNDate.Value, formatDate) & "','" & Trim(txtNote.Text) & "','Y','Y','N','N','101','" & logOn & "'" &
+                                    ",'" & Format(dtDate.Value, formatDate) & "','" & Format(Now, "HHmmss") & "'" &
+                                    ",'','')"
+                    .ExecuteNonQuery()
 
 
+                End With
+
+                ct.Commit()
             Else 'Edit
 
             End If
         Catch ex As Exception
+            ct.Rollback()
             Throw ex
+        Finally
+            If cn.State = ConnectionState.Open Then cn.Close()
+
         End Try
     End Sub
 

@@ -18,20 +18,55 @@ Public Class frmMenuAccess
     End Sub
 
     Private Sub MenuAccess()
+        Try
+            Dim dtMenus As New DataTable
 
-        menuTreeView.Nodes.Clear()
+            dtMenus = GetAllMenuAccess()
+            menuTreeView.Nodes.Clear()
 
-        For i As Integer = 0 To tblMenuAccess.Rows.Count - 1
-            Dim ndRoot As New TreeNode
+            For i As Integer = 0 To dtMenus.Rows.Count - 1
 
-            With ndRoot
-                .Name = tblMenuAccess.Rows(i).Item(1)
-                .Text = tblMenuAccess.Rows(i).Item(6)
-                .ToolTipText = tblMenuAccess.Rows(i).Item(6)
+                If dtMenus.Rows(i).Item(1) = "app" Then
+                    Dim ndRoot As New TreeNode
 
-            End With
-            menuTreeView.Nodes.Add(ndRoot)
+                    With ndRoot
+                        .Name = dtMenus.Rows(i).Item(0)
+                        .Text = dtMenus.Rows(i).Item(5)
+                        .ToolTipText = dtMenus.Rows(i).Item(5)
+
+                    End With
+                    menuTreeView.Nodes.Add(ndRoot)
+
+                    If dtMenus.Rows(i).Item(6) = True Then 'has child
+                        AddChild(ndRoot, dtMenus)
+                    End If
+                End If
+
+
+            Next
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+
+        End Try
+
+    End Sub
+
+    Private Sub AddChild(root As TreeNode, data As DataTable)
+
+        Dim nodesChild As TreeNode
+        For i As Integer = 0 To data.Rows.Count - 1
+            If data.Rows(i).Item(1) = root.Name Then
+                nodesChild = New TreeNode
+
+                With nodesChild
+                    .Name = data.Rows(i).Item(0)
+                    .Text = data.Rows(i).Item(5)
+                    .ToolTipText = data.Rows(i).Item(5)
+                End With
+                root.Nodes.Add(nodesChild)
+            End If
         Next
+
     End Sub
 
     Private Sub GridMenuAccess_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles GridMenuAccess.CellPainting

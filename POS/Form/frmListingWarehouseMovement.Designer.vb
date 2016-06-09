@@ -37,15 +37,23 @@ Partial Class frmListingWarehouseMovement
         Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.picLabel = New System.Windows.Forms.PictureBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.gridAll = New System.Windows.Forms.DataGridView()
         Me.GridHeader = New System.Windows.Forms.DataGridView()
+        Me.colDoc = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTransId = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colSupp = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colCust = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colToWH = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colNote = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colSts = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.dtTo = New System.Windows.Forms.DateTimePicker()
         Me.dtFrom = New System.Windows.Forms.DateTimePicker()
@@ -59,6 +67,13 @@ Partial Class frmListingWarehouseMovement
         Me.Label2 = New System.Windows.Forms.Label()
         Me.cmbOption = New System.Windows.Forms.ComboBox()
         Me.gridDetail = New System.Windows.Forms.DataGridView()
+        Me.colDocument = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDetDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colVendor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colUOM = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colQty = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -74,21 +89,6 @@ Partial Class frmListingWarehouseMovement
         Me.DataGridViewTextBoxColumn13 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn14 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn15 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDocument = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDetDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colVendor = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colUOM = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colQty = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDoc = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colTransId = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colSupp = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colCust = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colToWH = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colNote = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.colSts = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.picLabel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridAll, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.GridHeader, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -208,7 +208,7 @@ Partial Class frmListingWarehouseMovement
         DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.GridHeader.DefaultCellStyle = DataGridViewCellStyle8
-        Me.GridHeader.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.GridHeader.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
         Me.GridHeader.EnableHeadersVisualStyles = False
         Me.GridHeader.GridColor = System.Drawing.Color.Silver
         Me.GridHeader.Location = New System.Drawing.Point(11, 106)
@@ -233,6 +233,54 @@ Partial Class frmListingWarehouseMovement
         Me.GridHeader.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.GridHeader.Size = New System.Drawing.Size(804, 418)
         Me.GridHeader.TabIndex = 412
+        '
+        'colDoc
+        '
+        Me.colDoc.HeaderText = "Document"
+        Me.colDoc.Name = "colDoc"
+        Me.colDoc.Width = 87
+        '
+        'colDate
+        '
+        Me.colDate.HeaderText = "Date"
+        Me.colDate.Name = "colDate"
+        Me.colDate.Width = 56
+        '
+        'colTransId
+        '
+        Me.colTransId.HeaderText = "Trans Id"
+        Me.colTransId.Name = "colTransId"
+        Me.colTransId.Width = 69
+        '
+        'colSupp
+        '
+        Me.colSupp.HeaderText = "Supplier"
+        Me.colSupp.Name = "colSupp"
+        Me.colSupp.Width = 73
+        '
+        'colCust
+        '
+        Me.colCust.HeaderText = "Customer"
+        Me.colCust.Name = "colCust"
+        Me.colCust.Width = 82
+        '
+        'colToWH
+        '
+        Me.colToWH.HeaderText = "To WH"
+        Me.colToWH.Name = "colToWH"
+        Me.colToWH.Width = 64
+        '
+        'colNote
+        '
+        Me.colNote.HeaderText = "Note"
+        Me.colNote.Name = "colNote"
+        Me.colNote.Width = 57
+        '
+        'colSts
+        '
+        Me.colSts.HeaderText = "Status"
+        Me.colSts.Name = "colSts"
+        Me.colSts.Width = 65
         '
         'lblStatus
         '
@@ -453,6 +501,56 @@ Partial Class frmListingWarehouseMovement
         Me.gridDetail.TabIndex = 462
         Me.gridDetail.Visible = False
         '
+        'colDocument
+        '
+        Me.colDocument.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colDocument.HeaderText = "Document"
+        Me.colDocument.Name = "colDocument"
+        Me.colDocument.Width = 120
+        '
+        'colDetDate
+        '
+        Me.colDetDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colDetDate.HeaderText = "Date"
+        Me.colDetDate.Name = "colDetDate"
+        Me.colDetDate.Width = 70
+        '
+        'colVendor
+        '
+        Me.colVendor.HeaderText = "Vendor"
+        Me.colVendor.Name = "colVendor"
+        '
+        'colItem
+        '
+        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colItem.HeaderText = "Item"
+        Me.colItem.Name = "colItem"
+        '
+        'colDescription
+        '
+        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colDescription.HeaderText = "Description"
+        Me.colDescription.Name = "colDescription"
+        Me.colDescription.Width = 400
+        '
+        'colUOM
+        '
+        Me.colUOM.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colUOM.HeaderText = "UOM"
+        Me.colUOM.Name = "colUOM"
+        Me.colUOM.Width = 50
+        '
+        'colQty
+        '
+        Me.colQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle13.Format = "N0"
+        DataGridViewCellStyle13.NullValue = "0"
+        Me.colQty.DefaultCellStyle = DataGridViewCellStyle13
+        Me.colQty.HeaderText = "Qty"
+        Me.colQty.Name = "colQty"
+        Me.colQty.Width = 40
+        '
         'DataGridViewTextBoxColumn1
         '
         Me.DataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
@@ -563,104 +661,6 @@ Partial Class frmListingWarehouseMovement
         Me.DataGridViewTextBoxColumn15.HeaderText = "Qty"
         Me.DataGridViewTextBoxColumn15.Name = "DataGridViewTextBoxColumn15"
         Me.DataGridViewTextBoxColumn15.Width = 40
-        '
-        'colDocument
-        '
-        Me.colDocument.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colDocument.HeaderText = "Document"
-        Me.colDocument.Name = "colDocument"
-        Me.colDocument.Width = 120
-        '
-        'colDetDate
-        '
-        Me.colDetDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colDetDate.HeaderText = "Date"
-        Me.colDetDate.Name = "colDetDate"
-        Me.colDetDate.Width = 70
-        '
-        'colVendor
-        '
-        Me.colVendor.HeaderText = "Vendor"
-        Me.colVendor.Name = "colVendor"
-        '
-        'colItem
-        '
-        Me.colItem.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colItem.HeaderText = "Item"
-        Me.colItem.Name = "colItem"
-        '
-        'colDescription
-        '
-        Me.colDescription.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colDescription.HeaderText = "Description"
-        Me.colDescription.Name = "colDescription"
-        Me.colDescription.Width = 400
-        '
-        'colUOM
-        '
-        Me.colUOM.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colUOM.HeaderText = "UOM"
-        Me.colUOM.Name = "colUOM"
-        Me.colUOM.Width = 50
-        '
-        'colQty
-        '
-        Me.colQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle13.Format = "N0"
-        DataGridViewCellStyle13.NullValue = "0"
-        Me.colQty.DefaultCellStyle = DataGridViewCellStyle13
-        Me.colQty.HeaderText = "Qty"
-        Me.colQty.Name = "colQty"
-        Me.colQty.Width = 40
-        '
-        'colDoc
-        '
-        Me.colDoc.HeaderText = "Document"
-        Me.colDoc.Name = "colDoc"
-        Me.colDoc.Width = 87
-        '
-        'colDate
-        '
-        Me.colDate.HeaderText = "Date"
-        Me.colDate.Name = "colDate"
-        Me.colDate.Width = 56
-        '
-        'colTransId
-        '
-        Me.colTransId.HeaderText = "Trans Id"
-        Me.colTransId.Name = "colTransId"
-        Me.colTransId.Width = 69
-        '
-        'colSupp
-        '
-        Me.colSupp.HeaderText = "Supplier"
-        Me.colSupp.Name = "colSupp"
-        Me.colSupp.Width = 73
-        '
-        'colCust
-        '
-        Me.colCust.HeaderText = "Customer"
-        Me.colCust.Name = "colCust"
-        Me.colCust.Width = 82
-        '
-        'colToWH
-        '
-        Me.colToWH.HeaderText = "To WH"
-        Me.colToWH.Name = "colToWH"
-        Me.colToWH.Width = 64
-        '
-        'colNote
-        '
-        Me.colNote.HeaderText = "Note"
-        Me.colNote.Name = "colNote"
-        Me.colNote.Width = 57
-        '
-        'colSts
-        '
-        Me.colSts.HeaderText = "Status"
-        Me.colSts.Name = "colSts"
-        Me.colSts.Width = 65
         '
         'frmListingWarehouseMovement
         '

@@ -160,7 +160,7 @@ Public Class frmSummarySalesItem
                                        , GridSummarySales.Rows(i).Cells(2).Value _
                                        , GridSummarySales.Rows(i).Cells(3).Value _
                                        , GridSummarySales.Rows(i).Cells(4).Value _
-                                       , GridSummarySales.Rows(i).Cells(5).Value})
+                                       , GridSummarySales.Rows(i).Cells(6).Value})
 
             End With
         Next
