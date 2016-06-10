@@ -4102,8 +4102,8 @@ Public Class Sql
         Dim result As Boolean = False
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "SELECT part_partnumber FROM " & DB & ".dbo.mpart " & _
-                    "WHERE part_partnumber='" & kode & "' " & _
+            query = "SELECT part_partnumber FROM " & DB & ".dbo.mpart " &
+                    "WHERE part_partnumber='" & kode & "' " &
                     "AND part_wh='" & wh & "'"
 
             cm = New SqlCommand
@@ -4133,6 +4133,44 @@ Public Class Sql
 
         Return result
     End Function
+
+    Public Shared Function ItemBelongsSupplier(ByVal kode As String, supp As String) As Boolean
+        dtTable = New DataTable
+        Dim result As Boolean = False
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            query = "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
+                    "WHERE type_partnumber='" & kode & "' " &
+                    "AND type_prodhier5='" & supp & "'"
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            If dtTable.Rows.Count > 0 Then
+                result = True
+            Else
+                result = False
+            End If
+            cn.Close()
+            query = ""
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+
+        Return result
+    End Function
+
 
     Public Shared Function PriceExists(ByVal kode As String, ByVal pricegroup As String) As Boolean
         dtTable = New DataTable
