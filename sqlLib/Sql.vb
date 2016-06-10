@@ -2957,13 +2957,82 @@ Public Class Sql
         End Try
     End Sub
 
+    Public Shared Function GetCustAFFCO(ByVal kode As String) As String
+        dtTable = New DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            query = "SELECT CUST_AFFCO FROM " & DB & ".dbo.mcust WHERE Cust_Kode='" & kode & "' "
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+            cn.Close()
+            query = ""
+
+            If dtTable.Rows.Count > 0 Then
+                Return dtTable.Rows(0).Item(0)
+            Else
+                Return "000"
+            End If
+
+        Catch ex As Exception
+
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+
+    End Function
+
+    Public Shared Function GetJournalTran(ByVal transid As String, affco As String) As String
+        dtTable = New DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            query = "SELECT JournalCode FROM " & DB & ".dbo.MKTRNAFCO " &
+                    "WHERE AFFCO='" & affco & "' " &
+                    "AND txCode='" & transid & "'"
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+            cn.Close()
+            query = ""
+
+            If dtTable.Rows.Count > 0 Then
+                Return dtTable.Rows(0).Item(0)
+            Else
+                Return "000"
+            End If
+
+        Catch ex As Exception
+
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+    End Function
+
     Public Shared Function GetDetailItem(ByVal kode As String) As DataTable
 
         dtTable = New Datatable
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "SELECT type_partnumber,type_description,type_product,type_uom," & _
-                                "type_taxgroup,type_status " & _
+            query = "SELECT type_partnumber,type_description,type_product,type_uom," &
+                                "type_taxgroup,type_status,type_materialtype " &
                                 "FROM " & DB & ".dbo.mtipe WHERE type_partnumber='" & kode & "' "
             cm = New SqlCommand
             With cm

@@ -532,7 +532,6 @@ Module LoadData
         End Try
     End Sub
 
-
     Public Sub LoadDiscGroup(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
             dtTable = New datatable
@@ -839,8 +838,8 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Customer FROM " & DB & ".dbo.mcust " & _
-                                "WHERE Cust_CompanyCode='" & GetValueParamText("DEFAULT COMPANY") & "' " & _
+                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Customer FROM " & DB & ".dbo.mcust " &
+                                "WHERE Cust_CompanyCode='" & GetValueParamText("DEFAULT COMPANY") & "' " &
                                 "AND Cust_Branch='" & GetValueParamText("DEFAULT BRANCH") & "'"
             End With
 
@@ -855,6 +854,38 @@ Module LoadData
                 cmbBox.ValueMember = dtTable.Columns.Item(0).ColumnName
                 cmbBox.DisplayMember = dtTable.Columns.Item(1).ColumnName
             End If
+
+            gridView.DataSource = dtTable
+
+
+            cn.Close()
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub LoadCustomerShipTo(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal cust As String)
+        Try
+            dtTable = New DataTable
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = "SELECT Cust_QQ Code,Cust_Nama Customer FROM " & DB & ".dbo.mcqq " &
+                                "WHERE Cust_SalesOffice='" & GetValueParamText("POS SALESOFFICE") & "' " &
+                                "AND Cust_Kode='" & cust & "'"
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            cmbBox.DataSource = dtTable
+            cmbBox.ValueMember = dtTable.Columns.Item(0).ColumnName
+            cmbBox.DisplayMember = dtTable.Columns.Item(1).ColumnName
 
             gridView.DataSource = dtTable
 
