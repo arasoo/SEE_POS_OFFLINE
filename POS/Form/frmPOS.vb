@@ -830,7 +830,7 @@ Public Class frmPOS
 
              
                 If Not ItemAssignmentExists(Trim(txtItem.Text), mWh) = True Then
-                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, Title)
                     GoTo finish
                 End If
 

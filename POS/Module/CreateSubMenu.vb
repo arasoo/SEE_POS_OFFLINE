@@ -528,13 +528,13 @@ Module CreateSubMenu
         stores.DropDownItems.Add(mnuWarehouseStockTakes)
         stores.DropDownItems.Add(mnuInterbranch)
         stores.DropDownItems.Add(mnuWarehouseStockTransfer)
-        'stores.DropDownItems.Add(mnuSepStoresInventory1)
-        'stores.DropDownItems.Add(mnuReturnSupplier)
+        stores.DropDownItems.Add(mnuSepStoresInventory1)
+        stores.DropDownItems.Add(mnuReturnSupplier)
 
         DropMenuWarehouseStockTakes(mnuWarehouseStockTakes)
         DropMenuInterbranch(mnuInterbranch)
         DropMenuWarehouseStockTransfer(mnuWarehouseStockTransfer)
-
+        DropMenuReturnSupplier(mnuReturnSupplier)
     End Sub
 
     Private Sub DropMenuWarehouseStockTransfer(ByVal mnu As ToolStripMenuItem)
@@ -614,6 +614,28 @@ Module CreateSubMenu
         mnu.DropDownItems.Add(mnuWarehouseStockTakesCredit)
         AddHandler mnuWarehouseStockTakesConsignment.Click, AddressOf MenuItemClicked
         mnu.DropDownItems.Add(mnuWarehouseStockTakesConsignment)
+    End Sub
+
+    Private Sub DropMenuReturnSupplier(ByVal mnu As ToolStripMenuItem)
+        Dim mnuReturnSupplierCredit As ToolStripMenuItem
+        Dim mnuReturnSupplierConsignment As ToolStripMenuItem
+
+        mnuReturnSupplierCredit = New ToolStripMenuItem
+        With mnuReturnSupplierCredit
+            .Text = "Credit"
+            .Name = "mnuReturnSupplierCredit"
+        End With
+
+        mnuReturnSupplierConsignment = New ToolStripMenuItem
+        With mnuReturnSupplierConsignment
+            .Text = "Consignment"
+            .Name = "mnuReturnSupplierConsignment"
+        End With
+
+        AddHandler mnuReturnSupplierCredit.Click, AddressOf MenuItemClicked
+        mnu.DropDownItems.Add(mnuReturnSupplierCredit)
+        AddHandler mnuReturnSupplierConsignment.Click, AddressOf MenuItemClicked
+        mnu.DropDownItems.Add(mnuReturnSupplierConsignment)
     End Sub
 
     Private Sub DropMenuSalesReport(ByVal mnu As ToolStripMenuItem)
@@ -1071,6 +1093,20 @@ Module CreateSubMenu
                     f.TransferTitle = "Warehouse Stock Transfer Out"
                     f.TransID = "MM106"
                     f.TransferFlag = 0
+                    f.WindowState = FormWindowState.Maximized
+                    f.Show()
+
+                    AddHandler f.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Inventory"
+
+                Case "mnuInterbranchOut"
+                    Dim f As New frmTransfer
+
+                    f.MdiParent = MDIMain
+                    f.FromWH = GetValueParamText("DEFAULT WH")
+                    f.TransferTitle = "Interbranch Out"
+                    f.TransID = "MM410"
+                    f.TransferFlag = 1
                     f.WindowState = FormWindowState.Maximized
                     f.Show()
 

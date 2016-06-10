@@ -5,6 +5,7 @@ Imports System.IO
 Imports proLib.Process
 Imports sqlLib.Sql
 Imports mainlib
+Imports System.Data.SqlClient
 
 
 Public Class frmTransfer
@@ -30,6 +31,7 @@ Public Class frmTransfer
     Private seqnum As Integer = 0
     Private dataItem As DataTable
     Private mSuppCode As String = ""
+    Private firstLoad As Boolean = False
 
     Public WriteOnly Property TransferTitle As String
         Set(ByVal value As String)
@@ -98,51 +100,67 @@ Public Class frmTransfer
 
             btnClose.Image = mainClass.imgList.ImgBtnCancel
 
-        btnNew.Enabled = False
+            btnNew.Enabled = False
 
-        cmbToWH.Enabled = True
-        txtItem.Enabled = True
-        chckScan.Enabled = True
+            cmbToWH.Enabled = True
+            txtItem.Enabled = True
+            chckScan.Enabled = True
 
-        If chckScan.Checked = True Then
-            txtQty.Enabled = False
-            txtItem.Focus()
-        Else
-            txtQty.Enabled = True
-            txtItem.Focus()
-        End If
-        gridTransfer.Enabled = True
-        dtDate.Value = Now
-        txtNote.Clear()
+            If chckScan.Checked = True Then
+                txtQty.Enabled = False
+                txtItem.Focus()
+            Else
+                txtQty.Enabled = True
+                txtItem.Focus()
+            End If
+            gridTransfer.Enabled = True
+            dtDate.Value = Now
+            txtNote.Clear()
+            txtReffDoc.Clear()
+            txtReffDoc.Enabled = True
+
+            If mFlag = 0 Then
+                cmbFromWH.Enabled = False
+            ElseIf mFlag = 1 Then
+                cmbFromWH.Enabled = True
+                cmbToWH.Enabled = False
+            Else
+                cmbToWH.Enabled = False
+                cmbFromWH.Enabled = True
+            End If
 
         ElseIf state = 2 Then
 
         Else
 
 
-        txtNote.Enabled = False
+            txtNote.Enabled = False
 
-        btnNew.Enabled = True
+            btnNew.Enabled = True
 
-        btnSave.Enabled = False
-        btnEdit.Enabled = False
-        btnClose.Text = "Close"
+            btnSave.Enabled = False
+            btnEdit.Enabled = False
+            btnClose.Text = "Close"
             btnClose.Image = mainClass.imgList.ImgBtnClosing
 
-        cmbToWH.Enabled = False
-        txtItem.Enabled = False
-        chckScan.Enabled = False
+            cmbToWH.Enabled = False
+            txtItem.Enabled = False
+            chckScan.Enabled = False
+            txtReffDoc.Enabled = False
+            cmbFromWH.Enabled = False
+            dtDate.Value = Now
+            txtNote.Clear()
+            txtReffDoc.Clear()
 
-        dtDate.Value = Now
-        txtNote.Clear()
+            lblDocNo.Text = ""
+            gridTransfer.Rows.Clear()
+            gridTransfer.Enabled = False
+            dataItem = Nothing
 
-        lblDocNo.Text = ""
-        gridTransfer.Rows.Clear()
-        gridTransfer.Enabled = False
-        dataItem = Nothing
+            lblTotalItem.Text = 0
+            lblTotalQty.Text = 0
 
-        lblTotalItem.Text = 0
-        lblTotalQty.Text = 0
+
 
         End If
     End Sub
@@ -201,7 +219,6 @@ Public Class frmTransfer
 
     End Sub
 
-
     Private Sub txtItem_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtItem.DoubleClick
         If frmListItem.ShowDialog = Windows.Forms.DialogResult.OK Then
             txtItem.Text = frmListItem.GridListItem.SelectedCells(0).Value
@@ -230,11 +247,18 @@ Public Class frmTransfer
                     Exit Sub
                 End If
 
+
+                If Not ItemAssignmentExists(Trim(txtItem.Text), GetValueParamText("DEFAULT WH")) = True Then
+                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, Title)
+                    Exit Sub
+                End If
+
                 dataItem = GetDetailItem(Trim(txtItem.Text))
 
-                If Not dataItem.Rows.Count > 0 Then
-                    MsgBox("Item not found in Warehouse", MsgBoxStyle.Exclamation, Title)
-                    Exit Sub
+                If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                    dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                    dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
                 End If
 
                 If chckScan.Checked = True Then ' scan one by one
@@ -354,7 +378,6 @@ Public Class frmTransfer
 
     End Sub
 
-
     Private Sub txtQty_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtQty.Click
         txtQty.SelectAll()
     End Sub
@@ -365,10 +388,30 @@ Public Class frmTransfer
 
     Private Sub frmTransfer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.Text = mTitle
-        LoadWarehouse(cmbFromWH, gridAll, 0)
-        LoadWarehouse(cmbToWH, gridAll, 0)
+        lblTitle.Text = mTitle
+
+        If mFlag = 0 Then 'Warehouse Stock Movement
+
+            LoadWarehouse(cmbFromWH, gridAll, 0)
+            LoadWarehouse(cmbToWH, gridAll, 0)
+            cmbFromWH.SelectedValue = GetValueParamText("DEFAULT WH")
+
+            lblFrom.Text = "From WH"
+            lblTo.Text = "To"
+        ElseIf mFlag = 1 Then 'Interbranch
+
+            LoadCustomer(cmbFromWH, gridAll, 0)
+            lblFrom.Text = "Customer"
+            lblTo.Text = "Ship To"
+
+        Else 'Return Supplier
+
+        End If
+
         LoadImage()
-        cmbFromWH.SelectedValue = GetValueParamText("DEFAULT WH")
+
+        firstLoad = True
+
     End Sub
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
@@ -383,17 +426,30 @@ Public Class frmTransfer
         gridAll.Visible = False
     End Sub
 
-    Private Sub cmbFromWHClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbToWH.Click
+    Private Sub cmbFromWHClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbToWH.Click, cmbFromWH.Click
         Try
 
             Dim senderCmb As ComboBox = DirectCast(sender, ComboBox)
 
-           
-            LoadWarehouse(senderCmb, gridAll, 1)
+            If senderCmb.Tag = "FROW WH" Then
+                If mFlag = 0 Then
+                    LoadWarehouse(senderCmb, gridAll, 1)
+                ElseIf mFlag = 1 Then
+                    LoadCustomer(senderCmb, gridAll, 1)
+                Else
+
+                End If
+            Else
+                If mFlag = 0 Then LoadWarehouse(senderCmb, gridAll, 1)
+
+
+
+
+            End If
 
 
             gridAll.Location = New Point(senderCmb.Left, senderCmb.Location.Y + 22)
-            gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) + _
+            gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) +
                             (senderCmb.Width - GetColumnWidth(gridAll.Columns.Count, gridAll)) + 60, GetRowHeight(gridAll.Rows.Count, gridAll))
             senderCmb.DroppedDown = False
 
@@ -406,8 +462,12 @@ Public Class frmTransfer
 
             gridAll.Tag = senderCmb.Tag
 
+            If senderCmb.Tag = "FROM WH" Then
+                gridAll.Columns(0).Width = 70
+            Else
+                gridAll.Columns(0).Width = 50
+            End If
 
-            gridAll.Columns(0).Width = 50
             gridAll.Columns(1).Width = gridAll.Width - 54
         Catch ex As Exception
             MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
@@ -574,27 +634,95 @@ Public Class frmTransfer
                     hcustSupp = "S"
                     hcustSuppCode = mSuppCode
 
-                ElseIf mTransID = "MM106" Then
+                ElseIf mTransID = "MM106" Or mTransID = "MM410" Then
                     hcustSupp = "C"
                     hcustSuppCode = ""
                     mSuppCode = ""
+
                 End If
 
+                Dim statusItem As String = ""
 
-                InsertDetailTS(mTransID, Trim(lblDocNo.Text), "PO", "", temp, hcustSupp, hcustSuppCode)
+                If cn.State = ConnectionState.Closed Then cn.Open()
 
+                ct = cn.BeginTransaction("Save Movement")
+
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    For i As Integer = 0 To temp.Rows.Count - 1
+                        .CommandText = "INSERT INTO " & DB & ".dbo.ttsd " &
+                                       "(dts_doi,dts_partnumber,dts_product,dts_uom," &
+                                       "dts_qty,dts_cost,dts_batchno,dts_uomunit,dts_note) " &
+                                       "VALUES ('" & Trim(lblDocNo.Text) & "','" & temp.Rows(i).Item(0) & "','" & temp.Rows(i).Item(2) & "'" &
+                                       ",'" & temp.Rows(i).Item(3) & "','" & temp.Rows(i).Item(4) & "',0" &
+                                       ",'',1,'')"
+
+                        .ExecuteNonQuery()
+
+                        statusItem = 4
+
+                        Call NewTransactionStock(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") _
+                                                     , mTransID, hcustSupp, hcustSuppCode, Trim(lblDocNo.Text), GetValueParamText("DEFAULT WH") _
+                                                     , temp.Rows(i).Item(0), temp.Rows(i).Item(4), "-", temp.Rows(i).Item(2), statusItem _
+                                                     , temp.Rows(i).Item(1), temp.Rows(i).Item(3))
+                    Next
+
+                End With
 
                 'save header
                 InsertHeaderTS(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Trim(lblDocNo.Text) _
                                , dtDate.Value, GetValueParamText("DEFAULT WH"), cmbToWH.SelectedValue, mTransID, mSuppCode _
                                , DNNo, Trim(txtNote.Text))
 
+                Dim custAffco As String = ""
+                Dim JournalCode As String = ""
 
+                If mFlag = 0 Then
+                    JournalCode = "000"
+                ElseIf mFlag = 1 Then 'interbranch
+                    custAffco = GetCustAFFCO(cmbFromWH.SelectedValue)
+                    JournalCode = GetJournalTran(mTransID, custAffco)
+                Else 'supplier
+                    JournalCode = "420"
+                End If
+
+                If cn.State = ConnectionState.Closed Then cn.Open()
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    .CommandText = "INSERT INTO " & DB & ".dbo.ttsh " &
+                                    "(hts_company,hts_branch,hts_salesorg,hts_salesoffice,hts_doi,hts_date,hts_dc," &
+                                    "hts_wh,hts_trnid,hts_supplier,hts_customer,hts_qq,hts_to_wh,hts_salesman," &
+                                    "hts_reffdoc,hts_alocflag,hts_pickflag,hts_dnflag,hts_postingflag,hts_tpflag," &
+                                    "hts_dn,hts_note,hts_deliveryroute,hts_costcenter,hts_journal,hts_counter," &
+                                    "hts_createuser,hts_createdate,hts_createtime) " &
+                                    "VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'" &
+                                    ",'" & GetValueParamText("DEFAULT BRANCH") & "','',''" &
+                                    ",'" & Trim(lblDocNo.Text) & "','" & Format(dtDate.Value, formatDate) & "'" &
+                                    ",'" & GetValueParamText("DEFAULT BRANCH") & "'" &
+                                    ",'" & GetValueParamText("DEFAULT WH") & "','" & mTransID & "'" &
+                                    ",'" & IIf(mFlag = 2, cmbFromWH.SelectedValue, "") & "','" & IIf(mFlag = 1, cmbFromWH.SelectedValue, "") & "'" &
+                                    ",'" & IIf(mFlag = 1, cmbToWH.SelectedValue, "") & "'" &
+                                    ",'" & IIf(mFlag = 0, cmbToWH.SelectedValue, "") & "','','','Y'" &
+                                    ",'Y','Y','N','Y','','" & Trim(txtNote.Text) & "','','','" & JournalCode & "',0,'" & logOn & "'" &
+                                    ",'" & Format(dtDate.Value, formatDate) & "','" & Format(Now, "HHmmss") & "')"
+                    .ExecuteNonQuery()
+
+
+                End With
+
+                ct.Commit()
             Else 'Edit
 
             End If
         Catch ex As Exception
+            ct.Rollback()
             Throw ex
+        Finally
+            If cn.State = ConnectionState.Open Then cn.Close()
         End Try
     End Sub
 
@@ -629,7 +757,12 @@ Public Class frmTransfer
 
     End Sub
 
-    Private Sub cmbToWH_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbToWH.SelectedIndexChanged
+    Private Sub cmbFromWH_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFromWH.SelectedIndexChanged
+        If firstLoad = True Then
+            If mFlag = 1 Then
+                LoadCustomerShipTo(cmbToWH, gridAll, cmbFromWH.SelectedValue)
+            End If
+        End If
 
     End Sub
 End Class

@@ -23,19 +23,19 @@ Partial Class frmTransfer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle40 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle43 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle41 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle42 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dtDate = New System.Windows.Forms.DateTimePicker()
         Me.txtNote = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -53,11 +53,11 @@ Partial Class frmTransfer
         Me.txtItem = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.chckScan = New System.Windows.Forms.CheckBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblFrom = New System.Windows.Forms.Label()
         Me.picLabel = New System.Windows.Forms.PictureBox()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.cmbToWH = New System.Windows.Forms.ComboBox()
-        Me.lblToWH = New System.Windows.Forms.Label()
+        Me.lblTo = New System.Windows.Forms.Label()
         Me.cmbFromWH = New System.Windows.Forms.ComboBox()
         Me.gridAll = New System.Windows.Forms.DataGridView()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -87,6 +87,8 @@ Partial Class frmTransfer
         Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtReffDoc = New System.Windows.Forms.TextBox()
         Me.ContextMenuStrip1.SuspendLayout()
         CType(Me.picLabel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gridAll, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -109,7 +111,7 @@ Partial Class frmTransfer
         Me.txtNote.BackColor = System.Drawing.Color.White
         Me.txtNote.Enabled = False
         Me.txtNote.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNote.Location = New System.Drawing.Point(99, 138)
+        Me.txtNote.Location = New System.Drawing.Point(99, 164)
         Me.txtNote.Name = "txtNote"
         Me.txtNote.Size = New System.Drawing.Size(444, 21)
         Me.txtNote.TabIndex = 3
@@ -119,7 +121,7 @@ Partial Class frmTransfer
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.Color.Black
-        Me.Label5.Location = New System.Drawing.Point(29, 138)
+        Me.Label5.Location = New System.Drawing.Point(29, 164)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(64, 23)
         Me.Label5.TabIndex = 228
@@ -141,30 +143,30 @@ Partial Class frmTransfer
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'EditToolStripMenuItem
         '
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
         Me.EditToolStripMenuItem.Text = "Edit"
         '
         'ContextMenuStrip1
         '
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditToolStripMenuItem, Me.DeleteToolStripMenuItem, Me.ToolStripMenuItem1, Me.CreateXMLToolStripMenuItem})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(147, 76)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(136, 76)
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(143, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(132, 6)
         '
         'CreateXMLToolStripMenuItem
         '
         Me.CreateXMLToolStripMenuItem.Name = "CreateXMLToolStripMenuItem"
-        Me.CreateXMLToolStripMenuItem.Size = New System.Drawing.Size(146, 22)
+        Me.CreateXMLToolStripMenuItem.Size = New System.Drawing.Size(135, 22)
         Me.CreateXMLToolStripMenuItem.Text = "Create XML"
         '
         'lblDocNo
@@ -242,7 +244,7 @@ Partial Class frmTransfer
         'Label11
         '
         Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label11.BackColor = System.Drawing.Color.Khaki
         Me.Label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label11.Font = New System.Drawing.Font("Comic Sans MS", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -267,17 +269,17 @@ Partial Class frmTransfer
         Me.chckScan.Text = "Scan item one by one (F10)"
         Me.chckScan.UseVisualStyleBackColor = False
         '
-        'Label1
+        'lblFrom
         '
-        Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.Black
-        Me.Label1.Location = New System.Drawing.Point(17, 109)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(76, 23)
-        Me.Label1.TabIndex = 323
-        Me.Label1.Text = "From WH :"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblFrom.BackColor = System.Drawing.Color.Transparent
+        Me.lblFrom.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFrom.ForeColor = System.Drawing.Color.Black
+        Me.lblFrom.Location = New System.Drawing.Point(17, 109)
+        Me.lblFrom.Name = "lblFrom"
+        Me.lblFrom.Size = New System.Drawing.Size(76, 23)
+        Me.lblFrom.TabIndex = 323
+        Me.lblFrom.Text = "From WH :"
+        Me.lblFrom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'picLabel
         '
@@ -308,24 +310,24 @@ Partial Class frmTransfer
         Me.cmbToWH.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbToWH.FormattingEnabled = True
         Me.cmbToWH.IntegralHeight = False
-        Me.cmbToWH.Location = New System.Drawing.Point(346, 108)
+        Me.cmbToWH.Location = New System.Drawing.Point(366, 108)
         Me.cmbToWH.MaxDropDownItems = 1
         Me.cmbToWH.Name = "cmbToWH"
         Me.cmbToWH.Size = New System.Drawing.Size(197, 21)
         Me.cmbToWH.TabIndex = 405
         Me.cmbToWH.Tag = "TO WH"
         '
-        'lblToWH
+        'lblTo
         '
-        Me.lblToWH.BackColor = System.Drawing.Color.Transparent
-        Me.lblToWH.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblToWH.ForeColor = System.Drawing.Color.Black
-        Me.lblToWH.Location = New System.Drawing.Point(300, 108)
-        Me.lblToWH.Name = "lblToWH"
-        Me.lblToWH.Size = New System.Drawing.Size(45, 23)
-        Me.lblToWH.TabIndex = 406
-        Me.lblToWH.Text = "To :"
-        Me.lblToWH.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblTo.BackColor = System.Drawing.Color.Transparent
+        Me.lblTo.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTo.ForeColor = System.Drawing.Color.Black
+        Me.lblTo.Location = New System.Drawing.Point(304, 108)
+        Me.lblTo.Name = "lblTo"
+        Me.lblTo.Size = New System.Drawing.Size(61, 23)
+        Me.lblTo.TabIndex = 406
+        Me.lblTo.Text = "To :"
+        Me.lblTo.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cmbFromWH
         '
@@ -335,7 +337,7 @@ Partial Class frmTransfer
         Me.cmbFromWH.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbFromWH.FormattingEnabled = True
         Me.cmbFromWH.IntegralHeight = False
-        Me.cmbFromWH.Location = New System.Drawing.Point(101, 109)
+        Me.cmbFromWH.Location = New System.Drawing.Point(99, 108)
         Me.cmbFromWH.MaxDropDownItems = 1
         Me.cmbFromWH.Name = "cmbFromWH"
         Me.cmbFromWH.Size = New System.Drawing.Size(197, 21)
@@ -348,48 +350,48 @@ Partial Class frmTransfer
         Me.gridAll.AllowUserToOrderColumns = True
         Me.gridAll.AllowUserToResizeColumns = False
         Me.gridAll.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gridAll.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle34.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle34.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gridAll.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle34
         Me.gridAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gridAll.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.gridAll.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical
         Me.gridAll.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.WhiteSmoke
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridAll.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle35.BackColor = System.Drawing.Color.WhiteSmoke
+        DataGridViewCellStyle35.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle35.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridAll.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle35
         Me.gridAll.ColumnHeadersHeight = 25
         Me.gridAll.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gridAll.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle36.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle36.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle36.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
+        DataGridViewCellStyle36.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridAll.DefaultCellStyle = DataGridViewCellStyle36
         Me.gridAll.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.gridAll.EnableHeadersVisualStyles = False
         Me.gridAll.GridColor = System.Drawing.Color.Silver
         Me.gridAll.Location = New System.Drawing.Point(219, 247)
         Me.gridAll.MultiSelect = False
         Me.gridAll.Name = "gridAll"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Khaki
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridAll.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle37.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle37.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle37.SelectionBackColor = System.Drawing.Color.Khaki
+        DataGridViewCellStyle37.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridAll.RowHeadersDefaultCellStyle = DataGridViewCellStyle37
         Me.gridAll.RowHeadersVisible = False
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gridAll.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle38.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gridAll.RowsDefaultCellStyle = DataGridViewCellStyle38
         Me.gridAll.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White
         Me.gridAll.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gridAll.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.SystemColors.GradientInactiveCaption
@@ -406,7 +408,7 @@ Partial Class frmTransfer
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Tahoma", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(782, 345)
+        Me.Label2.Location = New System.Drawing.Point(782, 369)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(15, 10)
         Me.Label2.TabIndex = 425
@@ -418,7 +420,7 @@ Partial Class frmTransfer
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
         Me.Label3.Font = New System.Drawing.Font("Tahoma", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(782, 405)
+        Me.Label3.Location = New System.Drawing.Point(782, 429)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(18, 10)
         Me.Label3.TabIndex = 424
@@ -430,7 +432,7 @@ Partial Class frmTransfer
         Me.Label8.AutoSize = True
         Me.Label8.BackColor = System.Drawing.Color.Transparent
         Me.Label8.Font = New System.Drawing.Font("Tahoma", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(782, 287)
+        Me.Label8.Location = New System.Drawing.Point(782, 311)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(15, 10)
         Me.Label8.TabIndex = 422
@@ -442,7 +444,7 @@ Partial Class frmTransfer
         Me.Label14.AutoSize = True
         Me.Label14.BackColor = System.Drawing.Color.Transparent
         Me.Label14.Font = New System.Drawing.Font("Tahoma", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(782, 170)
+        Me.Label14.Location = New System.Drawing.Point(782, 194)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(15, 10)
         Me.Label14.TabIndex = 420
@@ -457,7 +459,7 @@ Partial Class frmTransfer
         Me.btnClose.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.Black
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnClose.Location = New System.Drawing.Point(778, 401)
+        Me.btnClose.Location = New System.Drawing.Point(778, 425)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(67, 58)
         Me.btnClose.TabIndex = 419
@@ -475,7 +477,7 @@ Partial Class frmTransfer
         Me.btnEdit.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnEdit.ForeColor = System.Drawing.Color.Black
         Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnEdit.Location = New System.Drawing.Point(778, 284)
+        Me.btnEdit.Location = New System.Drawing.Point(778, 308)
         Me.btnEdit.Name = "btnEdit"
         Me.btnEdit.Size = New System.Drawing.Size(67, 58)
         Me.btnEdit.TabIndex = 415
@@ -493,7 +495,7 @@ Partial Class frmTransfer
         Me.btnSave.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSave.Location = New System.Drawing.Point(778, 342)
+        Me.btnSave.Location = New System.Drawing.Point(778, 366)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(67, 58)
         Me.btnSave.TabIndex = 417
@@ -510,7 +512,7 @@ Partial Class frmTransfer
         Me.btnNew.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnNew.ForeColor = System.Drawing.Color.Black
         Me.btnNew.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnNew.Location = New System.Drawing.Point(778, 166)
+        Me.btnNew.Location = New System.Drawing.Point(778, 190)
         Me.btnNew.Name = "btnNew"
         Me.btnNew.Size = New System.Drawing.Size(67, 58)
         Me.btnNew.TabIndex = 413
@@ -524,7 +526,7 @@ Partial Class frmTransfer
         Me.lblTotalItem.BackColor = System.Drawing.Color.Transparent
         Me.lblTotalItem.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalItem.ForeColor = System.Drawing.Color.Black
-        Me.lblTotalItem.Location = New System.Drawing.Point(706, 119)
+        Me.lblTotalItem.Location = New System.Drawing.Point(706, 141)
         Me.lblTotalItem.Name = "lblTotalItem"
         Me.lblTotalItem.Size = New System.Drawing.Size(66, 23)
         Me.lblTotalItem.TabIndex = 429
@@ -537,7 +539,7 @@ Partial Class frmTransfer
         Me.lblTotalQty.BackColor = System.Drawing.Color.Transparent
         Me.lblTotalQty.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTotalQty.ForeColor = System.Drawing.Color.Black
-        Me.lblTotalQty.Location = New System.Drawing.Point(706, 141)
+        Me.lblTotalQty.Location = New System.Drawing.Point(706, 163)
         Me.lblTotalQty.Name = "lblTotalQty"
         Me.lblTotalQty.Size = New System.Drawing.Size(66, 23)
         Me.lblTotalQty.TabIndex = 427
@@ -550,7 +552,7 @@ Partial Class frmTransfer
         Me.Label9.BackColor = System.Drawing.Color.Transparent
         Me.Label9.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.Black
-        Me.Label9.Location = New System.Drawing.Point(587, 117)
+        Me.Label9.Location = New System.Drawing.Point(587, 139)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(109, 23)
         Me.Label9.TabIndex = 428
@@ -563,7 +565,7 @@ Partial Class frmTransfer
         Me.Label12.BackColor = System.Drawing.Color.Transparent
         Me.Label12.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label12.ForeColor = System.Drawing.Color.Black
-        Me.Label12.Location = New System.Drawing.Point(591, 140)
+        Me.Label12.Location = New System.Drawing.Point(591, 162)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(109, 23)
         Me.Label12.TabIndex = 426
@@ -576,40 +578,40 @@ Partial Class frmTransfer
         Me.gridTransfer.AllowUserToOrderColumns = True
         Me.gridTransfer.AllowUserToResizeColumns = False
         Me.gridTransfer.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Comic Sans MS", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gridTransfer.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle39.Font = New System.Drawing.Font("Comic Sans MS", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gridTransfer.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle39
         Me.gridTransfer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gridTransfer.BackgroundColor = System.Drawing.Color.WhiteSmoke
         Me.gridTransfer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.gridTransfer.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.gridTransfer.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.SteelBlue
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gridTransfer.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle40.BackColor = System.Drawing.Color.SteelBlue
+        DataGridViewCellStyle40.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle40.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle40.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle40.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gridTransfer.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle40
         Me.gridTransfer.ColumnHeadersHeight = 30
         Me.gridTransfer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.gridTransfer.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colNo, Me.colItem, Me.colDescription, Me.colProduct, Me.colUOM, Me.colQty})
         Me.gridTransfer.ContextMenuStrip = Me.ContextMenuStrip1
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gridTransfer.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle43.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle43.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle43.SelectionBackColor = System.Drawing.SystemColors.GradientActiveCaption
+        DataGridViewCellStyle43.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle43.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridTransfer.DefaultCellStyle = DataGridViewCellStyle43
         Me.gridTransfer.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.gridTransfer.Enabled = False
         Me.gridTransfer.EnableHeadersVisualStyles = False
         Me.gridTransfer.GridColor = System.Drawing.Color.Silver
-        Me.gridTransfer.Location = New System.Drawing.Point(12, 168)
+        Me.gridTransfer.Location = New System.Drawing.Point(12, 190)
         Me.gridTransfer.MultiSelect = False
         Me.gridTransfer.Name = "gridTransfer"
         Me.gridTransfer.RowHeadersVisible = False
@@ -619,13 +621,13 @@ Partial Class frmTransfer
         Me.gridTransfer.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black
         Me.gridTransfer.RowTemplate.Height = 25
         Me.gridTransfer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.gridTransfer.Size = New System.Drawing.Size(760, 360)
+        Me.gridTransfer.Size = New System.Drawing.Size(760, 338)
         Me.gridTransfer.TabIndex = 430
         '
         'colNo
         '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colNo.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colNo.DefaultCellStyle = DataGridViewCellStyle41
         Me.colNo.Frozen = True
         Me.colNo.HeaderText = "No."
         Me.colNo.Name = "colNo"
@@ -660,8 +662,8 @@ Partial Class frmTransfer
         '
         'colQty
         '
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.colQty.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.colQty.DefaultCellStyle = DataGridViewCellStyle42
         Me.colQty.HeaderText = "Qty"
         Me.colQty.Name = "colQty"
         Me.colQty.Width = 50
@@ -672,7 +674,7 @@ Partial Class frmTransfer
         Me.Label13.AutoSize = True
         Me.Label13.BackColor = System.Drawing.Color.Transparent
         Me.Label13.Font = New System.Drawing.Font("Tahoma", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(782, 229)
+        Me.Label13.Location = New System.Drawing.Point(782, 253)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(15, 10)
         Me.Label13.TabIndex = 434
@@ -686,7 +688,7 @@ Partial Class frmTransfer
         Me.btnBrowse.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnBrowse.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnBrowse.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnBrowse.Location = New System.Drawing.Point(778, 225)
+        Me.btnBrowse.Location = New System.Drawing.Point(778, 249)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(67, 58)
         Me.btnBrowse.TabIndex = 433
@@ -696,8 +698,8 @@ Partial Class frmTransfer
         '
         'DataGridViewTextBoxColumn1
         '
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle29
         Me.DataGridViewTextBoxColumn1.Frozen = True
         Me.DataGridViewTextBoxColumn1.HeaderText = "No."
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
@@ -726,19 +728,41 @@ Partial Class frmTransfer
         '
         'DataGridViewTextBoxColumn5
         '
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.DataGridViewTextBoxColumn5.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.DataGridViewTextBoxColumn5.DefaultCellStyle = DataGridViewCellStyle30
         Me.DataGridViewTextBoxColumn5.HeaderText = "Qty"
         Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
         Me.DataGridViewTextBoxColumn5.Width = 50
         '
         'DataGridViewTextBoxColumn6
         '
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.DataGridViewTextBoxColumn6.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.DataGridViewTextBoxColumn6.DefaultCellStyle = DataGridViewCellStyle33
         Me.DataGridViewTextBoxColumn6.HeaderText = "Qty"
         Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
         Me.DataGridViewTextBoxColumn6.Width = 50
+        '
+        'Label1
+        '
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Black
+        Me.Label1.Location = New System.Drawing.Point(29, 137)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(64, 23)
+        Me.Label1.TabIndex = 436
+        Me.Label1.Text = "Reff Doc :"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtReffDoc
+        '
+        Me.txtReffDoc.BackColor = System.Drawing.Color.White
+        Me.txtReffDoc.Enabled = False
+        Me.txtReffDoc.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtReffDoc.Location = New System.Drawing.Point(99, 137)
+        Me.txtReffDoc.Name = "txtReffDoc"
+        Me.txtReffDoc.Size = New System.Drawing.Size(199, 21)
+        Me.txtReffDoc.TabIndex = 435
         '
         'frmTransfer
         '
@@ -747,6 +771,9 @@ Partial Class frmTransfer
         Me.BackColor = System.Drawing.Color.WhiteSmoke
         Me.ClientSize = New System.Drawing.Size(857, 578)
         Me.ControlBox = False
+        Me.Controls.Add(Me.gridAll)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.txtReffDoc)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.btnBrowse)
         Me.Controls.Add(Me.cmbToWH)
@@ -762,12 +789,11 @@ Partial Class frmTransfer
         Me.Controls.Add(Me.btnEdit)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnNew)
-        Me.Controls.Add(Me.gridAll)
-        Me.Controls.Add(Me.lblToWH)
+        Me.Controls.Add(Me.lblTo)
         Me.Controls.Add(Me.cmbFromWH)
         Me.Controls.Add(Me.picLabel)
         Me.Controls.Add(Me.lblTitle)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblFrom)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.chckScan)
@@ -810,7 +836,7 @@ Partial Class frmTransfer
     Friend WithEvents txtItem As System.Windows.Forms.TextBox
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents chckScan As System.Windows.Forms.CheckBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblFrom As System.Windows.Forms.Label
     Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents DataGridViewTextBoxColumn3 As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -819,7 +845,7 @@ Partial Class frmTransfer
     Friend WithEvents picLabel As System.Windows.Forms.PictureBox
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents cmbToWH As System.Windows.Forms.ComboBox
-    Friend WithEvents lblToWH As System.Windows.Forms.Label
+    Friend WithEvents lblTo As System.Windows.Forms.Label
     Friend WithEvents cmbFromWH As System.Windows.Forms.ComboBox
     Friend WithEvents gridAll As System.Windows.Forms.DataGridView
     Friend WithEvents Label2 As System.Windows.Forms.Label
@@ -846,4 +872,6 @@ Partial Class frmTransfer
     Friend WithEvents CreateXMLToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents txtReffDoc As TextBox
 End Class
