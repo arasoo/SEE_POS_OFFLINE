@@ -61,13 +61,13 @@ Public Class frmTransfer
 
     Public WriteOnly Property TransferFlag As Integer
         Set(ByVal value As Integer)
-            mflag = value
+            mFlag = value
 
         End Set
     End Property
 
     Private Sub ContextMenuStrip1_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStrip1.Opening
-        If GridTransfer.RowCount > 0 Then
+        If gridTransfer.RowCount > 0 Then
             EditToolStripMenuItem.Enabled = True
             DeleteToolStripMenuItem.Enabled = True
             If logOn = "00-IT" Then
@@ -169,7 +169,7 @@ Public Class frmTransfer
     End Sub
 
     Private Sub LoadImage()
-        
+
         btnNew.Image = mainClass.imgList.ImgBtnNew
 
         btnBrowse.Image = mainClass.imgList.ImgBtnBrowse
@@ -298,24 +298,24 @@ Public Class frmTransfer
 
                     End If
 
-                    If GridTransfer.Rows.Count > 0 Then
+                    If gridTransfer.Rows.Count > 0 Then
                         If IsExists(Trim(txtItem.Text)) Then
                             Calculate(Trim(txtItem.Text))
                             Total()
                         Else
                             seqnum = GetLastSeqnum()
-                            GridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                                dataItem.Rows(0).Item("type_description"), _
-                                                                dataItem.Rows(0).Item("type_product"), _
+                            gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                                dataItem.Rows(0).Item("type_description"),
+                                                                dataItem.Rows(0).Item("type_product"),
                                                                 dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
 
                             Total()
                         End If
                     Else
                         seqnum = GetLastSeqnum()
-                        GridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                                  dataItem.Rows(0).Item("type_description"), _
-                                                                  dataItem.Rows(0).Item("type_product"), _
+                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                                  dataItem.Rows(0).Item("type_description"),
+                                                                  dataItem.Rows(0).Item("type_product"),
                                                                   dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
                         Total()
                     End If
@@ -333,8 +333,8 @@ Public Class frmTransfer
 
     Private Function IsExists(ByVal kode As String) As Boolean
         Try
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                If GridTransfer.Rows(i).Cells(1).Value = kode Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                If gridTransfer.Rows(i).Cells(1).Value = kode Then
                     Return True
                     Exit Function
                 End If
@@ -361,11 +361,11 @@ Public Class frmTransfer
 
     Private Sub Calculate(ByVal kode As String)
         Try
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                If GridTransfer.Rows(i).Cells(1).Value = kode Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                If gridTransfer.Rows(i).Cells(1).Value = kode Then
 
-                    GridTransfer.Rows(i).Cells(5).Value += CInt(txtQty.Text)
-                   
+                    gridTransfer.Rows(i).Cells(5).Value += CInt(txtQty.Text)
+
                     Exit Sub
                 End If
             Next
@@ -377,9 +377,9 @@ Public Class frmTransfer
 
     Private Function GetLastSeqnum() As Integer
         Dim iden As Integer = 0
-        If GridTransfer.Rows.Count > 0 Then
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                iden = GridTransfer.Rows(i).Cells(0).Value
+        If gridTransfer.Rows.Count > 0 Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                iden = gridTransfer.Rows(i).Cells(0).Value
             Next
 
             iden = iden + 1
@@ -595,22 +595,22 @@ Public Class frmTransfer
                         Total()
                     Else
                         seqnum = GetLastSeqnum()
-                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                            dataItem.Rows(0).Item("type_description"), _
-                                                            dataItem.Rows(0).Item("type_product"), _
+                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                            dataItem.Rows(0).Item("type_description"),
+                                                            dataItem.Rows(0).Item("type_product"),
                                                             dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
 
                         Total()
                     End If
                 Else
                     seqnum = GetLastSeqnum()
-                    gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                              dataItem.Rows(0).Item("type_description"), _
-                                                              dataItem.Rows(0).Item("type_product"), _
+                    gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                              dataItem.Rows(0).Item("type_description"),
+                                                              dataItem.Rows(0).Item("type_product"),
                                                               dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
                     Total()
                 End If
-              
+
                 txtQty.Text = 1
                 txtItem.Clear()
                 txtItem.Focus()
@@ -971,7 +971,7 @@ Public Class frmTransfer
             DtSet = New DataTable
             MyCommand.Fill(DtSet)
 
-            For i As Integer = 1 To DtSet.Rows.Count - 1
+            For i As Integer = 0 To DtSet.Rows.Count - 1
                 If Trim(DtSet.Rows(i).Item(0)) = "" Then Exit Sub
 
                 If Not ItemExists(Trim(DtSet.Rows(i).Item(0))) = True Then
@@ -1023,9 +1023,9 @@ Public Class frmTransfer
                     End If
                 End If
 
-                If CheckStockMinus(Trim(DtSet.Rows(i).Item(0)), txtQty.Text) = True Then
+                If CheckStockMinus(Trim(DtSet.Rows(i).Item(0)), CInt(DtSet.Rows(i).Item(1))) = True Then
 
-                    MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item " + Trim(DtSet.Rows(i).Item(0)) + " - " + dataItem.Rows(0).Item("type_description") + " Over Stock!!", MsgBoxStyle.Exclamation, Title)
                     Exit Sub
 
                 End If
@@ -1039,7 +1039,7 @@ Public Class frmTransfer
                         gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
                                                             dataItem.Rows(0).Item("type_description"),
                                                             dataItem.Rows(0).Item("type_product"),
-                                                            dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
+                                                            dataItem.Rows(0).Item("type_uom"), CInt(DtSet.Rows(i).Item(1))})
 
                         Total()
                     End If
@@ -1048,7 +1048,7 @@ Public Class frmTransfer
                     gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
                                                               dataItem.Rows(0).Item("type_description"),
                                                               dataItem.Rows(0).Item("type_product"),
-                                                              dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
+                                                              dataItem.Rows(0).Item("type_uom"), CInt(DtSet.Rows(i).Item(1))})
                     Total()
                 End If
             Next
