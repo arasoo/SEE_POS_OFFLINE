@@ -1112,6 +1112,32 @@ Module CreateSubMenu
 
                     AddHandler f.FormClosed, AddressOf ActiveMdiChild_FormClosed
                     MDIMain.Text = "TMBookstore - Inventory"
+                Case "mnuReturnSupplierCredit"
+                    Dim f As New frmTransfer
+
+                    f.MdiParent = MDIMain
+                    f.FromWH = GetValueParamText("DEFAULT WH")
+                    f.TransferTitle = "Return Supplier Credit"
+                    f.TransID = "PN101"
+                    f.TransferFlag = 2
+                    f.WindowState = FormWindowState.Maximized
+                    f.Show()
+
+                    AddHandler f.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Inventory"
+                Case "mnuReturnSupplierConsignment"
+                    Dim f As New frmTransfer
+
+                    f.MdiParent = MDIMain
+                    f.FromWH = GetValueParamText("DEFAULT WH")
+                    f.TransferTitle = "Return Supplier Consignment"
+                    f.TransID = "PN102"
+                    f.TransferFlag = 2
+                    f.WindowState = FormWindowState.Maximized
+                    f.Show()
+
+                    AddHandler f.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Inventory"
                 Case "mnuApproval"
                     frm = frmApproval
                     frm.MdiParent = MDIMain

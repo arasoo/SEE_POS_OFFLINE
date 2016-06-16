@@ -887,9 +887,6 @@ Module LoadData
             cmbBox.ValueMember = dtTable.Columns.Item(0).ColumnName
             cmbBox.DisplayMember = dtTable.Columns.Item(1).ColumnName
 
-            gridView.DataSource = dtTable
-
-
             cn.Close()
         Catch ex As Exception
             cn.Close()

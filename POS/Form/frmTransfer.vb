@@ -6,7 +6,7 @@ Imports proLib.Process
 Imports sqlLib.Sql
 Imports mainlib
 Imports System.Data.SqlClient
-
+Imports System.Data.OleDb
 
 Public Class frmTransfer
 
@@ -23,6 +23,7 @@ Public Class frmTransfer
     End Sub
 
     Private state As Integer
+    Private cnnExcel As New OleDbConnection
     Private mTitle As String
     Private mTransID As String
     Private mfromWH As String
@@ -32,6 +33,10 @@ Public Class frmTransfer
     Private dataItem As DataTable
     Private mSuppCode As String = ""
     Private firstLoad As Boolean = False
+
+    Private custAffco As String = ""
+    Private JournalCode As String = ""
+
 
     Public WriteOnly Property TransferTitle As String
         Set(ByVal value As String)
@@ -56,19 +61,13 @@ Public Class frmTransfer
 
     Public WriteOnly Property TransferFlag As Integer
         Set(ByVal value As Integer)
-            mflag = value
+            mFlag = value
 
         End Set
     End Property
 
-
-    'Private Sub frmTransfer_Activated(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Activated
-    '    Me.WindowState = FormWindowState.Maximized
-    'End Sub
-
-
     Private Sub ContextMenuStrip1_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStrip1.Opening
-        If GridTransfer.RowCount > 0 Then
+        If gridTransfer.RowCount > 0 Then
             EditToolStripMenuItem.Enabled = True
             DeleteToolStripMenuItem.Enabled = True
             If logOn = "00-IT" Then
@@ -94,7 +93,7 @@ Public Class frmTransfer
             txtNote.Enabled = True
             lblDocNo.Text = GetLastTransNo(mTransDoc)
             btnSave.Enabled = True
-
+            btnUpload.Enabled = True
             btnEdit.Enabled = False
             btnClose.Text = "Cancel"
 
@@ -132,12 +131,10 @@ Public Class frmTransfer
         ElseIf state = 2 Then
 
         Else
-
-
             txtNote.Enabled = False
 
             btnNew.Enabled = True
-
+            btnUpload.Enabled = False
             btnSave.Enabled = False
             btnEdit.Enabled = False
             btnClose.Text = "Close"
@@ -160,7 +157,8 @@ Public Class frmTransfer
             lblTotalItem.Text = 0
             lblTotalQty.Text = 0
 
-
+            custAffco = ""
+            JournalCode = ""
 
         End If
     End Sub
@@ -171,7 +169,7 @@ Public Class frmTransfer
     End Sub
 
     Private Sub LoadImage()
-        
+
         btnNew.Image = mainClass.imgList.ImgBtnNew
 
         btnBrowse.Image = mainClass.imgList.ImgBtnBrowse
@@ -221,7 +219,7 @@ Public Class frmTransfer
 
     Private Sub txtItem_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtItem.DoubleClick
         If frmListItem.ShowDialog = Windows.Forms.DialogResult.OK Then
-            txtItem.Text = frmListItem.GridListItem.SelectedCells(0).Value
+            txtItem.Text = Trim(frmListItem.GridListItem.SelectedCells(0).Value)
             frmListItem.Close()
         End If
     End Sub
@@ -255,10 +253,40 @@ Public Class frmTransfer
 
                 dataItem = GetDetailItem(Trim(txtItem.Text))
 
-                If dataItem.Rows(0).Item("type_materialtype") = "520" Or
-                    dataItem.Rows(0).Item("type_materialtype") = "510" Or
-                    dataItem.Rows(0).Item("type_materialtype") = "610" Then
+                If mFlag = 1 Then 'Interbranch 
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN101" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN102" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "001" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "002" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "600" Then
+
+                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                End If
+
+                If mTransID = "PN102" Then
+                    If Not ItemBelongsSupplier(Trim(txtItem.Text), cmbFromWH.SelectedValue) = True Then
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        Exit Sub
+                    End If
                 End If
 
                 If chckScan.Checked = True Then ' scan one by one
@@ -270,24 +298,24 @@ Public Class frmTransfer
 
                     End If
 
-                    If GridTransfer.Rows.Count > 0 Then
+                    If gridTransfer.Rows.Count > 0 Then
                         If IsExists(Trim(txtItem.Text)) Then
                             Calculate(Trim(txtItem.Text))
                             Total()
                         Else
                             seqnum = GetLastSeqnum()
-                            GridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                                dataItem.Rows(0).Item("type_description"), _
-                                                                dataItem.Rows(0).Item("type_product"), _
+                            gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                                dataItem.Rows(0).Item("type_description"),
+                                                                dataItem.Rows(0).Item("type_product"),
                                                                 dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
 
                             Total()
                         End If
                     Else
                         seqnum = GetLastSeqnum()
-                        GridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                                  dataItem.Rows(0).Item("type_description"), _
-                                                                  dataItem.Rows(0).Item("type_product"), _
+                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                                  dataItem.Rows(0).Item("type_description"),
+                                                                  dataItem.Rows(0).Item("type_product"),
                                                                   dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
                         Total()
                     End If
@@ -305,8 +333,8 @@ Public Class frmTransfer
 
     Private Function IsExists(ByVal kode As String) As Boolean
         Try
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                If GridTransfer.Rows(i).Cells(1).Value = kode Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                If gridTransfer.Rows(i).Cells(1).Value = kode Then
                     Return True
                     Exit Function
                 End If
@@ -333,11 +361,11 @@ Public Class frmTransfer
 
     Private Sub Calculate(ByVal kode As String)
         Try
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                If GridTransfer.Rows(i).Cells(1).Value = kode Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                If gridTransfer.Rows(i).Cells(1).Value = kode Then
 
-                    GridTransfer.Rows(i).Cells(5).Value += CInt(txtQty.Text)
-                   
+                    gridTransfer.Rows(i).Cells(5).Value += CInt(txtQty.Text)
+
                     Exit Sub
                 End If
             Next
@@ -349,9 +377,9 @@ Public Class frmTransfer
 
     Private Function GetLastSeqnum() As Integer
         Dim iden As Integer = 0
-        If GridTransfer.Rows.Count > 0 Then
-            For i As Integer = 0 To GridTransfer.Rows.Count - 1
-                iden = GridTransfer.Rows(i).Cells(0).Value
+        If gridTransfer.Rows.Count > 0 Then
+            For i As Integer = 0 To gridTransfer.Rows.Count - 1
+                iden = gridTransfer.Rows(i).Cells(0).Value
             Next
 
             iden = iden + 1
@@ -405,7 +433,10 @@ Public Class frmTransfer
             lblTo.Text = "Ship To"
 
         Else 'Return Supplier
-
+            lblFrom.Text = "Supplier"
+            LoadSupplier(cmbFromWH, gridAll, "", 0)
+            lblTo.Visible = False
+            cmbToWH.Visible = False
         End If
 
         LoadImage()
@@ -422,7 +453,12 @@ Public Class frmTransfer
 
     Private Sub gridAll_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles gridAll.DoubleClick
 
-        cmbToWH.SelectedValue = gridAll.SelectedCells(0).Value
+        If gridAll.Tag = "FROM WH" Then
+            cmbFromWH.SelectedValue = gridAll.SelectedCells(0).Value
+        Else
+            cmbToWH.SelectedValue = gridAll.SelectedCells(0).Value
+        End If
+
         gridAll.Visible = False
     End Sub
 
@@ -442,17 +478,12 @@ Public Class frmTransfer
             Else
                 If mFlag = 0 Then LoadWarehouse(senderCmb, gridAll, 1)
 
-
-
-
             End If
-
 
             gridAll.Location = New Point(senderCmb.Left, senderCmb.Location.Y + 22)
             gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) +
                             (senderCmb.Width - GetColumnWidth(gridAll.Columns.Count, gridAll)) + 60, GetRowHeight(gridAll.Rows.Count, gridAll))
             senderCmb.DroppedDown = False
-
 
             If gridAll.Visible = True Then
                 gridAll.Visible = False
@@ -514,6 +545,43 @@ Public Class frmTransfer
                     Exit Sub
                 End If
 
+                If mFlag = 1 Then 'Interbranch 
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN101" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN102" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "001" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "002" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "600" Then
+
+                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+
+                End If
+
+                If mTransID = "PN102" Then
+                    If Not ItemBelongsSupplier(Trim(txtItem.Text), cmbFromWH.SelectedValue) = True Then
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        Exit Sub
+                    End If
+                End If
+
                 If CheckStockMinus(Trim(txtItem.Text), txtQty.Text) = True Then
 
                     MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, Title)
@@ -527,22 +595,22 @@ Public Class frmTransfer
                         Total()
                     Else
                         seqnum = GetLastSeqnum()
-                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                            dataItem.Rows(0).Item("type_description"), _
-                                                            dataItem.Rows(0).Item("type_product"), _
+                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                            dataItem.Rows(0).Item("type_description"),
+                                                            dataItem.Rows(0).Item("type_product"),
                                                             dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
 
                         Total()
                     End If
                 Else
                     seqnum = GetLastSeqnum()
-                    gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13), _
-                                                              dataItem.Rows(0).Item("type_description"), _
-                                                              dataItem.Rows(0).Item("type_product"), _
+                    gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                              dataItem.Rows(0).Item("type_description"),
+                                                              dataItem.Rows(0).Item("type_product"),
                                                               dataItem.Rows(0).Item("type_uom"), CInt(txtQty.Text)})
                     Total()
                 End If
-              
+
                 txtQty.Text = 1
                 txtItem.Clear()
                 txtItem.Focus()
@@ -580,8 +648,17 @@ Public Class frmTransfer
             Next
 
             Me.Cursor = Cursors.WaitCursor
+            If mFlag = 0 Then
+                JournalCode = "000"
+            ElseIf mFlag = 1 Then 'interbranch
+                custAffco = GetCustAFFCO(cmbFromWH.SelectedValue)
+                JournalCode = GetJournalTran(mTransID, custAffco)
+            Else 'supplier
+                JournalCode = "420"
+            End If
+
             SaveData(state)
-            UpdateHistoryPOS(Trim(lblDocNo.Text), mTransDoc)
+
             MsgBox("Data Saved Successfully", MsgBoxStyle.Information, Title)
             state = 0
             DetailClear()
@@ -593,7 +670,6 @@ Public Class frmTransfer
     End Sub
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
-
         SaveTransaction()
     End Sub
 
@@ -601,6 +677,7 @@ Public Class frmTransfer
         Dim temp As New DataTable
         Dim hcustSupp As String = ""
         Dim hcustSuppCode As String = ""
+        Dim mcustomer As String = ""
         Dim DNNo As String = ""
 
         Try
@@ -633,13 +710,18 @@ Public Class frmTransfer
                 If mTransID = "PN102" Or mTransID = "PN101" Then
                     hcustSupp = "S"
                     hcustSuppCode = mSuppCode
+                    mcustomer = ""
 
                 ElseIf mTransID = "MM106" Or mTransID = "MM410" Then
                     hcustSupp = "C"
                     hcustSuppCode = ""
                     mSuppCode = ""
+                    If mTransID = "MM410" Then mcustomer = cmbFromWH.SelectedValue
+                    If mTransID = "MM106" Then mcustomer = ""
 
                 End If
+
+
 
                 Dim statusItem As String = ""
 
@@ -661,32 +743,83 @@ Public Class frmTransfer
 
                         .ExecuteNonQuery()
 
-                        statusItem = 4
+                        Dim dataTemp As New DataTable
 
-                        Call NewTransactionStock(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") _
-                                                     , mTransID, hcustSupp, hcustSuppCode, Trim(lblDocNo.Text), GetValueParamText("DEFAULT WH") _
-                                                     , temp.Rows(i).Item(0), temp.Rows(i).Item(4), "-", temp.Rows(i).Item(2), statusItem _
-                                                     , temp.Rows(i).Item(1), temp.Rows(i).Item(3))
+                        If cn.State = ConnectionState.Closed Then cn.Open()
+                        cm = New SqlCommand
+                        With cm
+                            .Connection = cn
+                            .Transaction = ct
+                            .CommandText = "SELECT Mat_Status FROM " & DB & ".dbo.mtipe " &
+                                        "INNER JOIN " & DB & ".dbo.mmca on type_materialtype=mat_tipe " &
+                                        "WHERE type_partnumber='" & gridTransfer.Rows(i).Cells(1).Value & "'"
+                        End With
+
+                        da = New SqlDataAdapter
+                        With da
+                            .SelectCommand = cm
+                            .Fill(dataTemp)
+                        End With
+
+                        statusItem = dataTemp.Rows(0).Item(0)
+
+                        If cn.State = ConnectionState.Closed Then cn.Open()
+
+                        With cm
+                            .Connection = cn
+                            .Transaction = ct
+                            .CommandText = "INSERT INTO " & DB & ".dbo.hkstok " &
+                                                   " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                                   "'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                                   " '" & Format(GetValueParamDate("SYSTEM DATE"), "yyyy-MM-dd") & "'" &
+                                                   ",'" & gridTransfer.Rows(i).Cells(1).Value & "','" & gridTransfer.Rows(i).Cells(5).Value & "'" &
+                                                   ",'" & mTransID & "','-',0,'" & Trim(lblDocNo.Text) & "','" & hcustSupp & "'" &
+                                                   ",'" & IIf(mFlag = 2, cmbFromWH.SelectedValue, mcustomer) & "','" & gridTransfer.Rows(i).Cells(3).Value & "','" & GetValueParamText("DEFAULT WH") & "'," &
+                                                   "'" & IIf(statusItem = "G", 4, 6) & "')"
+                            .ExecuteNonQuery()
+
+
+                        End With
+
+                        If cn.State = ConnectionState.Closed Then cn.Open()
+
+                        With cm
+                            .Connection = cn
+                            .Transaction = ct
+                            If PartExitst(gridTransfer.Rows(i).Cells(1).Value, GetValueParamText("DEFAULT BRANCH"), GetValueParamText("DEFAULT WH")) = True Then
+
+                                .CommandText = "UPDATE " & DB & ".dbo.mpart " &
+                                            " SET part_consigmentstock=part_consigmentstock - " & gridTransfer.Rows(i).Cells(5).Value &
+                                            ",part_rfsstock=part_rfsstock - " & gridTransfer.Rows(i).Cells(5).Value &
+                                            ",part_description='" & Replace(gridTransfer.Rows(i).Cells(2).Value, "'", "''") & "'" &
+                                            " WHERE part_partnumber='" & gridTransfer.Rows(i).Cells(1).Value & "'" &
+                                            " AND Part_Branch='" & GetValueParamText("DEFAULT BRANCH") & "'" &
+                                            " AND Part_WH = '" & GetValueParamText("DEFAULT WH") & "'"
+
+                            Else
+
+                                .CommandText = "INSERT INTO " & DB & ".dbo.mpart " &
+                                            " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "'," &
+                                            "'" & GetValueParamText("DEFAULT BRANCH") & "'," &
+                                            "'" & gridTransfer.Rows(i).Cells(1).Value & "'," &
+                                            "'" & gridTransfer.Rows(i).Cells(3).Value & "'," &
+                                            "'" & GetValueParamText("DEFAULT BRANCH") & "','" & GetValueParamText("DEFAULT WH") & "'," &
+                                            "'" & Replace(gridTransfer.Rows(i).Cells(2).Value, "'", "''") & "'," &
+                                            "'" & gridTransfer.Rows(i).Cells(4).Value & "',0,0,0,0,0,0,0,'" & 0 - gridTransfer.Rows(i).Cells(5).Value & "',0,0,0,0,0,0,0,0," &
+                                            "'" & 0 - gridTransfer.Rows(i).Cells(5).Value & "',0,0,0,0,0,0,'','',0,0)"
+
+
+                            End If
+
+                            .ExecuteNonQuery()
+
+                        End With
+
                     Next
 
                 End With
 
                 'save header
-                InsertHeaderTS(GetValueParamText("DEFAULT COMPANY"), GetValueParamText("DEFAULT BRANCH"), Trim(lblDocNo.Text) _
-                               , dtDate.Value, GetValueParamText("DEFAULT WH"), cmbToWH.SelectedValue, mTransID, mSuppCode _
-                               , DNNo, Trim(txtNote.Text))
-
-                Dim custAffco As String = ""
-                Dim JournalCode As String = ""
-
-                If mFlag = 0 Then
-                    JournalCode = "000"
-                ElseIf mFlag = 1 Then 'interbranch
-                    custAffco = GetCustAFFCO(cmbFromWH.SelectedValue)
-                    JournalCode = GetJournalTran(mTransID, custAffco)
-                Else 'supplier
-                    JournalCode = "420"
-                End If
 
                 If cn.State = ConnectionState.Closed Then cn.Open()
                 cm = New SqlCommand
@@ -706,12 +839,24 @@ Public Class frmTransfer
                                     ",'" & GetValueParamText("DEFAULT WH") & "','" & mTransID & "'" &
                                     ",'" & IIf(mFlag = 2, cmbFromWH.SelectedValue, "") & "','" & IIf(mFlag = 1, cmbFromWH.SelectedValue, "") & "'" &
                                     ",'" & IIf(mFlag = 1, cmbToWH.SelectedValue, "") & "'" &
-                                    ",'" & IIf(mFlag = 0, cmbToWH.SelectedValue, "") & "','','','Y'" &
+                                    ",'" & IIf(mFlag = 0, cmbToWH.SelectedValue, "") & "','','" & Trim(txtReffDoc.Text) & "','Y'" &
                                     ",'Y','Y','N','Y','','" & Trim(txtNote.Text) & "','','','" & JournalCode & "',0,'" & logOn & "'" &
                                     ",'" & Format(dtDate.Value, formatDate) & "','" & Format(Now, "HHmmss") & "')"
                     .ExecuteNonQuery()
 
 
+                End With
+
+                'Update TS
+
+                If cn.State = ConnectionState.Closed Then cn.Open()
+                cm = New SqlCommand
+                With cm
+                    .Connection = cn
+                    .Transaction = ct
+                    .CommandText = "UPDATE " & DB & ".dbo.hdoc SET Pos_Completed=9" &
+                                " WHERE Pos_Document='" & Trim(lblDocNo.Text) & "' AND Pos_TransDoc='" & mTransDoc & "'"
+                    .ExecuteNonQuery()
                 End With
 
                 ct.Commit()
@@ -765,4 +910,160 @@ Public Class frmTransfer
         End If
 
     End Sub
+
+    Private Sub cmbFromWH_KeyUp(sender As Object, e As KeyEventArgs) Handles cmbFromWH.KeyUp
+        If e.KeyCode = Keys.Enter Then
+            If Trim(cmbFromWH.Text) <> "" And mFlag = 2 Then
+                LoadSupplier(cmbFromWH, gridAll, Trim(cmbFromWH.Text), 1)
+
+                gridAll.Location = New Point(cmbFromWH.Left, cmbFromWH.Location.Y + 22)
+                gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) +
+                                         (cmbFromWH.Width - GetColumnWidth(gridAll.Columns.Count, gridAll)) + 60,
+                                         GetRowHeight(gridAll.Rows.Count, gridAll))
+                cmbFromWH.DroppedDown = False
+
+                If gridAll.Visible = True Then
+                    gridAll.Visible = False
+                    cmbFromWH.Focus()
+                Else
+                    If gridAll.RowCount > 0 Then gridAll.Visible = True
+                    cmbFromWH.DroppedDown = False
+                    gridAll.Focus()
+
+                End If
+
+                gridAll.Tag = cmbFromWH.Tag
+
+                gridAll.Columns(0).Width = 50
+                gridAll.Columns(1).Width = gridAll.Width - 54
+
+            End If
+        End If
+    End Sub
+
+    Private Sub btnUpload_Click(sender As Object, e As EventArgs) Handles btnUpload.Click
+        Dim opExcel As New OpenFileDialog
+        opExcel.Filter = "(*.xlsx)|*.xlsx|(*.xls)|*.xls"
+        Dim result As DialogResult = opExcel.ShowDialog()
+        Dim pathExcel As String = opExcel.FileName
+        Dim DtSet As DataTable
+        Dim ConStr As String = ""
+
+        Try
+
+            If pathExcel.Trim = "" Then
+                MessageBox.Show("Please Select Excel File !")
+                Exit Sub
+            Else
+                Dim Ext As String = pathExcel.Substring(pathExcel.LastIndexOf(".") + 1)
+                If Ext.Length = 3 Then
+                    ConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + pathExcel + ";Extended Properties='Excel 8.0;HDR=Yes;IMEX=1';"
+                ElseIf Ext.Length = 4 Then
+                    ConStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + pathExcel + ";Extended Properties='Excel 12.0 xml;HDR=YES';"
+                End If
+            End If
+
+            Dim MyConnection As System.Data.OleDb.OleDbConnection
+            Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+            MyConnection = New System.Data.OleDb.OleDbConnection(ConStr)
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter("select * from [Sheet1$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "import")
+            DtSet = New DataTable
+            MyCommand.Fill(DtSet)
+
+            For i As Integer = 0 To DtSet.Rows.Count - 1
+                If Trim(DtSet.Rows(i).Item(0)) = "" Then Exit Sub
+
+                If Not ItemExists(Trim(DtSet.Rows(i).Item(0))) = True Then
+                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, Title)
+                    Exit Sub
+                End If
+
+                If Not ItemAssignmentExists(Trim(DtSet.Rows(i).Item(0)), GetValueParamText("DEFAULT WH")) = True Then
+                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, Title)
+                    Exit Sub
+                End If
+
+                dataItem = GetDetailItem(Trim(DtSet.Rows(i).Item(0)))
+
+                If mFlag = 1 Then 'Interbranch 
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN101" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "520" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "510" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "610" Then
+
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                ElseIf mFlag = 2 And mTransID = "PN102" Then 'return consi
+                    If dataItem.Rows(0).Item("type_materialtype") = "001" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "002" Or
+                        dataItem.Rows(0).Item("type_materialtype") = "600" Then
+
+                        MsgBox("Item must consignment = " & vbCrLf & Trim(dataItem.Rows(0).Item(0)) _
+                                & " - " & dataItem.Rows(0).Item(1), MsgBoxStyle.Exclamation, Title)
+
+                        Exit Sub
+                    End If
+                End If
+
+                If mTransID = "PN102" Then
+                    If Not ItemBelongsSupplier(Trim(DtSet.Rows(i).Item(0)), cmbFromWH.SelectedValue) = True Then
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        Exit Sub
+                    End If
+                End If
+
+                If CheckStockMinus(Trim(DtSet.Rows(i).Item(0)), CInt(DtSet.Rows(i).Item(1))) = True Then
+
+                    MsgBox("Item " + Trim(DtSet.Rows(i).Item(0)) + " - " + dataItem.Rows(0).Item("type_description") + " Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    Exit Sub
+
+                End If
+
+                If gridTransfer.Rows.Count > 0 Then
+                    If IsExists(Trim(DtSet.Rows(i).Item(0))) Then
+                        Calculate(Trim(DtSet.Rows(i).Item(0)))
+                        Total()
+                    Else
+                        seqnum = GetLastSeqnum()
+                        gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                            dataItem.Rows(0).Item("type_description"),
+                                                            dataItem.Rows(0).Item("type_product"),
+                                                            dataItem.Rows(0).Item("type_uom"), CInt(DtSet.Rows(i).Item(1))})
+
+                        Total()
+                    End If
+                Else
+                    seqnum = GetLastSeqnum()
+                    gridTransfer.Rows.Add(New Object() {seqnum, Mid(dataItem.Rows(0).Item(0), 1, 13),
+                                                              dataItem.Rows(0).Item("type_description"),
+                                                              dataItem.Rows(0).Item("type_product"),
+                                                              dataItem.Rows(0).Item("type_uom"), CInt(DtSet.Rows(i).Item(1))})
+                    Total()
+                End If
+            Next
+
+            MyConnection.Close()
+
+            MessageBox.Show("File successfully imported")
+
+        Catch ex As Exception
+            MessageBox.Show("Error")
+
+        End Try
+    End Sub
+
+
+
+
 End Class
